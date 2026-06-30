@@ -12,7 +12,7 @@ Item {
     property int titleHAlignment: Qt.AlignLeft
 
     property int controlLevel: 2
-    property int controlWidth: 107
+    property int controlWidth: 150
     property int controlHeight: 30
 
     property color shineLineColor: "white"
@@ -46,8 +46,9 @@ Item {
                     width: controlWidth
                     height: controlHeight
                     border.width: 0
+                    axisConfig: globalConfig.xAxisConfig
                     color: "transparent"
-                    value: modelItem.xServoPos / 1000
+                    value: axisConfig.toUnit(modelItem.xServoPos)
                 }
             }
 
@@ -62,7 +63,7 @@ Item {
                     height: controlHeight
                     border.width: 0
                     color: "transparent"
-                    value: modelItem.xServoSpeed
+                    value: (modelItem.xServoSpeed / 10).toFixed(1)
                 }
             }
 
@@ -77,7 +78,8 @@ Item {
                     height: controlHeight
                     border.width: 0
                     color: "transparent"
-                    value: modelItem.yServoPos / 1000
+                    axisConfig: globalConfig.yAxisConfig
+                    value: axisConfig.toUnit(modelItem.yServoPos)
                 }
             }
 
@@ -92,7 +94,7 @@ Item {
                     height: controlHeight
                     border.width: 0
                     color: "transparent"
-                    value: modelItem.yServoSpeed
+                    value: (modelItem.yServoSpeed / 10.0).toFixed(1)
                 }
             }
         }

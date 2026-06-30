@@ -552,6 +552,9 @@ Item {
             serialGlobal.refreshPorts();
         }
 
+        /** Tcp **/
+
+        /** Serial **/
         servoSerialConfig.onOpenConnection: {
             servoModbusCom.openPort();
         }
@@ -592,6 +595,10 @@ Item {
 
     WeaQuick.GlobalContext {
         id: wQuick
+    }
+
+    GlobalConfig {
+        id: globalConfig
     }
 
     // AppSetting
