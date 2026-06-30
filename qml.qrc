@@ -89,5 +89,11 @@
         <file>qml/InterruptConfigView.qml</file>
         <file>qml/GlobalUtils.js</file>
         <file>qml/CircularButton.qml</file>
+        <file>qml/GlobalConfig.qml</file>
+        <file>qml/SettingGeneralPage.qml</file>
+        <file>qml/AxisConfigPanel.qml</file>
+        <file>qml/StepSettingPanel.qml</file>
+        <file>qml/NumLabel.qml</file>
+        <file>qml/TcpConfig.qml</file>
     </qresource>
 </RCC>
