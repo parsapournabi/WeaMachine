@@ -590,7 +590,7 @@ bool ServoModbusDevice::gotoHome()
 bool ServoModbusDevice::gotoPosition(qint32 path)
 {
     // return gotoPosition(path, m_speedData0.value, m_rampData0.value);
-    return gotoPosition(path, m_jogSpeed.value * 10 * 2, m_jogAcc.value);
+    return gotoPosition(path, static_cast<quint16>(m_jogSpeed.value * 10 * 2), m_jogAcc.value);
 }
 
 bool ServoModbusDevice::gotoPosition(qint32 path, qint32 speed, qint32 ramp)
