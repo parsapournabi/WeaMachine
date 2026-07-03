@@ -1,15 +1,13 @@
 UI TODO list:
 
-1. Complete StepItem & StepPopup such as Delay scaling, Run/Stop button, current running indicating. Also Add Profiles into the Steps (QC/QA all).
-2. Manual GroupBoxes should be enable only when its servo ON and Manual mode is ON.
-3. Complete Record Table and model.
-4. replace Step Start Interrupt with RADIO Button [ Step Start, Step Stop ]
-5. Remove X-Axis Servo Setting Page, Y-Axis Servo Setting Page
-6. Add 'General' Setting Page with these sections: [ Axes Configuration, Step Configuration ]
+1. Manual GroupBoxes should be enable only when its servo ON and Manual mode is ON.
+2. Complete Record Table and model.
+3. replace Step Start Interrupt with RADIO Button [ Step Start, Step Stop ]
+4. Add 'General' Setting Page with these sections: [ Axes Configuration, Step Configuration ]
 	
 	Axes Configuration:
-		- Servo Scale Numerator
-		- Servo Scaled Unit
+		- Servo Scale Numerator [ DONE ]
+		- Servo Scaled Unit [ DONE ]
 	
 	Step Configuration:
 		- Always ON Output while Step is Running ( it takes a list of outputs )
@@ -17,9 +15,11 @@ UI TODO list:
 		- X-Axis Torque
 		- Y-Axis Torque
 		
-7. Sync all PosEdit Boxes with Scaled Value & Unit referrer Axes Configuration
-8. ADD ModbusTCP UI.
-9. Link with backend
+5. Add Step Starting from a specific step.
+6. Fix GAUGE from/to values
+7. Fix Manual Scaling for Position
+8. Add Splash Screen using Wearily logo.
+9. Add Notification and Alarm Sound (Low priority)
 10. Optimize UI
 
 
@@ -30,13 +30,15 @@ Backend TODO list:
 
 1. FIX Outputs interlock issue.
 2. ADD Stop Interrupt for PlcIOItem & Model and link it with StepModel.
-3. ADD Stop Method for StepModel referrer UI.
-4. ADD Conditions Checker for IOS on Steps & Servo HOME/TPOS, .etc.
-5. ADD Always ON coils while Step is Running
-6. ADD Single StepItem running/pausing execution.
-7. ADD RecordTable model logic.
-8. DEL hardcoded things of Steps at Cpp/Qml.
-9. ADD Alarm for when a specific Step cannot be execute or is freezing.
-10. REFACTOR modbus & servomodbus classes with new logic (if needed use multi-threading)
-11. ADD ModbusTCP and an environment at .ini setting for Choosing ModbusRTU or ModbusTCP.
-12. ADD Counter register for when Step flow is done.
+3. ADD Conditions Checker for IOS on Steps & Servo HOME/TPOS, .etc.
+4. ADD Always ON coils while Step is Running
+5. ADD RecordTable model logic.
+6. ADD Alarm for when a specific Step cannot be execute or is freezing.
+7. REFACTOR modbus & servomodbus classes with new logic (if needed use multi-threading)
+8. ADD Counter register for when Step flow is done.
+9. Make Homing Smarter
+10. Fix Interrupt issue when its force stop.
+11. Auto Connect of TCP/Serial
+12. Fix Sometimes Servo will freeze at specific Step (Because of Servo Encoder error and we also have an encoder checking for reaching position).
+you can fix this by using it an option into the general setting.
+13. Servo OFF at Start ---> Done (But sometimes has an issue)
