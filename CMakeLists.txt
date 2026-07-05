@@ -22,7 +22,7 @@ file(GLOB_RECURSE PROJECT_RESOURCES "qml/*.qrc" "qml/*.js")
 
 set(PROJECT_SOURCES
     main.cpp
-    qml.qrc
+    resources.qrc
     ${PROJECT_HEADERS}
     ${PROJECT_SOURCES}
     ${PROJECT_SCRIPTS}
