@@ -95,5 +95,7 @@
         <file>qml/StepSettingPanel.qml</file>
         <file>qml/NumLabel.qml</file>
         <file>qml/TcpConfig.qml</file>
+        <file>qml/SplashScreen.qml</file>
+        <file>shaders/splash-intro.frag</file>
     </qresource>
 </RCC>
