@@ -1,6 +1,16 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
+/*
+* By Default settings, This component has some dependencies:
+*  - logoImage (.png)
+*  - splash-intro.frag (fragment shader)
+*  - Orbitron font (orbitron-bold.otf)
+*  - Rajdhani font (Rajdhani-Bold.ttf)
+*
+* These dependencies can be change by changing the properties values.
+*/
+
 Item {
     id: root
 
