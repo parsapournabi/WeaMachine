@@ -23,6 +23,7 @@ struct SplashAnim
 uniform sampler2D source;
 uniform vec4 uBaseColor;
 uniform vec2 uResolution;
+uniform float u_minimumDuration;
 uniform float iTime;
 
 uniform float qt_Opacity;
@@ -80,7 +81,7 @@ SplashAnim anim(float time)
 {
     SplashAnim a;
 
-    const float duration = 7.0;
+    float duration = u_minimumDuration;
 
     float t = clamp(time / duration, 0.0, 1.0);
 
