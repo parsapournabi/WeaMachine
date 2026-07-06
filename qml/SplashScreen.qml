@@ -1,8 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
-/// TODO: shader cleanup
-
 Item {
     id: root
 
@@ -26,6 +24,7 @@ Item {
 
     property color baseColor: "white"
     property string fragmentShader: "qrc:/shaders/splash-intro.frag"
+    property vector2d logoSize: Qt.vector2d(200, 200)
     property Image logoImage: Image {
         source: "qrc:/share/images/Wearily-Logo-Steel.png"
     }
@@ -63,11 +62,12 @@ Item {
         visible: !_private.isMainLoaded && opacity > 0.0
         opacity: root.opacity
 
-        property color uBaseColor: root.baseColor
-        property vector2d uResolution: Qt.vector2d(width, height)
+        property color u_baseColor: root.baseColor
+        property vector2d u_resolution: Qt.vector2d(width, height)
+        property vector2d u_logoSize: root.logoSize
         property real u_minimumDuration: root.minimumDurationSec
-        property real iTime: _private.elapsed
-        property variant source: logoImage
+        property real u_time: _private.elapsed
+        property variant u_source: logoImage
 
         fragmentShader: root.fragmentShader
     }
