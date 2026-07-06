@@ -98,5 +98,8 @@
         <file>qml/SplashScreen.qml</file>
         <file>shaders/splash-intro.frag</file>
         <file>share/images/Wearily-Logo-Steel.png</file>
+        <file>share/fonts/Orbitron/orbitron-medium.otf</file>
+        <file>share/fonts/Rajdhani/Rajdhani-Bold.ttf</file>
+        <file>share/fonts/Orbitron/orbitron-bold.otf</file>
     </qresource>
 </RCC>
