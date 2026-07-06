@@ -97,5 +97,6 @@
         <file>qml/TcpConfig.qml</file>
         <file>qml/SplashScreen.qml</file>
         <file>shaders/splash-intro.frag</file>
+        <file>share/images/Wearily-Logo-Steel.png</file>
     </qresource>
 </RCC>
