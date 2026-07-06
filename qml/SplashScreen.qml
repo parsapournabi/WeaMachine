@@ -1,168 +1,343 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
-/// TODO: Make clean
-/// TODO: Remove hardcode things
-/// TODO: add FontLoader
-/// TODO: add logical functions (start)
 /// TODO: shader cleanup
-/// TODO: QC/QA and add Lazy loading
-/// TODO: add minimumDuration properties, enable/disable and ...
 
 Item {
     id: root
 
-    property var logoPic: Image {
-        source: "file:///C:/Users/PARSA/Desktop/Logo1.png"
-    }
-    property color baseColor: "white"
+    /** Splash Properties **/
+    // Read Only
+    readonly property bool isMainLoaded: _private.isMainLoaded
 
+    // REQUIRED
+    property string mainFormSource: "" // Use this property when hot-reload process is active
+    property Component mainFormSourceComponent // Target component after splash finished (Use it Release mode)
+
+    property bool noSplashAnimation: false // Splash Animation (if false: mainFormComponent will be load implicitly)
+    property real minimumDurationSec: 6.0 // second
+    property int fadeInDelay: 500 // ms
+    property int fadeOutDelay: 500 // ms
+
+    property string titleText: "WEARILY"
+    property string topLeftText: "WeaMachine Framework - Create Machines. Not Code."
+    property string bottomLeftText: "VERSION 2.1.0"
+    property string bottomRightText: "Copyright © 2026 P. Pournabi"
+
+    property color baseColor: "white"
+    property string fragmentShader: "qrc:/shaders/splash-intro.frag"
+    property Image logoImage: Image {
+        source: "qrc:/share/images/Wearily-Logo-Steel.png"
+    }
+
+    // First Intro
+    property alias labelTopLeft: lblTopLeft
+    property alias labelBottomLeft: lblBottomLeft
+    property alias labelBottomRight: lblBottomRight
+    property alias shaderEffectSplash: shaderEffect
+
+    // Second Intro
+    property alias titleUnderline: titleUnderline
+    property alias labelTitle: lblTitle
+
+    // Other
+    property alias fontLoaderTitle: fontLoaderTitle
+    property alias fontLoaderInfo: fontLoaderInfo
+    property alias mainFormLoader: mainLoader
+
+    /** Signals **/
+    signal splashStarted
     signal splashFinished
 
+    signal loadingStarted
+    signal loadingCompleted
+
     opacity: 0.0
-    Component.onCompleted: {
-        opacity = 1.0;
-        lblWeaMachine.opacity = 0.5;
-    }
 
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 1000
-        }
-    }
+    /** First Intro **/
 
+    // Splash Effect
     ShaderEffect {
-        id: shEffect
+        id: shaderEffect
         anchors.fill: parent
+        visible: !_private.isMainLoaded && opacity > 0.0
+        opacity: root.opacity
 
         property color uBaseColor: root.baseColor
         property vector2d uResolution: Qt.vector2d(width, height)
-        property real iTime: 0.0
-        property variant source: logoPic
+        property real u_minimumDuration: root.minimumDurationSec
+        property real iTime: _private.elapsed
+        property variant source: logoImage
 
-        fragmentShader: "qrc:/shaders/splash-intro.frag"
-        Timer {
-            id: tmrFrame
-            property real _st: root.visible ? Date.now() : 0.0 // Start Time
-            property bool hasDone: false
-            running: root.visible
-            repeat: true
-            interval: 16
-            onTriggered: {
-                parent.iTime = (Date.now() - _st) * 0.001;
-                if (parent.iTime > 6.0) {
-                    lblWeaMachine.opacity = 0.0;
-                }
-
-                if (parent.iTime > 7.0) {
-                    lblWearily.opacity = 1.0;
-                }
-
-                if (parent.iTime >= 8.5 && !hasDone) {
-                    hasDone = true;
-                    root.splashFinished();
-                }
-            }
-        }
+        fragmentShader: root.fragmentShader
     }
 
-    // Shine Line
-    ShineLine {
-        id: shineLine
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: lblWearily.bottom
-            topMargin: 10
-        }
-        color: root.baseColor
-        width: lblWearily.paintedWidth * 1.25
-        opacity: lblWearily.opacity
-    }
-
-    // VERSION
+    // BottomRight Label (Version No)
     Label {
-        id: lblVersion
+        id: lblBottomLeft
         anchors {
             left: parent.left
             bottom: parent.bottom
             margins: 10
         }
+        visible: !_private.isMainLoaded && opacity > 0.0
+        opacity: _private.firstIntroOpacity
 
-        opacity: lblWeaMachine.opacity
         font {
-            family: "Rajdhani"
+            family: fontLoaderInfo.name
             pixelSize: 15
             bold: true
             letterSpacing: 2
         }
         color: "white"
-        text: "VERSION 2.1.0"
+        text: root.bottomLeftText
     }
 
-    // WEARILY STUDIO
+    // BottomRight Label (Policy & Info)
     Label {
-        id: lblWeaStudio
+        id: lblBottomRight
         anchors {
             right: parent.right
             bottom: parent.bottom
             margins: 10
         }
-
-        opacity: lblWeaMachine.opacity
+        visible: !_private.isMainLoaded && opacity > 0.0
+        opacity: _private.firstIntroOpacity
         font {
-            family: "Rajdhani"
+            family: fontLoaderInfo.name
             pixelSize: 15
             bold: true
             letterSpacing: 1
         }
         color: "white"
-        text: "Copyright © 2026 P. Pournabi"
+        text: root.bottomRightText
     }
 
-    // WEA MACHINE
+    // TopLeft Label (Studio name)
     Label {
-        id: lblWeaMachine
+        id: lblTopLeft
         anchors {
             left: parent.left
             top: parent.top
             margins: 10
         }
 
-        opacity: 0.0
+        visible: !_private.isMainLoaded && opacity > 0.0
+        opacity: _private.firstIntroOpacity
         font {
-            family: "Rajdhani"
+            family: fontLoaderInfo.name
             pixelSize: 15
             bold: true
             letterSpacing: 2
         }
         color: "white"
-        text: "WeaMachine Framework - Create Machines. Not Code."
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 1000
-            }
-        }
+        text: root.topLeftText
     }
 
-    // WEARILY Title
+    /** Second Intro **/
+
+    // Title
     Label {
-        id: lblWearily
+        id: lblTitle
         x: parent.width / 2 - paintedWidth / 2 + 10
         y: parent.height / 2 - parent.height / 9
-        opacity: 0.0
+        visible: !_private.isMainLoaded && opacity > 0.0
+        opacity: _private.secondIntroOpacity
         font {
-            family: "Orbitron"
+            family: fontLoaderTitle.name
             pixelSize: 32
-            bold: true
+            bold: false
             letterSpacing: 10
         }
         color: "white"
-        text: "WEARILY"
+        text: root.titleText
+    }
 
-        Behavior on opacity {
+    // Title Under Line
+    ShineLine {
+        id: titleUnderline
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: lblTitle.bottom
+            topMargin: 10
+        }
+        visible: !_private.isMainLoaded && opacity > 0.0
+        opacity: _private.secondIntroOpacity
+        color: root.baseColor
+        width: lblTitle.paintedWidth * 1.25
+    }
+
+    /** Main Screen (After Splash finished) **/
+    Loader {
+        id: mainLoader
+        anchors.fill: parent
+        onLoaded: {
+            root.loadingCompleted(); // Emitting
+
+            _private.showMainForm();
+        }
+    }
+
+    /** Objects & Resources **/
+
+    // Fonts
+    FontLoader {
+        id: fontLoaderTitle
+        source: "qrc:/share/fonts/Orbitron/orbitron-bold.otf"
+    }
+
+    FontLoader {
+        id: fontLoaderInfo
+        source: "qrc:/share/fonts/Rajdhani/Rajdhani-Bold.ttf"
+    }
+
+    // Animations
+    NumberAnimation {
+        id: fadeInAnimation
+        target: root
+        property: "opacity"
+        duration: root.fadeInDelay
+        from: 0.0
+        to: 1.0
+        onStarted: {
+            _private.firstIntroOpacity = 0.7;
+        }
+
+        onFinished: {
+            _private.tmrFrame.start();
+        }
+    }
+
+    NumberAnimation {
+        id: fadeOutAnimation
+        target: mainLoader.item
+        property: "opacity"
+        duration: root.fadeOutDelay
+        from: 0.0
+        to: 1.0
+        onFinished: {
+            _private.isMainLoaded = true;
+            root.splashFinished(); // Emitting
+        }
+    }
+
+    // Private
+    QtObject {
+        id: _private
+        property bool isMainLoaded: false
+        property real elapsed: 0.0 // Elapsed Timer (unit second)
+        property real firstIntroOpacity: 0.0
+        property real secondIntroOpacity: 0.0
+
+        property Timer tmrFrame: Timer {
+            property real _startTime: Date.now()
+
+            running: false
+            repeat: true
+            interval: 16
+            onTriggered: {
+                _private.elapsed = (Date.now() - _startTime) * 0.001;
+                if (_private.elapsed > (minimumDurationSec - 1.0) && _private.firstIntroOpacity !== 0.0) {
+                    _private.firstIntroOpacity = 0.0;
+                }
+
+                if (_private.elapsed > (minimumDurationSec + 1.0) && _private.secondIntroOpacity !== 1.0) {
+                    _private.secondIntroOpacity = 1.0;
+                }
+
+                if (_private.elapsed >= minimumDurationSec + 2.0) {
+                    _private.loadMain();
+                    stop();
+                }
+            }
+            onRunningChanged: {
+                _startTime = Date.now();
+            }
+        }
+
+        Behavior on firstIntroOpacity {
             NumberAnimation {
                 duration: 1000
             }
+        }
+
+        Behavior on secondIntroOpacity {
+            NumberAnimation {
+                duration: 1000
+            }
+        }
+
+        function restoreMemories() {
+            if (mainLoader.item) {
+                mainLoader.item.visible = false;
+                mainLoader.item.opacity = 0.0;
+            }
+            mainLoader.sourceComponent = undefined;
+
+            root.opacity = 0.0;
+            isMainLoaded = false;
+            elapsed = 0.0;
+            firstIntroOpacity = 0.0;
+            secondIntroOpacity = 0.0;
+        }
+
+        function startFadeInAnimation() {
+            fadeInAnimation.start();
+        }
+
+        function startFadeOutAnimation() {
+            mainLoader.item.opacity = 0.0;
+            mainLoader.item.visible = true;
+
+            fadeOutAnimation.start();
+        }
+
+        function loadMain() {
+            root.loadingStarted(); // Emitting
+
+            root.opacity = 1.0;
+            if (mainFormSource.length > 0) {
+                // hot-reload enabled
+                mainLoader.sourceComponent = Qt.createComponent(mainFormSource);
+            } else {
+                // Load from component
+                mainLoader.sourceComponent = mainFormSourceComponent;
+            }
+        }
+
+        function showMainForm() {
+            if (noSplashAnimation) {
+                isMainLoaded = true;
+
+                mainLoader.item.opacity = 1.0;
+                mainLoader.item.visible = true;
+
+                root.splashFinished(); // Emitting
+            } else {
+                startFadeOutAnimation();
+            }
+
+            firstIntroOpacity = 0.0;
+            secondIntroOpacity = 0.0;
+        }
+    }
+
+    /** Functions **/
+    function start() {
+        if (!mainFormSourceComponent && !mainFormSource) {
+            console.warn("mainSourceComponent/mainFormSource cannot be empty for SplashScreen!");
+            Qt.quit();
+        }
+
+        root.splashStarted(); // Emitting
+
+        _private.restoreMemories();
+
+        if (noSplashAnimation) {
+            // Directly Loading Main
+            _private.loadMain();
+        } else {
+            _private.startFadeInAnimation();
         }
     }
 }

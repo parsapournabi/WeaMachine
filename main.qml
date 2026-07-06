@@ -13,27 +13,13 @@ Window {
     color: "black"
 
     // qrc:/
-    property string mainFormPath: "qml/MainForm.qml"
+    property string splashSource: "qml/SplashScreen.qml"
 
     Component {
         id: compSplashScreen
 
         SplashScreen {
-            onSplashFinished: {
-                console.log("Splash Screen is DONE", getCurrentTime());
-                mainFormLoader.source = "";
-                mainFormLoader.source = mainFormPath;
-            }
-        }
-    }
-
-    Loader {
-        id: mainFormLoader
-        anchors.fill: parent
-        onLoaded: {
-            console.log("MainForm has loaded: ", getCurrentTime());
-            appLoader.item.opacity = 0.0;
-            mainFormLoader.item.opacity = 1.0;
+            mainFormSource: "qrc:/qml/MainForm.qml"
         }
     }
 
@@ -42,19 +28,18 @@ Window {
         anchors.fill: parent
         sourceComponent: compSplashScreen
         onLoaded: {
-            console.log("Splash Screen has loaded: ", getCurrentTime());
+            item.start();
         }
-    }
-
-    function getCurrentTime() {
-        var dt = new Date();
-        return Qt.formatTime(dt, "hh:mm:ss.zzz");
     }
 
     function doReload() {
         appLoader.sourceComponent = undefined;
+        appLoader.source = "";
         _engine.clearCache();
-        appLoader.sourceComponent = compSplashScreen;
+        appLoader.setSource(splashSource, {
+                                mainFormSource: "MainForm.qml",
+                                noSplashAnimation: true
+                            });
     }
 
     Shortcut {
