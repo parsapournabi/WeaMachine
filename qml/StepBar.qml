@@ -61,7 +61,9 @@ Item {
                     }
 
                     // Helper for single StepRunning
-                    stepModel.currentSelected = listView.currentIndex;
+                    stepModel.currentSelected = Qt.binding(function () {
+                        return listView.currentIndex;
+                    });
                 }
                 onPlayRequest:
                     // TODO: Add StepModel Single StepRunning request HERE
