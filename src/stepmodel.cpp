@@ -10,7 +10,8 @@
 
 
 StepModel::StepModel(QObject* parent)
-    : QAbstractListModel{parent}
+    : QAbstractListModel{parent},
+      m_running(false)
 {
     reverseRoleNames();
 
