@@ -9,7 +9,7 @@ ItemGauge {
     editBoxGauge {
         decimals: 1
         from: 0.0
-        to: 1500.0
+        to: 3000.0
         suffix: " rpm"
     }
 
@@ -18,9 +18,9 @@ ItemGauge {
         anchors.fill: parent
 
         minimumValue: 0
-        maximumValue: 1500
+        maximumValue: 3000
 
-        labelStepSize: 150
+        labelStepSize: 300
         tickmarkStepSize: 75
         minimumValueAngle: -135
         maximumValueAngle: 135
