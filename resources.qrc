@@ -101,5 +101,6 @@
         <file>share/fonts/Orbitron/orbitron-medium.otf</file>
         <file>share/fonts/Rajdhani/Rajdhani-Bold.ttf</file>
         <file>share/fonts/Orbitron/orbitron-bold.otf</file>
+        <file>qml/CusToolTip.qml</file>
     </qresource>
 </RCC>
