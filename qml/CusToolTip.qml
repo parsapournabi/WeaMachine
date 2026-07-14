@@ -81,9 +81,10 @@ ToolTip {
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
+                    enabled: root.delegateItems[index].enabled
                     acceptedButtons: Qt.LeftButton
                     hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
                     onClicked: {
                         root.clicked(index);
 
@@ -95,7 +96,7 @@ ToolTip {
 
                 Behavior on color {
                     ColorAnimation {
-                        duration: 300
+                        duration: 200
                     }
                 }
             }
