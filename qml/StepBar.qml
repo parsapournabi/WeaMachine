@@ -65,14 +65,10 @@ Item {
                         return listView.currentIndex;
                     });
                 }
-                onPlayRequest:
-                    // TODO: Add StepModel Single StepRunning request HERE
-                {
+                onPlayRequest: {
                     stepModel.runSelected();
                 }
-                onPauseRequest:
-                    // TODO: Add StepModel Single StepStopping request HERE
-                {
+                onPauseRequest: {
                     stepModel.stop();
                 }
             }
