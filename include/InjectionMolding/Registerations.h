@@ -16,6 +16,7 @@
 #include "stepitem.h"
 #include "stepmodel.h"
 #include "axisconfig.h"
+#include "stepconfig.h"
 
 #define QT_REGISTER_METATYPE(type) \
     qRegisterMetaType<type>(#type)
@@ -61,6 +62,7 @@ static void registerTypes()
 
     // Configurations
     QTQML_REGISTER_TYPE("CustomItems", AxisConfig);
+    QTQML_REGISTER_TYPE("CustomItems", StepConfig);
 }
 
 Q_COREAPP_STARTUP_FUNCTION(registerTypes)
