@@ -9,6 +9,9 @@ import com.wearily.WeaQuick 1.0 as WeaQuick
 Item {
     id: root
 
+    // REQUIRED
+    property StepConfig targetStepConfig
+
     property int controlHeight: 33
     property real spliterScale: 1.0
     property int titleSize: 22
@@ -201,10 +204,13 @@ Item {
                                     const plcOuts = _plcIOModel.outputs;
                                     const len = plcOuts.length;
                                     const displayByTag = swDisplayByTag.checked;
+                                    const activeCoils = targetStepConfig.defaultActiveCoils;
                                     for (var i = 0; i < len; ++i) {
                                         const item = plcOuts[i];
                                         const itemName = displayByTag ? item.displayName : item.name;
-                                        const isChecked = false;
+                                        /// FIXME: better condition fo isChecked
+                                        const isChecked = activeCoils.indexOf(i) !== -1 || activeCoils.indexOf(String(
+                                                                                                                   i)) !== -1;
                                         result.push({
                                                         name: itemName,
                                                         checked: isChecked && enabled,
@@ -269,6 +275,31 @@ Item {
                 }
             }
         }
+    }
+
+    // Slots
+    onWriteRequest: {
+        writeConfigs(targetStepConfig);
+    }
+
+    Component.onCompleted: {
+        const targetName = targetStepConfig.objectName;
+        if (targetName === undefined || targetName === null || targetName === "") {
+            console.warn("targetStepConfigObjectName cannot be empty!", targetName);
+            Qt.quit();
+        }
+
+        readConfigs(targetStepConfig);
+    }
+
+    /** functions **/
+    function writeConfigs(otherStepConfig) {
+        otherStepConfig.synchronize(gridOutputs.resultModel, cmbBoxStepRestart.currentIndex);
+    }
+
+    function readConfigs(otherStepConfig) {
+        cmbBoxStepRestart.currentIndex = otherStepConfig.stepRestartMethod;
+        // Repeater update
     }
 
     /** Inline Components **/
