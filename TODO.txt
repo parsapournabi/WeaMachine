@@ -7,12 +7,19 @@ UI TODO list:
 	Step Configuration:
 		- Always ON Output while Step is Running ( it takes a list of outputs )
 		- Step Restart Method [ Manually, Reset & Home, Reset and continue ]
-        - Encoder Tolerance value for X/Y Axes
+        - Encoder Properties --> 
+            1. Tolerance value for X/Y Axes
+            2. Number of the retries
+            3. Number of Delay for Checking
+            4. Mode when encoder error has occured --> [ Emergency and Stop after Delay of checking is completed and has error,
+                                                         Retry again (send GotoPos and continue until the retry counts is reached) ]
+            5. Number of Tolerance for Homing Method (Low priority)
 		
 4. Add Step Starting from a specific step.
 5. Fix Manual Scaling for Position
 6. Add Notification and Alarm Sound (Low priority)
-7. Optimize UI
+7. Connect these new UIs with Backend
+8. Optimize UI
 
 
 ================================================================================================================================================
