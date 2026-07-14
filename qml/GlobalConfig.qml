@@ -12,4 +12,7 @@ QtObject {
     property AxisConfig yAxisConfig: AxisConfig {
         objectName: "Y_AXIS_CONFIG" // REQUIRED for AppSettings
     }
+    property StepConfig stepConfig: StepConfig {
+        objectName: "STEP_CONFIG"
+    }
 }
