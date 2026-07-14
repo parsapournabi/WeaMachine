@@ -166,9 +166,9 @@ Item {
                             }
                         }
 
-                        // Stop Interrupts
+                        // Default Active Outputs
                         Title {
-                            title: "Stop Interrupt Targets"
+                            title: "Default Active Outputs"
                         }
 
                         // Spacer
@@ -343,6 +343,7 @@ Item {
             width: parent.width
             height: parent.height
             font.pixelSize: 18
+            horizontalAlignment: Qt.AlignHCenter
         }
 
         ShineLine {
