@@ -102,5 +102,6 @@
         <file>share/fonts/Rajdhani/Rajdhani-Bold.ttf</file>
         <file>share/fonts/Orbitron/orbitron-bold.otf</file>
         <file>qml/CusToolTip.qml</file>
+        <file>qml/StepToolTip.qml</file>
     </qresource>
 </RCC>
