@@ -116,6 +116,9 @@ Item {
                                 height: parent.height
                                 labelSize: parent.fontSize
                                 model: ["Emergency and Stop", "Retry and Continue"]
+                                onCurrentIndexChanged: {
+                                    helper.axisConfig.actionMode = currentIndex;
+                                }
                             }
                         }
 
@@ -127,11 +130,10 @@ Item {
                             ConfigEditBox {
                                 id: editBoxEncTolerance
                                 width: 300
-                                // value: helper.axisConfig.numerator
-                                // onValueChanged: {
-                                // helper.axisConfig.setScale(editBoxN.value, editBoxD.value);
-                                // }
                                 suffix: " PUU"
+                                onValueChanged: {
+                                    helper.axisConfig.encoderTolerance = value;
+                                }
                             }
                         }
 
@@ -142,11 +144,11 @@ Item {
 
                             ConfigEditBox {
                                 id: editBoxPosRetries
-                                // value: helper.axisConfig.denominator
-                                // onValueChanged: {
-                                //     helper.axisConfig.setScale(editBoxN.value, editBoxD.value);
-                                // }
                                 width: 300
+                                from: 0
+                                onValueChanged: {
+                                    helper.axisConfig.positionRetries = value;
+                                }
                             }
                         }
 
@@ -157,13 +159,12 @@ Item {
 
                             ConfigEditBox {
                                 id: editBoxPosTimeout
-                                // from: -Math.pow(2, 32) / 2
-                                // value: helper.axisConfig.zeroPUU
-                                // onValueChanged: {
-                                // helper.axisConfig.setZeroPUU(value);
-                                // }
                                 width: 300
+                                stepSize: 50
                                 suffix: " ms"
+                                onValueChanged: {
+                                    helper.axisConfig.positionErrorCheckDelay = value;
+                                }
                             }
                         }
 
@@ -501,12 +502,18 @@ Item {
     }
 
     function readConfigs(otherAxisConfig) {
+        // Unit Scaling
         editBoxN.value = otherAxisConfig.numerator;
         editBoxD.value = otherAxisConfig.denominator;
         editBoxZeroOffset.value = otherAxisConfig.zeroPUU;
         helper.maxDecimals = otherAxisConfig.maxDecimals;
         editBoxDecimalCnt.value = otherAxisConfig.decimals;
         lineEditUnit.text = otherAxisConfig.unitName;
+        // Positioning Config
+        cmbActionModeError.currentIndex = otherAxisConfig.actionMode;
+        editBoxEncTolerance.value = otherAxisConfig.encoderTolerance;
+        editBoxPosRetries.value = otherAxisConfig.positionRetries;
+        editBoxPosTimeout.value = otherAxisConfig.positionErrorCheckDelay;
     }
 
     /** inline **/
