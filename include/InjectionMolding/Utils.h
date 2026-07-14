@@ -4,7 +4,11 @@
 #include <QThread>
 #include <QTextStream>
 #include <QGuiApplication>
+#include <QElapsedTimer>
 #include <stdlib.h>
+
+#define ELPS_ST QElapsedTimer ep; ep.start()
+#define ELPS_ED qDebug() << "Elapsed Timer: " << ep.elapsed()
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
