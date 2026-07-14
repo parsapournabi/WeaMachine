@@ -19,12 +19,13 @@ Item {
     property alias labelTitle: lblTitle
     property alias spliterVisible: spliter.visible
 
-    implicitHeight: 600
+    implicitHeight: 900
 
     // Saving options into the SettingFile
     signal writeRequest
 
     ColumnLayout {
+        id: layout
         anchors.fill: parent
         spacing: 10
 
@@ -68,9 +69,111 @@ Item {
             Layout.leftMargin: 20
             Layout.rightMargin: 20
 
-            RowLayout {
+            GridLayout {
                 anchors.fill: parent
-                spacing: 10
+                columns: 2
+                rowSpacing: 10
+
+                // Encoder Setting
+                Item {
+                    id: topSide
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 300
+                    Layout.columnSpan: 2
+
+                    ColumnLayout {
+                        id: layoutC
+                        anchors {
+                            fill: parent
+                        }
+                        spacing: 20
+
+                        WeaQuick.Label {
+                            font {
+                                pixelSize: 20
+                                bold: true
+                            }
+                            text: "Positioning Configuration"
+                        }
+
+                        SpliterLine {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 2
+                        }
+
+                        // Action Mode
+                        RowCompact {
+                            title: "Action Mode at Position Freezing:"
+                            fontSize: 17
+
+                            CusComboBox {
+                                id: cmbActionModeError
+                                anchors {
+                                    right: parent.right
+                                    rightMargin: parent.rightPadding
+                                }
+                                width: 300
+                                height: parent.height
+                                labelSize: parent.fontSize
+                                model: ["Emergency and Stop", "Retry and Continue"]
+                            }
+                        }
+
+                        // Encoder Tolerance
+                        RowCompact {
+                            title: "Encoder Tolerance:"
+                            fontSize: 17
+
+                            ConfigEditBox {
+                                id: editBoxEncTolerance
+                                width: 300
+                                // value: helper.axisConfig.numerator
+                                // onValueChanged: {
+                                // helper.axisConfig.setScale(editBoxN.value, editBoxD.value);
+                                // }
+                                suffix: " PUU"
+                            }
+                        }
+
+                        // Position Retries
+                        RowCompact {
+                            title: "Position Failure Retries:"
+                            fontSize: 17
+
+                            ConfigEditBox {
+                                id: editBoxPosRetries
+                                // value: helper.axisConfig.denominator
+                                // onValueChanged: {
+                                //     helper.axisConfig.setScale(editBoxN.value, editBoxD.value);
+                                // }
+                                width: 300
+                            }
+                        }
+
+                        // Position Error Timeout
+                        RowCompact {
+                            title: "Position Error Timeout:"
+                            fontSize: 17
+
+                            ConfigEditBox {
+                                id: editBoxPosTimeout
+                                // from: -Math.pow(2, 32) / 2
+                                // value: helper.axisConfig.zeroPUU
+                                // onValueChanged: {
+                                // helper.axisConfig.setZeroPUU(value);
+                                // }
+                                width: 300
+                                suffix: " ms"
+                            }
+                        }
+
+                        // Spacer
+                        Item {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                    }
+                }
 
                 Item {
                     id: leftSide
@@ -191,41 +294,10 @@ Item {
                             }
                         }
 
-                        // Footer
+                        // Spacer
                         Item {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-
-                            CusDelayButton {
-                                id: btnDlyWriteSetting
-                                anchors {
-                                    right: parent.right
-                                    bottom: parent.bottom
-                                    rightMargin: 20
-                                    bottomMargin: 30
-                                }
-                                width: 200
-                                button.width: 200
-                                height: 45
-                                label.font.pixelSize: 14
-
-                                level: 2
-                                text: "Write"
-                                delay: 700
-                                onActivated: {
-                                    writeRequest();
-                                }
-
-                                WeaQuick.IconFont {
-                                    anchors {
-                                        verticalCenter: parent.verticalCenter
-                                        right: parent.right
-                                        rightMargin: 60
-                                    }
-                                    name: "clipboard"
-                                    pixelSize: 12
-                                }
-                            }
                         }
                     }
                 }
@@ -330,6 +402,46 @@ Item {
                         }
                     }
                 }
+
+                // Footer
+                Item {
+                    id: footer
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 2
+                    Layout.preferredHeight: 90
+
+                    CusDelayButton {
+                        id: btnDlyWriteSetting
+                        anchors {
+                            right: parent.right
+                            bottom: parent.bottom
+                            rightMargin: 20
+                            bottomMargin: 10
+                        }
+                        width: 220
+                        button.border.width: 2
+                        button.width: 220
+                        height: 48
+                        label.font.pixelSize: 16
+
+                        level: 2
+                        text: "Write"
+                        delay: 700
+                        onActivated: {
+                            writeRequest();
+                        }
+
+                        WeaQuick.IconFont {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                                rightMargin: 60
+                            }
+                            name: "clipboard"
+                            pixelSize: 14
+                        }
+                    }
+                }
             }
         }
     }
@@ -400,6 +512,7 @@ Item {
     /** inline **/
     component RowCompact: Item {
 
+        property int fontSize: 16
         property int leftPadding: 0
         property int rightPadding: 20
 
@@ -420,7 +533,7 @@ Item {
 
             width: parent.width
             height: parent.height
-            font.pixelSize: 16
+            font.pixelSize: parent.fontSize
             horizontalAlignment: Qt.AlignLeft
         }
     }
@@ -434,7 +547,7 @@ Item {
         height: parent.height
         level: 2
 
-        font.pixelSize: 15
+        font.pixelSize: parent.fontSize - 1
         from: 1
         value: 1
         to: Math.pow(2, 32) / 2 - 1
