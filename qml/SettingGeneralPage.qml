@@ -64,6 +64,7 @@ Item {
                         right: parent.right
                     }
                     title: "Steps Configuration"
+                    targetStepConfig: globalConfig.stepConfig
                 }
             }
         }
