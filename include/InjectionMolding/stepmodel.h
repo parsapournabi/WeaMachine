@@ -14,6 +14,7 @@ enum ExecutionState
 {
     Idle,
     Dispatching,
+    WaitingConditions,
     WaitingMotion,
     WaitingDelay,
     Finished,
@@ -176,6 +177,7 @@ class  StepModel : public QAbstractListModel
 
     protected:
         void dispatchCurrentStep();
+        void updateConditionState();
         void updateRunningState();
         void updateDelay();
         void finishExecution();
@@ -218,5 +220,6 @@ class  StepModel : public QAbstractListModel
 
         bool m_servosCompleted = false;
         bool m_plcCompleted = false;
+        bool m_conditionsPassed = false;
 };
 #endif // STEPMODEL_H

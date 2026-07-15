@@ -569,7 +569,7 @@ void StepModel::stop()
     m_state = Idle;
 
     m_servosCompleted = false;
-
+    m_conditionsPassed = false;
     m_plcCompleted = false;
 
     emit currentRunningChanged();
@@ -700,6 +700,12 @@ void StepModel::onStepTrigger()
 
             break;
 
+        case WaitingConditions:
+
+            updateConditionState();
+
+            break;
+
         case WaitingMotion:
 
             updateRunningState();
@@ -737,8 +743,48 @@ void StepModel::dispatchCurrentStep()
     // New execution context
     m_servosCompleted = false;
     m_plcCompleted    = false;
+    m_conditionsPassed = false;
     m_delayTimer.invalidate();
 
+    m_state = WaitingConditions;
+}
+
+void StepModel::updateConditionState()
+{
+    StepItem* step = current();
+
+    auto conditionBits = step->conditionBits();
+    if (step->bitwiseEnable() && conditionBits.size() > 0)
+    {
+        for (auto& condBit : qAsConst(conditionBits))
+        {
+            int ioIndex = condBit.toInt();
+            auto* plcIOItem = m_plcModel->getItem(ioIndex);
+            if (!plcIOItem)
+            {
+                qCritical() << "PlcIOItem is NULL for conditionBits: " << ioIndex;
+                return;
+            }
+            // NOTE: for plc outputs -> activeFeedback should be check and for plc inputs -> active should be check
+            if (plcIOItem->isInputType())
+            {
+                if (!plcIOItem->active())
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (!plcIOItem->activeFeedback())
+                {
+                    return;
+                }
+            }
+        }
+    }
+    m_conditionsPassed = true;
+
+    /** All Contions are TRUE and Passed **/
     applyServosStep(step);
     applyPlcStep(step);
 
@@ -992,6 +1038,7 @@ void StepModel::restoreMemories()
     // Clear internal flags
     m_servosCompleted = false;
     m_plcCompleted = false;
+    m_conditionsPassed = false;
     m_delayTimer.invalidate();
     qDebug() << "restoringMemories..." << m_running <<  m_currentRunning << m_currentSelected;
 }
@@ -1050,6 +1097,10 @@ void StepModel::applyStateStr()
             break;
         case Dispatching:
             currentState = TO_STR(Dispatching);
+            stateLevel = GreenLevel;
+            break;
+        case WaitingConditions:
+            currentState = TO_STR(WaitingConditions);
             stateLevel = GreenLevel;
             break;
         case WaitingMotion:
