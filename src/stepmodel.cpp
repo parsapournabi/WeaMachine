@@ -604,6 +604,7 @@ void StepModel::setPlcModel(PlcIOModel* value)
     m_plcModel = value;
 
     makePlcModelConnection();
+    syncWithPlcModel();
 
     emit plcModelChanged();
 }
@@ -1029,6 +1030,12 @@ void StepModel::syncJsWithStepItem(const QJSValue& jsValue, StepItem* step)
         const auto& value = jsValue.property(static_cast<QString>(name)).toVariant();
         setData(step, value, m_roleNameToId[name]);
     }
+}
+
+void StepModel::syncWithPlcModel()
+{
+    // Synchronizing current state
+    m_state = m_plcModel->isValidToRunSteps() ? Idle : Emergency;
 }
 
 void StepModel::applyStateStr()

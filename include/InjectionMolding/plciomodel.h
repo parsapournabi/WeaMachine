@@ -88,6 +88,8 @@ class  PlcIOModel : public QAbstractListModel
          */
         bool setOutputCoil(int index, bool value);
 
+        /** Feedbacks **/
+        bool isValidToRunSteps() const;
     signals:
         void countChanged();
         void inputsChanged();
@@ -112,6 +114,8 @@ class  PlcIOModel : public QAbstractListModel
         QList<PlcIOItem*> m_outputs;
 
         QList<PlcIOItem*> m_items; // All IO
+
+        bool m_isValidToRunSteps = true;
 };
 
 #endif // PLCIOMODEL_H

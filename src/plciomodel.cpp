@@ -226,11 +226,13 @@ bool PlcIOModel::addItem(PlcIOItem* item)
     connect(item, &PlcIOItem::stepStop, this, [ = ]()
     {
         qDebug() << "Stopping a Step" << item->name() << item->displayName();
+        m_isValidToRunSteps = false;
         emit emergencyStop();
     });
     connect(item, &PlcIOItem::releaseStepStop, this, [ = ]()
     {
         qDebug() << "Release Step Stop" << item->name() << item->displayName();
+        m_isValidToRunSteps = true;
         emit releaseStop();
     });
 
@@ -326,6 +328,11 @@ bool PlcIOModel::setOutputCoil(int index, bool value)
      **/
     return setOutputData(index, value, ActiveFeedbackRole);
     // setData(modelIndex, value, CoilActiveRole);
+}
+
+bool PlcIOModel::isValidToRunSteps() const
+{
+    return m_isValidToRunSteps;
 }
 
 bool PlcIOModel::setInputData(int index, const QVariant& value, IORoles role)

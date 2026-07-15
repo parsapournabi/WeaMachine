@@ -197,6 +197,7 @@ class  StepModel : public QAbstractListModel
     private:
         StepItem* current();
         void syncJsWithStepItem(const QJSValue& jsValue, StepItem* step);
+        void syncWithPlcModel();
         void applyStateStr();
 
         PlcIOModel* m_plcModel = nullptr;
