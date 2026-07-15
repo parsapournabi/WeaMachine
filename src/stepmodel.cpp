@@ -7,13 +7,23 @@
 #include <QJsonArray>
 #include<QJsonDocument>
 #include <QFile>
+#include <QSettings>
+#include <QGuiApplication>
 
+#define STEPS_FILE_PATH "STEPS_FILE_PATH"
 
 StepModel::StepModel(QObject* parent)
     : QAbstractListModel{parent},
       m_running(false)
 {
     reverseRoleNames();
+
+    // Loading last json file
+    QSettings settings(QSettings::IniFormat,
+                       QSettings::UserScope,
+                       QGuiApplication::organizationName(),
+                       QGuiApplication::applicationName());
+    loadFromJsonFile(settings.value(STEPS_FILE_PATH, "").toString());
 
     /** Connections **/
     connect(this, &StepModel::enabledChanged, this, [ = ]()
@@ -437,6 +447,14 @@ bool StepModel::saveToJsonFile(const QString& f) const
         file.write(data);
         file.close();
         qDebug() << "Json saved successfully" << filePath;
+
+        // Saving last json file for next loading startup
+        QSettings settings(QSettings::IniFormat,
+                           QSettings::UserScope,
+                           QGuiApplication::organizationName(),
+                           QGuiApplication::applicationName());
+        settings.setValue(STEPS_FILE_PATH, filePath);
+
         return true;
     }
     else
