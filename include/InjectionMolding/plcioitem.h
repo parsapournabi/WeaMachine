@@ -109,6 +109,8 @@ class PlcIOItem : public QObject
         /** Getters / Setters **/
         Q_INVOKABLE bool isStepStopInterrupt() const;
         Q_INVOKABLE bool isStepStartInterrupt() const;
+        bool isInputType() const;
+        bool isOutputType() const;
         bool isOutputEnabled() const;
         bool isCoilActive() const;
         bool invalidToActive() const;

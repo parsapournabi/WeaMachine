@@ -461,3 +461,13 @@ bool PlcIOItem::isStepStartInterrupt() const
 {
     return m_stepInterruptType == StepInterruptType::StepStartInterrupt;
 }
+
+bool PlcIOItem::isInputType() const
+{
+    return m_type == IOType::InputType;
+}
+
+bool PlcIOItem::isOutputType() const
+{
+    return m_type == IOType::OutputType;
+}
