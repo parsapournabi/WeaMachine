@@ -34,6 +34,12 @@ StepModel::StepModel(QObject* parent)
         }
     });
 
+    connect(this, &StepModel::currentRunningChanged, this, [this]()
+    {
+        m_running = m_currentRunning >= 0;
+        emit runningChanged();
+    });
+
     connect(this, &StepModel::stepFinished, this, &StepModel::onStepFinished);
 
     connect(&m_stepsTimer, &QTimer::timeout, this, &StepModel::onStepTrigger);
