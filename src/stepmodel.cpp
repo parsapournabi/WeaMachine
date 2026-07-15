@@ -1034,31 +1034,43 @@ void StepModel::syncJsWithStepItem(const QJSValue& jsValue, StepItem* step)
 void StepModel::applyStateStr()
 {
     QString currentState;
+    int stateLevel = YellowLevel;
     switch (m_state)
     {
         case Idle:
             currentState = TO_STR(Idle);
+            stateLevel = YellowLevel;
             break;
         case Dispatching:
             currentState = TO_STR(Dispatching);
+            stateLevel = GreenLevel;
             break;
         case WaitingMotion:
             currentState = TO_STR(WaitingMotion);
+            stateLevel = GreenLevel;
             break;
         case WaitingDelay:
             currentState = TO_STR(WaitingDelay);
+            stateLevel = GreenLevel;
             break;
         case Finished:
             currentState = TO_STR(Finished);
+            stateLevel = YellowLevel;
             break;
         case Emergency:
             currentState = TO_STR(Emergency);
+            stateLevel = RedLevel;
             break;
         case Error:
             currentState = TO_STR(Error);
+            stateLevel = RedLevel;
+            break;
         default:
             currentState = "Invalid";
+            stateLevel = RedLevel;
+            break;
     }
 
+    setCurrentStateLevel(stateLevel);
     setCurrentState(currentState);
 }

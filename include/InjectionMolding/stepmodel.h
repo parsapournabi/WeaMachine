@@ -27,6 +27,14 @@ enum RunMode
     SingleStep
 };
 
+// Yellow, Green, Red
+enum StateLevel
+{
+    RedLevel = 0,
+    GreenLevel,
+    YellowLevel
+};
+
 class ServoModbusDevice;
 class PlcIOModel;
 class StepItem;
@@ -44,6 +52,7 @@ class  StepModel : public QAbstractListModel
         Q_PROPERTY(ServoModbusDevice* xServoDevice READ xServoDevice WRITE setXServoDevice NOTIFY xServoDeviceChanged)
         Q_PROPERTY(ServoModbusDevice* yServoDevice READ yServoDevice WRITE setYServoDevice NOTIFY yServoDeviceChanged)
 
+        W_PROP_HDEF(int, currentStateLevel, CurrentStateLevel, YellowLevel)
         W_PROP_HDEF(QString, currentState, CurrentState, "Idle")
         W_PROP_HDEF(bool, enabled, Enabled, false)
         W_PROP_HDEF(int, interval, Interval, 250)
