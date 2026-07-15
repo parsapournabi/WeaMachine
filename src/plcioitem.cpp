@@ -10,8 +10,8 @@ PlcIOItem::PlcIOItem(int ioIndex, int ioType, const QString& name, QObject* pare
       m_ioIndex(ioIndex),
       m_type(ioType),
       m_name(name),
-      m_displayName(name) // default & initial value
-
+      m_displayName(name), // default & initial value
+      m_active(false)
 {
 
     /** Connections **/
