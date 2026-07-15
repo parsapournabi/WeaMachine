@@ -152,6 +152,7 @@ Item {
 
         dependentEnabled: listView.currentIndex > -1
         currentStateText: stepModel.currentState
+        currentStateColor: getColorBylevel(stepModel.currentStateLevel)
         moveUpButton.enabled: dependentEnabled && listView.currentIndex > 0
         moveDownButton.enabled: dependentEnabled && listView.currentIndex < listView.count - 1
 
@@ -205,5 +206,19 @@ Item {
         function onAccepted() {
             stepModel.saveToJsonFile(saveFileDialog.currentFile);
         }
+    }
+
+    /** Functions **/
+    function getColorBylevel(level) {
+        // Referrer StepModel currentStateLevel property & StateLevel enum
+        switch (level) {
+        case 0: // RedLevel
+            return "red";
+        case 1:// GreenLevel
+            return "green";
+        case 2:// YellowLevel
+            return "orange";
+        }
+        return "white";
     }
 }
