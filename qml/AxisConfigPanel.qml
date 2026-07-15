@@ -498,7 +498,7 @@ Item {
 
     /** functions **/
     function writeConfigs(otherAxisConfig) {
-        otherAxisConfig.syncronize(helper.axisConfig);
+		otherAxisConfig.synchronize(helper.axisConfig);
     }
 
     function readConfigs(otherAxisConfig) {

@@ -42,7 +42,7 @@ class AxisConfig : public QObject, public QQmlParserStatus
         Q_INVOKABLE void setZeroPUU(qint32 zeroPUU);
         Q_INVOKABLE void setScale(qint64 numerator, qint64 denominator);
 
-        Q_INVOKABLE void syncronize(AxisConfig* other);
+        Q_INVOKABLE void synchronize(AxisConfig* other);
 
     signals:
         void gearRatioChanged();

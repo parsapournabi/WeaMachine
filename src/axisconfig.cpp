@@ -50,7 +50,7 @@ void AxisConfig::setScale(qint64 numerator, qint64 denominator)
     emit gearRatioChanged();
 }
 
-void AxisConfig::syncronize(AxisConfig* other)
+void AxisConfig::synchronize(AxisConfig* other)
 {
     // Unit Scaling
     m_numerator = other->m_numerator;
