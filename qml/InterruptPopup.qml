@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import com.wearily.WeaQuick 1.0 as WeaQuick
+import CustomItems 1.0 // Enums
 
 CusPopup {
     id: root
@@ -9,6 +10,7 @@ CusPopup {
     property alias plcIOItem: interruptConfigView.plcIOItem
     property alias displayByTag: interruptConfigView.displayByTag
     property alias startStep: interruptConfigView.startStep
+    property alias stopStep: interruptConfigView.stopStep
     property alias stopTargetsModel: interruptConfigView.stopTargetsModel
     property alias resultStopTargetsModel: interruptConfigView.resultStopTargetsModel
     property alias signalFwdTargetsModel: interruptConfigView.signalFwdTargetsModel
@@ -151,8 +153,14 @@ CusPopup {
         }
         console.log("Writing interrupts to plc...");
 
-        // Step Start
-        plcIOItem.hasStepStartInterrupt = interruptConfigView.startStep;
+        // Step Interrupt
+        if (interruptConfigView.stopStep) {
+            plcIOItem.stepInterruptType = PlcIOItem.StepStopInterrupt;
+        } else if (interruptConfigView.startStep) {
+            plcIOItem.stepInterruptType = PlcIOItem.StepStartInterrupt;
+        } else {
+            plcIOItem.stepInterruptType = PlcIOItem.NoStepInterrupt;
+        }
 
         // Stop Targets
         plcIOItem.stopInterruptTargets = interruptConfigView.resultStopTargetsModel;

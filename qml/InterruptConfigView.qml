@@ -1,12 +1,14 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import com.wearily.WeaQuick 1.0 as WeaQuick
+import CustomItems 1.0 // For enums
 
 Flickable {
     id: root
 
     property var plcIOItem
     property alias startStep: swStepStart.checked
+    property alias stopStep: swStepStop.checked
     property alias stopMethod: cmbStopMethod.currentIndex
     property alias signalFwdMethod: cmbSignalFwdMethod.currentIndex
     property alias stopTargetsModel: gridIoChkStop.model
@@ -79,7 +81,7 @@ Flickable {
                 indicatorHeight: 22
                 handleShape: WeaQuick.Handle.HandleShape.Circular
                 handleSize: 16
-                checked: plcIOItem ? plcIOItem.hasStepStartInterrupt : false
+                checked: plcIOItem ? plcIOItem.stepInterruptType === PlcIOItem.StepStartInterrupt : false
             }
         }
 
@@ -98,8 +100,7 @@ Flickable {
                 indicatorHeight: 22
                 handleShape: WeaQuick.Handle.HandleShape.Circular
                 handleSize: 16
-                // checked: plcIOItem ? plcIOItem.hasStepStartInterrupt : false
-                checked: false
+                checked: plcIOItem ? plcIOItem.stepInterruptType === PlcIOItem.StepStopInterrupt : false
             }
         }
 
