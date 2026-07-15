@@ -54,6 +54,7 @@ Flickable {
             level: controlLevel
             font.pixelSize: fontSize - 1
             flat: false
+            selectByMouse: true
 
             placeholderText: "Step Name"
             text: isItemValid() ? currentStepItem.name : ""
@@ -223,10 +224,13 @@ Flickable {
                 const plcoutputs = _plcIOModel.outputs;
                 var stepitem = root.currentStepItem;
                 const len = plcoutputs.length;
+                const defaultActiveCoils = globalConfig.stepConfig.defaultActiveCoils;
                 for (var i = 0; i < len; ++i) {
                     const output = plcoutputs[i];
                     const itemName = displayByTag ? output.displayName : output.name; // DisplayNameRole and NameRole
-                    const isChecked = isItemValid() ? stepitem.containsPlcOutput(i) : false;
+                    const isDefaultActive = defaultActiveCoils.indexOf(i) !== -1 || defaultActiveCoils.indexOf(String(
+                                                                                                                   i)) !== -1;
+                    const isChecked = isItemValid() ? stepitem.containsPlcOutput(i) : isDefaultActive;
                     result.push({
                                     name: itemName,
                                     checked: isChecked && enabled,
