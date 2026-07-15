@@ -10,7 +10,7 @@ union Torque
         quint16 first;
         quint16 second;
     };
-    qint16 value;
+    qint16 value = 0;
 };
 
 /** Readonly Variables **/
@@ -21,7 +21,7 @@ union EncoderPUU
         quint16 first;
         quint16 second;
     };
-    qint32 value;
+    qint32 value = 0;
 };
 
 union Speed
@@ -31,7 +31,7 @@ union Speed
         quint16 first;
         quint16 second;
     };
-    qint16 value;
+    qint16 value = 0;
 };
 
 union JogSpeed
@@ -41,7 +41,7 @@ union JogSpeed
         quint16 first;
         quint16 second;
     };
-    quint16 value;
+    quint16 value = 0;
 };
 
 // Acc/Dec
@@ -52,7 +52,7 @@ union Ramp
         quint16 first;
         quint16 second;
     };
-    quint16 value;
+    quint16 value = 0;
 };
 
 union DigitalInputs
@@ -74,7 +74,7 @@ union DigitalInputs
         bool di13 : 1;
         bool di14 : 1;
     };
-    quint16 value;
+    quint16 value = 0;
 };
 
 union DigitalOutputs
@@ -87,7 +87,7 @@ union DigitalOutputs
         bool do4 : 1;
         bool do5 : 1;
     };
-    quint16 value;
+    quint16 value = 0;
 };
 
 #endif // SERVOUNIONS_H
