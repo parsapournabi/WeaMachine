@@ -104,5 +104,6 @@
         <file>qml/CusToolTip.qml</file>
         <file>qml/StepToolTip.qml</file>
         <file>qml/CusRadioButton.qml</file>
+        <file>qml/StepConditionBits.qml</file>
     </qresource>
 </RCC>
