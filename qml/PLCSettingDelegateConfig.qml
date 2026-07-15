@@ -226,6 +226,7 @@ Item {
                 placeholderText: "Display Name"
                 color: "transparent"
                 font.pixelSize: 14
+                selectByMouse: true
                 verticalAlignment: Qt.AlignTop
                 horizontalAlignment: Qt.AlignHCenter
                 onAccepted: {
