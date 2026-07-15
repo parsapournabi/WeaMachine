@@ -107,7 +107,8 @@ Flickable {
                     right: parent.right
                     rightMargin: parent.rightPadding
                 }
-                enabled: swBitwiseCondtion.checked
+                // enabled: swBitwiseCondtion.checked
+                enabled: false
                 width: controlWidth
                 model: ["AND", "OR", "XOR"]
 
