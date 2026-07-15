@@ -148,6 +148,7 @@ class PlcIOItem : public QObject
         // Interrupt Signal
         void stepStart();
         void stepStop();
+        void releaseStepStop();
         void emergencyStop();
 
     protected:

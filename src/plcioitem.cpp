@@ -108,6 +108,10 @@ void PlcIOItem::applyInterrupts()
     {
         emit stepStop();
     }
+    else if (m_stepInterruptType == StepInterruptType::StepStopInterrupt && !m_active)
+    {
+        emit releaseStepStop();
+    }
 
     QMapIterator<int, QList<PlcIOItem*>> i(m_interruptItems);
     while (i.hasNext())
