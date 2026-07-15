@@ -1038,7 +1038,7 @@ void StepModel::applyStateStr()
     switch (m_state)
     {
         case Idle:
-            currentState = TO_STR(Idle);
+            currentState = "Ready";
             stateLevel = YellowLevel;
             break;
         case Dispatching:
