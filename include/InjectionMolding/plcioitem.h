@@ -26,7 +26,7 @@ class PlcIOItem : public QObject
         W_PROP_HDEF(int, contactType, ContactType, NormallyOpen)
         W_PROP_HDEF(int, stopMethod, StopMethod, LatchedCoilRst)
         W_PROP_HDEF(int, signalForwardMethod, SignalForwardMethod, SetReset)
-        W_PROP_HDEF(bool, hasStepStartInterrupt, HasStepStartInterrupt, false)
+        W_PROP_HDEF(int, stepInterruptType, StepInterruptType, NoStepInterrupt)
 
         UNSAFE_PROP_HDEF(bool, coilActive, CoilActive, false) // Immediately response of Input/Output
         W_PROP_HDEF(bool, activeFeedback, ActiveFeedback, false) // Response from communication (must be value from communication class)
@@ -56,10 +56,17 @@ class PlcIOItem : public QObject
         {
             NoInterrupt = 0,
             StopInterrupt, // Emergency Interruption (This will be emit emergencyStop signal and can be use to reset siblings)
-            SignalForwardInterrupt,
-            StepStartInterrupt // Steps Start Interruption (This will be emit stepStart signal)
+            SignalForwardInterrupt
         };
         Q_ENUM(InterruptType)
+
+        enum StepInterruptType
+        {
+            NoStepInterrupt = 0,
+            StepStartInterrupt,
+            StepStopInterrupt
+        };
+        Q_ENUM(StepInterruptType)
 
         enum StopMethod
         {
@@ -86,7 +93,7 @@ class PlcIOItem : public QObject
             CONTACT_TYPE,
             STOP_METHOD,
             SIGNAL_FORWARD_METHOD,
-            STEP_START_INTERRUPT,
+            STEP_INTERRUPT_TYPE,
             STOP_INTERRUPT_TARGETS,
             SIGNAL_FORWARD_INTERRUPT_TARGETS,
         };
@@ -100,6 +107,8 @@ class PlcIOItem : public QObject
         Q_INVOKABLE void writeToSettings() const;
 
         /** Getters / Setters **/
+        Q_INVOKABLE bool isStepStopInterrupt() const;
+        Q_INVOKABLE bool isStepStartInterrupt() const;
         bool isOutputEnabled() const;
         bool isCoilActive() const;
         bool invalidToActive() const;
@@ -120,7 +129,7 @@ class PlcIOItem : public QObject
             {CONTACT_TYPE, TO_STR(CONTACT_TYPE) },
             {STOP_METHOD, TO_STR(STOP_METHOD) },
             {SIGNAL_FORWARD_METHOD, TO_STR(SIGNAL_FORWARD_METHOD) },
-            {STEP_START_INTERRUPT, TO_STR(STEP_START_INTERRUPT) },
+            {STEP_INTERRUPT_TYPE, TO_STR(STEP_INTERRUPT_TYPE) },
             {STOP_INTERRUPT_TARGETS, TO_STR(STOP_INTERRUPT_TARGETS) },
             {SIGNAL_FORWARD_INTERRUPT_TARGETS, TO_STR(SIGNAL_FORWARD_INTERRUPT_TARGETS) },
         };
@@ -138,6 +147,7 @@ class PlcIOItem : public QObject
 
         // Interrupt Signal
         void stepStart();
+        void stepStop();
         void emergencyStop();
 
     protected:

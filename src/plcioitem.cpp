@@ -98,10 +98,15 @@ void PlcIOItem::doCopy(const PlcIOItem& other)
 void PlcIOItem::applyInterrupts()
 {
     // If Interrupt has Start Step ignore all
-    if (m_hasStepStartInterrupt && m_active)
+    if (m_stepInterruptType == StepInterruptType::StepStartInterrupt && m_active)
     {
         emit stepStart();
         return;
+    }
+
+    if (m_stepInterruptType == StepInterruptType::StepStopInterrupt && m_active)
+    {
+        emit stepStop();
     }
 
     QMapIterator<int, QList<PlcIOItem*>> i(m_interruptItems);
@@ -121,9 +126,6 @@ void PlcIOItem::applyInterrupts()
                 break;
             case InterruptType::SignalForwardInterrupt:
                 applySignalForwardInterrupt();
-
-                break;
-            case InterruptType::StepStartInterrupt:
 
                 break;
 
@@ -418,7 +420,7 @@ void PlcIOItem::readFromSettings()
     setStopMethod(settings.value(getSettingName(STOP_METHOD), m_stopMethod).toInt());
     setSignalForwardMethod(settings.value(getSettingName(SIGNAL_FORWARD_METHOD), m_signalForwardMethod).toInt());
 
-    setHasStepStartInterrupt(settings.value(getSettingName(STEP_START_INTERRUPT), m_hasStepStartInterrupt).toBool());
+    setStepInterruptType(settings.value(getSettingName(STEP_INTERRUPT_TYPE), m_stepInterruptType).toInt());
     setStopInterruptTargets(settings.value(getSettingName(STOP_INTERRUPT_TARGETS), m_stopInterruptTargets).toList());
     setSignalForwardInterruptTargets(settings.value(getSettingName(SIGNAL_FORWARD_INTERRUPT_TARGETS), m_signalForwardInterruptTargets).toList());
 
@@ -441,7 +443,17 @@ void PlcIOItem::writeToSettings() const
     settings.setValue(getSettingName(STOP_METHOD), m_stopMethod);
     settings.setValue(getSettingName(SIGNAL_FORWARD_METHOD), m_signalForwardMethod);
 
-    settings.setValue(getSettingName(STEP_START_INTERRUPT), m_hasStepStartInterrupt);
+    settings.setValue(getSettingName(STEP_INTERRUPT_TYPE), m_stepInterruptType);
     settings.setValue(getSettingName(STOP_INTERRUPT_TARGETS), m_stopInterruptTargets);
     settings.setValue(getSettingName(SIGNAL_FORWARD_INTERRUPT_TARGETS), m_signalForwardInterruptTargets);
+}
+
+bool PlcIOItem::isStepStopInterrupt() const
+{
+    return m_stepInterruptType == StepInterruptType::StepStopInterrupt;
+}
+
+bool PlcIOItem::isStepStartInterrupt() const
+{
+    return m_stepInterruptType == StepInterruptType::StepStartInterrupt;
 }
