@@ -228,6 +228,11 @@ bool PlcIOModel::addItem(PlcIOItem* item)
         qDebug() << "Stopping a Step" << item->name() << item->displayName();
         emit emergencyStop();
     });
+    connect(item, &PlcIOItem::releaseStepStop, this, [ = ]()
+    {
+        qDebug() << "Release Step Stop" << item->name() << item->displayName();
+        emit releaseStop();
+    });
 
 
     m_items.append(item);

@@ -97,6 +97,7 @@ class  PlcIOModel : public QAbstractListModel
         void outputCoilChanged(int outputIndex, bool active);
 
         void emergencyStop();
+        void releaseStop();
         void stepStarted();
 
     protected:
