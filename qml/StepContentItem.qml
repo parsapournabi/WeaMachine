@@ -113,7 +113,7 @@ Item {
             id: stepSetCoilsGrid
             x: 5
             width: parent.width
-            model: modelItem.plcOutputTargets
+            model: modelItem ? modelItem.plcOutputTargets : []
             activeIndicators: true
         }
 
@@ -127,14 +127,6 @@ Item {
         Title {
             title: "Coils to Be RST"
             visible: false
-        }
-
-        StepCoilsGrid {
-            id: stepRstCoilsGrid
-            visible: false
-            x: 5
-            width: parent.width
-            model: modelItem.plcOutputTargets
         }
 
         // Delay
