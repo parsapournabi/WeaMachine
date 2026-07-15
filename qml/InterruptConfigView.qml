@@ -74,11 +74,32 @@ Flickable {
                     rightMargin: parent.rightPadding
                 }
 
+                enabled: !swStepStop.checked
                 indicatorWidth: 45
                 indicatorHeight: 22
                 handleShape: WeaQuick.Handle.HandleShape.Circular
                 handleSize: 16
                 checked: plcIOItem ? plcIOItem.hasStepStartInterrupt : false
+            }
+        }
+
+        // Step Stop Interrupt
+        RowCompact {
+            title: "Step Stop Interrupt: "
+            WeaQuick.Switch {
+                id: swStepStop
+                anchors {
+                    right: parent.right
+                    rightMargin: parent.rightPadding
+                }
+
+                enabled: !swStepStart.checked
+                indicatorWidth: 45
+                indicatorHeight: 22
+                handleShape: WeaQuick.Handle.HandleShape.Circular
+                handleSize: 16
+                // checked: plcIOItem ? plcIOItem.hasStepStartInterrupt : false
+                checked: false
             }
         }
 
