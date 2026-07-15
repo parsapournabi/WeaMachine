@@ -103,5 +103,6 @@
         <file>share/fonts/Orbitron/orbitron-bold.otf</file>
         <file>qml/CusToolTip.qml</file>
         <file>qml/StepToolTip.qml</file>
+        <file>qml/CusRadioButton.qml</file>
     </qresource>
 </RCC>
