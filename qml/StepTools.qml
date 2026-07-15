@@ -1,13 +1,15 @@
 import QtQuick 2.12
+import com.wearily.WeaQuick 1.0 as WeaQuick
 
 Item {
     id: root
 
     property bool dependentEnabled: false
 
-    property alias profiles: cBoxProfiles.model
+    property color currentStateColor: "orange"
+    property alias currentStateText: statusLabel.text
 
-    property alias comboBoxProfiles: cBoxProfiles
+    property alias statusBox: statusRect
     property alias insertButton: insertButton
     property alias moveUpButton: moveUpButton
     property alias moveDownButton: moveDownButton
@@ -20,12 +22,22 @@ Item {
         anchors.fill: parent
         spacing: 5
 
-        CusComboBox {
-            id: cBoxProfiles
-            wheelEnabled: false
-            model: ["Default", "Profile1", "Profile2", "Profile3"]
+        Rectangle {
+            id: statusRect
             width: root.width - 8 * (insertButton.width + 1.5)
             height: root.height
+            color: "transparent"
+            border.color: currentStateColor
+            radius: 4
+
+            WeaQuick.Label {
+                id: statusLabel
+                anchors.centerIn: parent
+                font.pixelSize: 13
+                color: currentStateColor
+                verticalAlignment: Qt.AlignVCenter
+                horizontalAlignment: Qt.AlignHCenter
+            }
         }
 
         IconicButton {
