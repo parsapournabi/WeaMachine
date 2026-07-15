@@ -41,6 +41,8 @@ void StepConfig::synchronize(StepConfig* other)
     m_stepRestartMethod = other->m_stepRestartMethod;
 
     writeToSettings();
+
+    emit hasUpdated();
 }
 
 void StepConfig::readFromSettings()
@@ -55,6 +57,8 @@ void StepConfig::readFromSettings()
 
     m_stepRestartMethod = settings.value(GET_SETTING_NAME(STEP_RESTART_METHOD),
                                          RestartMethod::RestartAtBegining).toInt();
+
+    emit hasUpdated();
 }
 
 void StepConfig::writeToSettings() const

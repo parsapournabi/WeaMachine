@@ -8,8 +8,8 @@ class StepConfig : public QObject, public QQmlParserStatus
 {
         Q_OBJECT
         Q_INTERFACES(QQmlParserStatus)
-        Q_PROPERTY(QVariantList defaultActiveCoils MEMBER m_defaultActiveCoils CONSTANT) // Stores Coils index starts at 0
-        Q_PROPERTY(int stepRestartMethod MEMBER m_stepRestartMethod CONSTANT)
+        Q_PROPERTY(QVariantList defaultActiveCoils MEMBER m_defaultActiveCoils NOTIFY hasUpdated) // Stores Coils index starts at 0
+        Q_PROPERTY(int stepRestartMethod MEMBER m_stepRestartMethod NOTIFY hasUpdated)
     public:
         enum RestartMethod
         {
@@ -27,6 +27,7 @@ class StepConfig : public QObject, public QQmlParserStatus
         Q_INVOKABLE void synchronize(StepConfig* other);
 
     signals:
+        void hasUpdated();
 
     protected:
         /** Settings Storage **/
