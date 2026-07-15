@@ -14,7 +14,21 @@ enum ExecutionState
 {
     Idle,
     Dispatching,
+    // After this if xServoPos or yServPos are active: set state to PrepareMotion else RunCommand
     WaitingConditions,
+
+    /* Setting Servo ON/OFF, POS ON/OFF, PATH0, RAMP0, SPEED0,
+        and homing until their are TRUE (Check homing if is ready don't set it): if Home is already done, set state to RunCommand
+    */
+    PrepareMotion,
+
+    // Just set CTRG  TRUE until the feedback is also TRUE
+    RunMotion,
+
+    // applyPlcStep (coils)
+    RunCommand,
+
+    // Check Plc are active and Motion is Completed (using ZSPD, TPOS, HOME are TRUE) also set CTRG to FALSE
     WaitingMotion,
     WaitingDelay,
     Finished,
@@ -178,6 +192,9 @@ class  StepModel : public QAbstractListModel
     protected:
         void dispatchCurrentStep();
         void updateConditionState();
+        void prepareMotionState();
+        void updateRunMotionState();
+        void updateRunCommandState();
         void updateRunningState();
         void updateDelay();
         void finishExecution();

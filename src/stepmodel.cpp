@@ -706,6 +706,24 @@ void StepModel::onStepTrigger()
 
             break;
 
+        case PrepareMotion:
+
+            prepareMotionState();
+
+            break;
+
+        case RunMotion:
+
+            updateRunMotionState();
+
+            break;
+
+        case RunCommand:
+
+            updateRunCommandState();
+
+            break;
+
         case WaitingMotion:
 
             updateRunningState();
@@ -789,6 +807,24 @@ void StepModel::updateConditionState()
     applyPlcStep(step);
 
     m_state = ExecutionState::WaitingMotion;
+}
+
+void StepModel::prepareMotionState()
+{
+    /* Setting Servo ON/OFF, POS ON/OFF, PATH0, RAMP0, SPEED0,
+        and homing until their are TRUE (Check homing if is ready don't set it): if Home is already done, set state to RunCommand
+    */
+}
+
+void StepModel::updateRunMotionState()
+{
+
+    // Just set CTRG  TRUE until the feedback is also TRUE
+}
+
+void StepModel::updateRunCommandState()
+{
+    // applyPlcStep (coils)
 }
 
 void StepModel::updateRunningState()
@@ -1101,6 +1137,18 @@ void StepModel::applyStateStr()
             break;
         case WaitingConditions:
             currentState = TO_STR(WaitingConditions);
+            stateLevel = GreenLevel;
+            break;
+        case PrepareMotion:
+            currentState = TO_STR(PrepareMotion);
+            stateLevel = GreenLevel;
+            break;
+        case RunMotion:
+            currentState = TO_STR(RunMotion);
+            stateLevel = GreenLevel;
+            break;
+        case RunCommand:
+            currentState = TO_STR(RunCommand);
             stateLevel = GreenLevel;
             break;
         case WaitingMotion:
