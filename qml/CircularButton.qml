@@ -11,9 +11,11 @@ IconicButton {
     arrayHoveredBorderColor: checked ? arraySelectedBorderColor : arrayBorderColor
     arraySelectedBorderColor: checked ? ["green"] : arrayBorderColor
 
+    states: []
+
     // color: getColor()
-    // border.color: getColor()
-    iconColor: enabled ? getColor() : "darkGray"
+    border.color: checked ? "green" : enabled ? "orange" : "darkGray"
+    iconColor: checked ? "green" : enabled ? "orange" : "darkGray"
 
     icon: checked ? "pause" : "play"
 

@@ -61,6 +61,7 @@ DropDown {
             id: playStepButton
             Layout.rightMargin: 10
 
+            checkable: false
             checked: root.running
             onClicked: {
                 if (!checked) {
