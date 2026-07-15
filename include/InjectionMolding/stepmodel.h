@@ -127,9 +127,6 @@ class  StepModel : public QAbstractListModel
         Q_INVOKABLE void emergencyStop();
 
         /** Properties **/
-        // const QList<StepItem>& steps() const;
-        // void setSteps(const QList<StepItem>& value);
-
         const QList<StepItem*>& steps() const;
         void setSteps(const QList<StepItem*>& value);
 
@@ -174,16 +171,12 @@ class  StepModel : public QAbstractListModel
         void finishExecution();
 
         virtual void applyServosStep(StepItem* step);
-        // virtual void applyServoHoming(ServoModbusDevice* servo);
-        // virtual void applyServoGotoPosition(ServoModbusDevice* servo, StepItem* step);
 
         virtual void applyPlcStep(StepItem* step);
 
         virtual bool servosStepCompleted(StepItem* step);
         virtual bool plcStepCompleted(StepItem* step);
 
-
-        virtual void readyMemories();
         virtual void restoreMemories();
         virtual bool currentStepCompleted(StepItem* step);
 

@@ -41,7 +41,6 @@ StepModel::StepModel(QObject* parent)
     });
 
     connect(this, &StepModel::stepFinished, this, &StepModel::onStepFinished);
-
     connect(&m_stepsTimer, &QTimer::timeout, this, &StepModel::onStepTrigger);
 
     m_stepsTimer.setInterval(250);
@@ -563,8 +562,6 @@ bool StepModel::runStep(int index)
 
 void StepModel::stop()
 {
-    // m_stepsTimer.stop();
-
     restoreMemories();
 
     setCurrentRunning(-1);
@@ -596,18 +593,6 @@ void StepModel::setSteps(const QList<StepItem*>& value)
 
     emit stepsChanged();
 }
-
-// const QList<StepItem>& StepModel::steps() const
-// {
-//     return m_steps;
-// }
-
-// void StepModel::setSteps(const QList<StepItem>& value)
-// {
-//     m_steps = value;
-
-//     emit stepsChanged();
-// }
 
 PlcIOModel* StepModel::plcModel() const
 {
@@ -695,7 +680,6 @@ void StepModel::onStepStarted()
 
 void StepModel::onStepFinished()
 {
-    // restoreMemories();
 }
 
 void StepModel::onStepTrigger()
@@ -841,8 +825,6 @@ void StepModel::applyServosStep(StepItem* step)
         {
             if (!m_xServoDevice->servoOn())
             {
-                // m_errorAtStep = true;
-                // return;
             }
 
             if (step->xServoHome())
@@ -851,8 +833,6 @@ void StepModel::applyServosStep(StepItem* step)
                 {
                     if (!m_xServoDevice->gotoHome())
                     {
-                        // m_errorAtStep = true;
-                        // return;
                     }
                 }
             }
@@ -862,8 +842,6 @@ void StepModel::applyServosStep(StepItem* step)
                                                   step->xServoSpeed(),
                                                   step->xServoAcc()))
                 {
-                    // m_errorAtStep = true;
-                    // return;
                 }
             }
         }
@@ -885,8 +863,6 @@ void StepModel::applyServosStep(StepItem* step)
         {
             if (!m_yServoDevice->servoOn())
             {
-                // m_errorAtStep = true;
-                // return;
             }
 
             if (step->yServoHome())
@@ -895,8 +871,6 @@ void StepModel::applyServosStep(StepItem* step)
                 {
                     if (!m_yServoDevice->gotoHome())
                     {
-                        // m_errorAtStep = true;
-                        // return;
                     }
                 }
             }
@@ -906,8 +880,6 @@ void StepModel::applyServosStep(StepItem* step)
                                                   step->yServoSpeed(),
                                                   step->yServoAcc()))
                 {
-                    // m_errorAtStep = true;
-                    // return;
                 }
             }
         }
@@ -915,22 +887,10 @@ void StepModel::applyServosStep(StepItem* step)
         {
             if (!m_yServoDevice->servoOff())
             {
-                // m_errorAtStep = true;
-                // return;
             }
         }
     }
 }
-
-// void StepModel::applyServoHoming(ServoModbusDevice* servo)
-// {
-
-// }
-
-// void StepModel::applyServoGotoPosition(ServoModbusDevice* servo, StepItem* step)
-// {
-
-// }
 
 void StepModel::applyPlcStep(StepItem* step)
 {
@@ -966,12 +926,6 @@ bool StepModel::servosStepCompleted(StepItem* step)
             }
             else
             {
-                // if (m_xServoDevice->checkIfHasErrorOnMove()) // || m_xServoGotoPosOnDemand)
-                // {
-                //     m_errorAtStep = true;
-                //     return false;
-                // }
-                /*else*/
                 if (!m_xServoDevice->isPositionReached())
                 {
                     return false;
@@ -1006,12 +960,6 @@ bool StepModel::servosStepCompleted(StepItem* step)
             }
             else
             {
-                // if (m_yServoDevice->checkIfHasErrorOnMove()) // || m_yServoGotoPosOnDemand)
-                // {
-                //     m_errorAtStep = true;
-                //     return false;
-                // }
-                /*else*/
                 if (!m_yServoDevice->isPositionReached())
                 {
                     return false;
@@ -1033,22 +981,6 @@ bool StepModel::plcStepCompleted(StepItem* step)
 {
     Q_UNUSED(step)
     return true;
-}
-
-void StepModel::readyMemories()
-{
-    /*    m_running = true;
-        m_currentRunning = 0;
-
-        // m_stepsTimer.setInterval(m_interval);
-        // m_stepsTimer.start();
-
-        emit runningChanged();
-        emit currentRunningChanged();
-
-        emit stepStarted()*/
-
-    restoreMemories();
 }
 
 void StepModel::restoreMemories()
@@ -1075,14 +1007,10 @@ void StepModel::makePlcModelConnection()
 
 void StepModel::makeXServoConnection()
 {
-    // connect(m_xServoDevice, &ServoModbusDevice::positionStarted, this, &StepModel::onXServoPosStarted);
-    // connect(m_xServoDevice, &ServoModbusDevice::positionCompleted, this, &StepModel::onXServoPosCompleted);
 }
 
 void StepModel::makeYServoConnection()
 {
-    // connect(m_yServoDevice, &ServoModbusDevice::positionStarted, this, &StepModel::onYServoPosStarted);
-    // connect(m_yServoDevice, &ServoModbusDevice::positionCompleted, this, &StepModel::onYServoPosCompleted);
 }
 
 StepItem* StepModel::current()
