@@ -264,6 +264,16 @@ bool PlcIOModel::addItem(PlcIOItem* item)
 
 }
 
+PlcIOItem* PlcIOModel::getItem(int index) const
+{
+    if (index < 0 || index >= m_items.count())
+    {
+        qCritical() << "Invalid index value!" << index << m_items.count();
+        return nullptr;
+    }
+    return m_items[index];
+}
+
 void PlcIOModel::updateAll()
 {
     if (!isEmpty())

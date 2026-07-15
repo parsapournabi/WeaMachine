@@ -57,6 +57,7 @@ class  PlcIOModel : public QAbstractListModel
 
         Q_INVOKABLE bool addItem(int ioIndex, int ioType, const QString& name);
         Q_INVOKABLE bool addItem(PlcIOItem* item);
+        Q_INVOKABLE PlcIOItem* getItem(int index) const;
 
         Q_INVOKABLE void updateAll();
 
