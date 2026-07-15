@@ -672,6 +672,12 @@ void StepModel::onStepStarted()
         return;
     }
 
+    if (m_items.empty())
+    {
+        qWarning() << "StepModel is Empty!";
+        return;
+    }
+
     if (m_running || m_currentRunning > 0)
     {
         qWarning() << "Steps is Already on Process!" << m_running << m_currentRunning;
