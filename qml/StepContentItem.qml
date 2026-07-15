@@ -99,6 +99,24 @@ Item {
             }
         }
 
+        // Conditions
+        ShineLine {
+            width: parent.width
+            color: shineLineColor
+        }
+
+        Title {
+            title: "Conditions"
+        }
+
+        StepConditionBits {
+            id: stepConditionBits
+            x: 5
+            width: parent.width
+            model: modelItem ? modelItem.conditionBits : []
+            activeIndicators: true
+        }
+
         // Coil To be Set
         ShineLine {
             width: parent.width
@@ -115,18 +133,6 @@ Item {
             width: parent.width
             model: modelItem ? modelItem.plcOutputTargets : []
             activeIndicators: true
-        }
-
-        // Coil To be Reset
-        ShineLine {
-            width: parent.width
-            color: shineLineColor
-            visible: false
-        }
-
-        Title {
-            title: "Coils to Be RST"
-            visible: false
         }
 
         // Delay
