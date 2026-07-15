@@ -50,7 +50,7 @@ Item {
         HomingControl {
             id: manualModeControl
 
-            property bool enableOther: homingSwitch.checked
+            property bool enableOther: homingSwitch.checked && !stepModel.running
 
             Layout.fillWidth: true
             Layout.leftMargin: 10
@@ -103,15 +103,19 @@ Item {
             Layout.leftMargin: 10
             Layout.rightMargin: 10
 
-            joystickLeft.enabled: servoOnXControl.homingActive
-            joystickRight.enabled: servoOnXControl.homingActive
-            joystickTop.enabled: servoOnYControl.homingActive
-            joystickDown.enabled: servoOnYControl.homingActive
+            joystickLeft.enabled: servoOnXControl.homingActive && manualModeControl.enableOther
+            joystickRight.enabled: servoOnXControl.homingActive && manualModeControl.enableOther
+            joystickTop.enabled: servoOnYControl.homingActive && manualModeControl.enableOther
+            joystickDown.enabled: servoOnYControl.homingActive && manualModeControl.enableOther
 
             joystickTopLeft.enabled: servoOnXControl.homingActive && servoOnYControl.homingActive
+                                     && manualModeControl.enableOther
             joystickTopRight.enabled: servoOnXControl.homingActive && servoOnYControl.homingActive
+                                      && manualModeControl.enableOther
             joystickDownLeft.enabled: servoOnXControl.homingActive && servoOnYControl.homingActive
+                                      && manualModeControl.enableOther
             joystickDownRight.enabled: servoOnXControl.homingActive && servoOnYControl.homingActive
+                                       && manualModeControl.enableOther
 
             /** Slots **/
             // X Axs
