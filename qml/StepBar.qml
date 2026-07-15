@@ -151,6 +151,7 @@ Item {
         height: 27
 
         dependentEnabled: listView.currentIndex > -1
+        currentStateText: stepModel.currentState
         moveUpButton.enabled: dependentEnabled && listView.currentIndex > 0
         moveDownButton.enabled: dependentEnabled && listView.currentIndex < listView.count - 1
 
