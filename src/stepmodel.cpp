@@ -684,6 +684,9 @@ void StepModel::onStepFinished()
 
 void StepModel::onStepTrigger()
 {
+    // Updating UI
+    applyStateStr();
+
     switch (m_state)
     {
         case Idle:
@@ -1026,4 +1029,36 @@ void StepModel::syncJsWithStepItem(const QJSValue& jsValue, StepItem* step)
         const auto& value = jsValue.property(static_cast<QString>(name)).toVariant();
         setData(step, value, m_roleNameToId[name]);
     }
+}
+
+void StepModel::applyStateStr()
+{
+    QString currentState;
+    switch (m_state)
+    {
+        case Idle:
+            currentState = TO_STR(Idle);
+            break;
+        case Dispatching:
+            currentState = TO_STR(Dispatching);
+            break;
+        case WaitingMotion:
+            currentState = TO_STR(WaitingMotion);
+            break;
+        case WaitingDelay:
+            currentState = TO_STR(WaitingDelay);
+            break;
+        case Finished:
+            currentState = TO_STR(Finished);
+            break;
+        case Emergency:
+            currentState = TO_STR(Emergency);
+            break;
+        case Error:
+            currentState = TO_STR(Error);
+        default:
+            currentState = "Invalid";
+    }
+
+    setCurrentState(currentState);
 }

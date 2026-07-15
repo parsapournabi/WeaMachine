@@ -44,6 +44,7 @@ class  StepModel : public QAbstractListModel
         Q_PROPERTY(ServoModbusDevice* xServoDevice READ xServoDevice WRITE setXServoDevice NOTIFY xServoDeviceChanged)
         Q_PROPERTY(ServoModbusDevice* yServoDevice READ yServoDevice WRITE setYServoDevice NOTIFY yServoDeviceChanged)
 
+        W_PROP_HDEF(QString, currentState, CurrentState, "Idle")
         W_PROP_HDEF(bool, enabled, Enabled, false)
         W_PROP_HDEF(int, interval, Interval, 250)
         READ_PROP(bool, running) // isRunning
@@ -187,6 +188,7 @@ class  StepModel : public QAbstractListModel
     private:
         StepItem* current();
         void syncJsWithStepItem(const QJSValue& jsValue, StepItem* step);
+        void applyStateStr();
 
         PlcIOModel* m_plcModel = nullptr;
         ServoModbusDevice* m_xServoDevice = nullptr;
