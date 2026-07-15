@@ -24,6 +24,9 @@
 #define QTQML_REGISTER_TYPE(uri, type) \
     qmlRegisterType<type>(uri, 1, 0, #type)
 
+#define QTQML_UNCREATABLE_TYPE(uri, type) \
+    qmlRegisterUncreatableType<type>(uri, 1, 0, #type, "Enum Only")
+
 Q_DECLARE_METATYPE(AbstractModbusDevice*);
 Q_DECLARE_METATYPE(QList<AbstractModbusDevice*>);
 Q_DECLARE_METATYPE(QList<PlcIOItem*>);
@@ -59,6 +62,9 @@ static void registerTypes()
     QTQML_REGISTER_TYPE("CustomItems", TcpConnection);
     QTQML_REGISTER_TYPE("CustomItems", ModbusCom);
     QTQML_REGISTER_TYPE("CustomItems", ModbusTcp);
+
+    // Enums
+    QTQML_UNCREATABLE_TYPE("CustomItems", PlcIOItem);
 
     // Configurations
     QTQML_REGISTER_TYPE("CustomItems", AxisConfig);
