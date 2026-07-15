@@ -151,6 +151,12 @@ Item {
                             Layout.preferredHeight: 2
                         }
 
+                        // Spacer
+                        Item {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 5
+                        }
+
                         // Step Name
                         RowCompact {
                             title: "Display Coils by Tag: "
@@ -196,7 +202,7 @@ Item {
                                     topMargin: 10
                                     bottomMargin: 0
                                 }
-                                fontSize: 17
+                                fontSize: 14
 
                                 model: {
                                     var result = [];
@@ -305,7 +311,7 @@ Item {
     /** Inline Components **/
     component RowCompact: Item {
 
-        property int fontSize: 17
+        property int fontSize: 16
         property int leftPadding: 0
         property int rightPadding: 20
 
