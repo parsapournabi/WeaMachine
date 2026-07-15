@@ -161,6 +161,7 @@ class  StepModel : public QAbstractListModel
 
     protected slots:
         void onEmergencyStop();
+        void onReleaseStop();
         void onStepStarted();
         void onStepFinished();
 

@@ -543,6 +543,11 @@ bool StepModel::runStep(int index)
         qCritical() << "Step is Already running: " << m_currentRunning << m_running;
         return false;
     }
+    if (m_state == Emergency)
+    {
+        qCritical() << "Cannot run the step" << index << "Emergency is occured!" << m_state;
+        return false;
+    }
     if (index < 0 || index >= m_items.size())
     {
         return false;
@@ -651,6 +656,14 @@ void StepModel::onEmergencyStop()
     emergencyStop();
 }
 
+void StepModel::onReleaseStop()
+{
+    if (m_state == Emergency)
+    {
+        m_state = Idle;
+    }
+}
+
 void StepModel::onStepStarted()
 {
     if (!m_enabled)
@@ -662,6 +675,12 @@ void StepModel::onStepStarted()
     if (m_running || m_currentRunning > 0)
     {
         qWarning() << "Steps is Already on Process!" << m_running << m_currentRunning;
+        return;
+    }
+
+    if (m_state == Emergency)
+    {
+        qCritical() << "Cannot Run the Steps emergency is occured!" << m_state;
         return;
     }
 
@@ -1044,6 +1063,7 @@ bool StepModel::currentStepCompleted(StepItem* step)
 void StepModel::makePlcModelConnection()
 {
     connect(m_plcModel, &PlcIOModel::emergencyStop, this, &StepModel::onEmergencyStop);
+    connect(m_plcModel, &PlcIOModel::releaseStop, this, &StepModel::onReleaseStop);
     connect(m_plcModel, &PlcIOModel::stepStarted, this, &StepModel::onStepStarted);
 }
 
