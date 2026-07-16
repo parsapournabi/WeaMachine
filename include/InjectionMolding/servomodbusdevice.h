@@ -117,6 +117,7 @@ class ServoModbusDevice : public AbstractModbusDevice
 
         Q_INVOKABLE bool gotoHome();
 
+        bool forceServoOn(bool servoOn);
         bool applyTrigger();
         void applyUnTrigger();
         bool allOutputsEnable() const;

@@ -588,6 +588,16 @@ bool ServoModbusDevice::gotoHome()
 
 }
 
+bool ServoModbusDevice::forceServoOn(bool servoOn)
+{
+    if (m_digitalInputs.di1 != servoOn)
+    {
+        pushDi1(servoOn);
+        return false;
+    }
+    return true;
+}
+
 bool ServoModbusDevice::applyTrigger()
 {
     if (m_digitalInputs.di4)

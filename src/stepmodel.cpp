@@ -956,6 +956,8 @@ void StepModel::applyServosStep(StepItem* step)
             }
             else
             {
+                // Apply Servo ON
+                xServoNoNeedHome = m_xServoDevice->forceServoOn(step->xServoOn());
                 xServoIsReady = xServoNoNeedHome;
             }
         }
@@ -991,6 +993,8 @@ void StepModel::applyServosStep(StepItem* step)
             }
             else
             {
+                // Apply Servo ON
+                yServoNoNeedHome = m_yServoDevice->forceServoOn(step->yServoOn());
                 yServoIsReady = yServoNoNeedHome;
             }
         }
