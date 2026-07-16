@@ -43,40 +43,47 @@ Item {
         IconicButton {
             id: insertButton
             icon: "plus-large"
+            toolTipText: "Add Step"
         }
 
         IconicButton {
             id: moveUpButton
             enabled: dependentEnabled
             icon: "angles-up"
+            toolTipText: "Move Up"
         }
 
         IconicButton {
             id: moveDownButton
             enabled: dependentEnabled
             icon: "angles-down"
+            toolTipText: "Move Down"
         }
 
         IconicButton {
             id: editButton
             enabled: dependentEnabled
             icon: "pencil-mechanical"
+            toolTipText: "Edit Step"
         }
 
         IconicButton {
             id: deleteButton
             enabled: dependentEnabled
             icon: "trash-can"
+            toolTipText: "Delete Step"
         }
 
         IconicButton {
             id: openFileButton
             icon: "folder-open"
+            toolTipText: "Open Steps file"
         }
 
         IconicButton {
             id: saveFileButton
             icon: "clipboard"
+            toolTipText: "Save Steps"
         }
     }
 }
