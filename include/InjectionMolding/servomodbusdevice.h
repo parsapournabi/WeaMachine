@@ -117,6 +117,12 @@ class ServoModbusDevice : public AbstractModbusDevice
 
         Q_INVOKABLE bool gotoHome();
 
+        bool applyTrigger();
+        void applyUnTrigger();
+        bool allOutputsEnable() const;
+        bool noNeedHome() const;
+        bool prepareMotion(bool servoOn, bool pos0, qint32 path, qint32 speed, qint32 ramp);
+        bool prepareMotion(bool servoOn, bool pos0, qint32 path, quint16 speed, quint16 ramp);
         Q_INVOKABLE bool gotoPosition(qint32 path);
         Q_INVOKABLE bool gotoPosition(qint32 path, qint32 speed, qint32 ramp);
         Q_INVOKABLE bool gotoPosition(qint32 path, quint16 speed, quint16 ramp);

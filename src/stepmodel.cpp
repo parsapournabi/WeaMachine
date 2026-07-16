@@ -803,10 +803,14 @@ void StepModel::updateConditionState()
     m_conditionsPassed = true;
 
     /** All Contions are TRUE and Passed **/
-    applyServosStep(step);
-    applyPlcStep(step);
-
-    m_state = ExecutionState::WaitingMotion;
+    if (step->xPosActive() || step->yPosActive())
+    {
+        m_state = ExecutionState::PrepareMotion;
+    }
+    else
+    {
+        m_state = ExecutionState::RunCommand;
+    }
 }
 
 void StepModel::prepareMotionState()
@@ -814,17 +818,43 @@ void StepModel::prepareMotionState()
     /* Setting Servo ON/OFF, POS ON/OFF, PATH0, RAMP0, SPEED0,
         and homing until their are TRUE (Check homing if is ready don't set it): if Home is already done, set state to RunCommand
     */
+    auto* step = current();
+    applyServosStep(step); // State will change into this method
 }
 
 void StepModel::updateRunMotionState()
 {
-
     // Just set CTRG  TRUE until the feedback is also TRUE
+    auto* step = current();
+
+    bool xServoIsTrigger = true;
+    bool yServoIsTrigger = true;
+
+    // Triggering X-CTRG
+    if (step->xPosActive() && step->xServoOn())
+    {
+        xServoIsTrigger = m_xServoDevice->applyTrigger();
+    }
+
+    // Triggering Y-CTRG
+    if (step->yPosActive() && step->yServoOn())
+    {
+        yServoIsTrigger = m_yServoDevice->applyTrigger();
+    }
+
+    if (xServoIsTrigger && yServoIsTrigger)
+    {
+        m_state = ExecutionState::RunCommand;
+    }
 }
 
 void StepModel::updateRunCommandState()
 {
     // applyPlcStep (coils)
+    StepItem* step = current();
+    applyPlcStep(step);
+
+    m_state = ExecutionState::WaitingMotion;
 }
 
 void StepModel::updateRunningState()
@@ -904,78 +934,164 @@ void StepModel::finishExecution()
 
 void StepModel::applyServosStep(StepItem* step)
 {
-    // X Axis
+    /** NEW **/
+    bool xServoNoNeedHome = false;
+    bool yServoNoNeedHome = false;
+    bool xServoIsReady = false;
+    bool yServoIsReady = false;
+
+    // X-Axis
     if (step->xPosActive())
     {
-        if (step->xServoOn())
+        if (step->xServoHome())
         {
-            if (!m_xServoDevice->servoOn())
+            xServoNoNeedHome = m_xServoDevice->noNeedHome();
+            if (!xServoNoNeedHome)
             {
-            }
-
-            if (step->xServoHome())
-            {
-                if (!m_xServoDevice->isHomeCompleted())
-                {
-                    if (!m_xServoDevice->gotoHome())
-                    {
-                    }
-                }
+                xServoIsReady = m_xServoDevice->prepareMotion(step->xServoOn(),
+                                false,
+                                step->xServoPos(),
+                                step->xServoSpeed(),
+                                step->xServoAcc());
             }
             else
             {
-                if (!m_xServoDevice->gotoPosition(step->xServoPos(),
-                                                  step->xServoSpeed(),
-                                                  step->xServoAcc()))
-                {
-                }
+                xServoIsReady = xServoNoNeedHome;
             }
         }
         else
         {
-            if (!m_xServoDevice->servoOff())
-            {
-                // m_errorAtStep = true;
-                // return;
-            }
+            // Goto Position (No  matter SON is True or false
+            xServoIsReady = m_xServoDevice->prepareMotion(step->xServoOn(),
+                            true,
+                            step->xServoPos(),
+                            step->xServoSpeed(),
+                            step->xServoAcc());
         }
     }
+    else
+    {
+        xServoNoNeedHome = true;
+        xServoIsReady = true;
+    }
 
-
-    // Y Axis
+    // Y-Axis
     if (step->yPosActive())
     {
-        if (step->yServoOn())
+        if (step->yServoHome())
         {
-            if (!m_yServoDevice->servoOn())
+            yServoNoNeedHome = m_yServoDevice->noNeedHome();
+            if (!yServoNoNeedHome)
             {
-            }
-
-            if (step->yServoHome())
-            {
-                if (!m_yServoDevice->isHomeCompleted())
-                {
-                    if (!m_yServoDevice->gotoHome())
-                    {
-                    }
-                }
+                yServoIsReady = m_yServoDevice->prepareMotion(step->yServoOn(),
+                                false,
+                                step->yServoPos(),
+                                step->yServoSpeed(),
+                                step->yServoAcc());
             }
             else
             {
-                if (!m_yServoDevice->gotoPosition(step->yServoPos(),
-                                                  step->yServoSpeed(),
-                                                  step->yServoAcc()))
-                {
-                }
+                yServoIsReady = yServoNoNeedHome;
             }
         }
         else
         {
-            if (!m_yServoDevice->servoOff())
-            {
-            }
+            // Goto Position (No  matter SON is True or false
+            yServoIsReady = m_yServoDevice->prepareMotion(step->yServoOn(),
+                            true,
+                            step->yServoPos(),
+                            step->yServoSpeed(),
+                            step->yServoAcc());
         }
     }
+    else
+    {
+        yServoNoNeedHome = true;
+        yServoIsReady = true;
+    }
+
+    if (xServoNoNeedHome && yServoNoNeedHome)
+    {
+        m_state = ExecutionState::RunCommand;
+    }
+    else if (xServoIsReady && yServoIsReady)
+    {
+        m_state = ExecutionState::RunMotion;
+    }
+
+    /** OLD **/
+    // X Axis
+    // if (step->xPosActive())
+    // {
+    //     if (step->xServoOn())
+    //     {
+    //         if (!m_xServoDevice->servoOn())
+    //         {
+    //         }
+
+    //         if (step->xServoHome())
+    //         {
+    //             if (!m_xServoDevice->isHomeCompleted())
+    //             {
+    //                 if (!m_xServoDevice->gotoHome())
+    //                 {
+    //                 }
+    //             }
+    //         }
+    //         else
+    //         {
+    //             if (!m_xServoDevice->gotoPosition(step->xServoPos(),
+    //                                               step->xServoSpeed(),
+    //                                               step->xServoAcc()))
+    //             {
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (!m_xServoDevice->servoOff())
+    //         {
+    //             // m_errorAtStep = true;
+    //             // return;
+    //         }
+    //     }
+    // }
+
+
+    // // Y Axis
+    // if (step->yPosActive())
+    // {
+    //     if (step->yServoOn())
+    //     {
+    //         if (!m_yServoDevice->servoOn())
+    //         {
+    //         }
+
+    //         if (step->yServoHome())
+    //         {
+    //             if (!m_yServoDevice->isHomeCompleted())
+    //             {
+    //                 if (!m_yServoDevice->gotoHome())
+    //                 {
+    //                 }
+    //             }
+    //         }
+    //         else
+    //         {
+    //             if (!m_yServoDevice->gotoPosition(step->yServoPos(),
+    //                                               step->yServoSpeed(),
+    //                                               step->yServoAcc()))
+    //             {
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (!m_yServoDevice->servoOff())
+    //         {
+    //         }
+    //     }
+    // }
 }
 
 void StepModel::applyPlcStep(StepItem* step)
@@ -993,6 +1109,9 @@ void StepModel::applyPlcStep(StepItem* step)
 
 bool StepModel::servosStepCompleted(StepItem* step)
 {
+    /** NEW **/
+    bool xServoResult = true;
+    bool yServoResult = true;
     // X Axis
     if (step->xPosActive())
     {
@@ -1003,19 +1122,14 @@ bool StepModel::servosStepCompleted(StepItem* step)
                 return false;
             }
 
-            if (step->xServoHome())
+            if (m_xServoDevice->di4())
             {
-                if (!m_xServoDevice->isHomeCompleted())
-                {
-                    return false;
-                }
+                m_xServoDevice->applyUnTrigger();
+                xServoResult = false;
             }
             else
             {
-                if (!m_xServoDevice->isPositionReached())
-                {
-                    return false;
-                }
+                xServoResult = m_xServoDevice->allOutputsEnable();
             }
         }
         else
@@ -1037,19 +1151,14 @@ bool StepModel::servosStepCompleted(StepItem* step)
                 return false;
             }
 
-            if (step->yServoHome())
+            if (m_yServoDevice->di4())
             {
-                if (!m_yServoDevice->isHomeCompleted())
-                {
-                    return false;
-                }
+                m_yServoDevice->applyUnTrigger();
+                yServoResult = false;
             }
             else
             {
-                if (!m_yServoDevice->isPositionReached())
-                {
-                    return false;
-                }
+                yServoResult = m_yServoDevice->allOutputsEnable();
             }
         }
         else
@@ -1060,7 +1169,77 @@ bool StepModel::servosStepCompleted(StepItem* step)
             }
         }
     }
-    return true;
+    return xServoResult && yServoResult;
+
+    // /** OLD **/
+    // // X Axis
+    // if (step->xPosActive())
+    // {
+    //     if (step->xServoOn())
+    //     {
+    //         if (!m_xServoDevice->di1())
+    //         {
+    //             return false;
+    //         }
+
+    //         if (step->xServoHome())
+    //         {
+    //             if (!m_xServoDevice->isHomeCompleted())
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             if (!m_xServoDevice->isPositionReached())
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (m_xServoDevice->di1())
+    //         {
+    //             return false;
+    //         }
+    //     }
+    // }
+
+    // // Y Axis
+    // if (step->yPosActive())
+    // {
+    //     if (step->yServoOn())
+    //     {
+    //         if (!m_yServoDevice->di1())
+    //         {
+    //             return false;
+    //         }
+
+    //         if (step->yServoHome())
+    //         {
+    //             if (!m_yServoDevice->isHomeCompleted())
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             if (!m_yServoDevice->isPositionReached())
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (m_yServoDevice->di1())
+    //         {
+    //             return false;
+    //         }
+    //     }
+    // }
+    // return true;
 }
 
 bool StepModel::plcStepCompleted(StepItem* step)

@@ -137,21 +137,22 @@ void ServoModbusDevice::writeValuToProperty(int address, quint16 value)
         // Digital Inputs
         case RW_DI:
             m_digitalInputs.value = value;
-            if (m_prevDigitalInputs.value < 20000 && m_prevDigitalInputs.di2 != m_digitalInputs.di2)
-            {
-                pushDi4(true);
-            }
+            // TODO
+            // if (m_prevDigitalInputs.value < 20000 && m_prevDigitalInputs.di2 != m_digitalInputs.di2)
+            // {
+            //     pushDi4(true);
+            // }
 
             emitDigitalInputs();
 
             // Handlers for inputs
-            if (m_digitalInputs.di4)
-            {
-                QTimer::singleShot(m_triggerDelay, this, [ = ]()
-                {
-                    pushDi4(false);
-                });
-            }
+            // if (m_digitalInputs.di4)
+            // {
+            //     QTimer::singleShot(m_triggerDelay, this, [ = ]()
+            //     {
+            //         pushDi4(false);
+            //     });
+            // }
 
             m_prevDigitalInputs.value = value;
 
@@ -585,6 +586,106 @@ bool ServoModbusDevice::gotoHome()
     emit errorOccured(200, "Cannot apply GotoHome! : " +  outputsStateStr());
     return false;
 
+}
+
+bool ServoModbusDevice::applyTrigger()
+{
+    if (m_digitalInputs.di4)
+    {
+        return true;
+    }
+
+    pushDi4(true);
+
+    return false;
+}
+
+void ServoModbusDevice::applyUnTrigger()
+{
+    pushDi4(false);
+}
+
+bool ServoModbusDevice::allOutputsEnable() const
+{
+    return m_digitalOutputs.do1 &&
+           m_digitalOutputs.do2 &&
+           m_digitalOutputs.do3 &&
+           m_digitalOutputs.do4 &&
+           m_digitalOutputs.do5;
+}
+
+bool ServoModbusDevice::noNeedHome() const
+{
+    return m_digitalOutputs.do3;
+}
+
+bool ServoModbusDevice::prepareMotion(bool servoOn, bool pos0, qint32 path, qint32 speed, qint32 ramp)
+{
+    return prepareMotion(servoOn, pos0,
+                         path,
+                         static_cast<quint16>(speed),
+                         static_cast<quint16>(ramp));
+}
+
+bool ServoModbusDevice::prepareMotion(bool servoOn, bool pos0, qint32 path, quint16 speed, quint16 ramp)
+{
+    // Declares State: [HOME motion, Servo OFF motion, Servo ON GotoPosition
+    bool servoOnReady = true;
+    bool pos0Ready = true;
+    bool triggerReady = true;
+    bool pathReady = true;
+    bool speedReady = true;
+    bool rampReady = true;
+    if (m_digitalInputs.di1 != servoOn)
+    {
+        pushDi1(servoOn);
+        servoOnReady = false;
+    }
+
+    // If Motion is Servo off do not check others
+    if (!servoOn)
+    {
+        return servoOnReady;
+    }
+
+    if (m_digitalInputs.di2 != pos0)
+    {
+        pushDi2(pos0);
+        pos0Ready = false;
+    }
+
+    // Making CTRG False if its true
+    if (m_digitalInputs.di4)
+    {
+        pushDi4(false);
+        triggerReady = false;
+    }
+
+    // If Motion is Home State do not check others
+    if (!pos0)
+    {
+        return servoOnReady && pos0Ready && triggerReady;
+    }
+
+    if (m_pathData1.value != path)
+    {
+        pushPathData1(path);
+        pathReady = false;
+    }
+
+    if (m_speedData0.value != speed)
+    {
+        pushSpeed0(speed);
+        speedReady = false;
+    }
+
+    if (m_rampData0.value != ramp)
+    {
+        pushRamp0(ramp);
+        rampReady = false;
+    }
+
+    return servoOnReady && pos0Ready && triggerReady && pathReady && speedReady && rampReady;
 }
 
 bool ServoModbusDevice::gotoPosition(qint32 path)
