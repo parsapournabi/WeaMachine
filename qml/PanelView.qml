@@ -37,17 +37,19 @@ Flickable {
             // homingXControl.enabled: servoXDevice.availableToHome
             // homingYControl.enabled: servoYDevice.availableToHome
 
-            // submitButton.mouseArea.onPressed: {
-            //     // X Servo Homing
-            //     if (homingPanel.homingXControl.homingSwitch.enabled) {
-            //         servoXDevice.pushDi2(false);
-            //     }
+            submitButton.mouseArea.onPressed: {
+                // X Servo Homing
+                servoXDevice.pushDi4(false);
+                // if (homingPanel.homingXControl.homingSwitch.enabled) {
+                //     servoXDevice.pushDi2(false);
+                // }
 
-            //     // Y Servo Homing
-            //     if (homingPanel.homingYControl.homingSwitch.enabled) {
-            //         servoYDevice.pushDi2(false);
-            //     }
-            // }
+                // // Y Servo Homing
+                servoYDevice.pushDi4(false);
+                // if (homingPanel.homingYControl.homingSwitch.enabled) {
+                //     servoYDevice.pushDi2(false);
+                // }
+            }
             submitButton.onActivated: {
                 // X Servo Homing
                 if (homingPanel.homingXControl.homingSwitch.enabled) {
@@ -61,6 +63,11 @@ Flickable {
                     servoYDevice.gotoHome();
                 }
             }
+
+            submitButton.onReleased: {
+                servoXDevice.pushDi4(false);
+                servoYDevice.pushDi4(false);
+            }
         }
 
         // Goto Position Panel
@@ -73,6 +80,7 @@ Flickable {
 
             submitButton.mouseArea.onPressed: {
                 // X Servo Goto Position
+                servoXDevice.pushDi4(false);
                 if (gotoPosPanel.gotoPosXControl.positionEditBox.enabled)
                     // servoXDevice.pushPathData1(gotoPosPanel.gotoPosXControl.positionValue * 1000);
                     // servoXDevice.pushSpeed0(speedPanel.speedXControl.value * 10);
@@ -81,6 +89,7 @@ Flickable {
                 {}
 
                 // Y Servo Goto Position
+                servoYDevice.pushDi4(false);
                 if (gotoPosPanel.gotoPosYControl.positionEditBox.enabled)
                     // servoYDevice.pushPathData1(gotoPosPanel.gotoPosYControl.positionValue * 1000);
                     // servoYDevice.pushSpeed0(speedPanel.speedYControl.value * 10);
@@ -102,6 +111,11 @@ Flickable {
                     servoYDevice.gotoPosition(gotoPosPanel.gotoPosYControl.positionValue * 1000,
                                               speedPanel.speedYControl.value * 10, rampPanel.rampYControl.accValue);
                 }
+            }
+
+            submitButton.onReleased: {
+                servoXDevice.pushDi4(false);
+                servoYDevice.pushDi4(false);
             }
         }
 
