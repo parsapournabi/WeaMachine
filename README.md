@@ -349,3 +349,40 @@ Industrial Automation & Software Engineering
 C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
 
 ---
+
+## TODO
+
+### UI/Front
+
+- [ ] Manual GroupBoxes should be enable only when its servo ON and Manual mode is ON.
+- [ ] Complete Record Table and model.
+- [ ] Add 'General' Setting Page with these sections: [ Axes Configuration, Step Configuration ]
+	
+- [ ] Step Configuration:
+    - [x] Always ON Output while Step is Running ( it takes a list of outputs )
+    - [x] Step Restart Method [ Manually, Reset & Home, Reset and continue ]
+    - [ ] Encoder Properties:
+    - [x].Tolerance value for X/Y Axes
+    - [x] Number of the retries
+    - [x] Number of Delay for Checking
+    - [x] Mode when encoder error has occured --> [ Emergency and Stop after Delay of checking is completed and has error, Retry again (send GotoPos and continue until the retry counts is reached) ]
+    - [ ] Number of Tolerance for Homing Method (Low priority)
+		
+- [ ] Add Step Starting from a specific step.
+- [ ] Fix Manual Scaling for Position
+- [ ] Add Notification and Alarm Sound (Low priority)
+- [ ] Connect these new UIs with Backend
+- [ ] Optimize UI 
+
+### Backend
+
+- [ ] ADD RecordTable model logic.
+- [ ] ADD Alarm for when a specific Step cannot be execute or is freezing.
+- [ ] ADD Counter register for when Step flow is done.
+- [ ] Make Homing Smarter
+- [ ] Auto Connect of TCP/Serial
+- [ ] Fix Sometimes Servo will freeze at specific Step (Because of Servo Encoder error and we also have an encoder checking for reaching position.
+    you can fix this by using it an option into the general setting.
+- [ ] Servo OFF at Start ---> Done (But sometimes has an issue)
+
+### General
