@@ -4,6 +4,7 @@
 #include <WeaCore/utils.h>
 #include <QModbusRtuSerialMaster>
 #include <QBasicTimer>
+#include <QTimer>
 #include <QHash>
 #include <QQmlParserStatus>
 
@@ -18,6 +19,7 @@ class ModbusCom : public QModbusRtuSerialMaster, public QQmlParserStatus
         W_PROP_HDEF(SerialConnection*, serialConn, SerialConn, nullptr) // REQUIRED
         W_PROP_HDEF(QList<AbstractModbusDevice*>, devices, Devices, {}) // millisecond (cannot be change after connected)
         W_PROP_HDEF(bool, threaded, Threaded, false)
+        W_PROP_HDEF(bool, autoConnect, AutConnect, false)
 
         W_PROP_HDEF(int, numberOfRetries, NumberOfRetries, 3)
         W_PROP_HDEF(int, refreshInterval, RefreshInterval, 100) // millisecond (cannot be change after connected)
@@ -60,6 +62,7 @@ class ModbusCom : public QModbusRtuSerialMaster, public QQmlParserStatus
     protected:
         bool applyConnectionSettings();
         void applyConfigs();
+        void tryToConnect();
         void timerEvent(QTimerEvent* event) override;
 
     protected slots:
@@ -76,6 +79,8 @@ class ModbusCom : public QModbusRtuSerialMaster, public QQmlParserStatus
         QBasicTimer m_refreshTmr;
         QHash<int, bool> m_isFirstFrame; // slaveAddress, is first frame
         // QHash<int, AbstractModbusDevice*> m_addrToDevice; // slaveAddress, Device (sync with m_devices)
+        QTimer m_autoConnectTimer;
+        int m_intervalIndex; // AutoConnectTimer Interval Index
 };
 
 #endif // MODBUSCOM_H

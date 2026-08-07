@@ -8,9 +8,40 @@
 #include <QThread>
 #include <QDebug>
 
-ModbusCom::ModbusCom(QObject* parent)
-    : QModbusRtuSerialMaster(parent)
+constexpr int AUTO_CONNECT_INTERVAL[5] =
 {
+    1000,
+    2000,
+    5000,
+    10000,
+    15000,
+};
+
+ModbusCom::ModbusCom(QObject* parent)
+    : QModbusRtuSerialMaster(parent),
+      m_intervalIndex(0)
+{
+
+    /** Auto Connect Configuration **/
+    m_autoConnectTimer.setSingleShot(true);
+    connect(&m_autoConnectTimer, &QTimer::timeout, this, &ModbusCom::tryToConnect);
+    connect(this, &ModbusCom::autoConnectChanged, this, [this]()
+    {
+        if (m_autoConnect)
+        {
+
+            // Updating Interval
+            auto len = sizeof(AUTO_CONNECT_INTERVAL) / sizeof(int);
+            m_intervalIndex = (m_intervalIndex + 1) % len;
+            m_autoConnectTimer.setInterval(AUTO_CONNECT_INTERVAL[m_intervalIndex]);
+
+            m_autoConnectTimer.start();
+        }
+        else
+        {
+            m_autoConnectTimer.stop();
+        }
+    });
 
     connect(this, &ModbusCom::requestForSendWrite, this, [ = ](AbstractModbusDevice * device, int slaveAddress)
     {
@@ -232,10 +263,15 @@ void ModbusCom::applyConfigs()
     /** Make Connection Signals **/
     connect(this, &QModbusClient::errorOccurred, [ this ](QModbusDevice::Error code)
     {
-        // qCritical() << "Modbus Error: " << errorString() << code;
+        qCritical() << "Modbus Error: " << errorString() << code;
+
         // QML signal
         emit errorRaised(code, errorString());
 
+        if (WeaCore::hasFlag(code, QModbusDevice::ConnectionError))
+        {
+            closePort();
+        }
     });
 
     connect(this, &QModbusClient::stateChanged, [this](int state)
@@ -243,6 +279,13 @@ void ModbusCom::applyConfigs()
         qInfo() << "Modbus State: " << ModbusCom::stateString(state);
         // QML should use `connected` property
         m_serialConn->setConnected(state != QModbusDevice::UnconnectedState);
+
+        // Enable/Disable AutoConnectTimer
+        if (WeaCore::hasFlag(state, QModbusDevice::ConnectedState) ||
+                WeaCore::hasFlag(state, QModbusDevice::UnconnectedState))
+        {
+            emit autoConnectChanged();
+        }
     });
 
     /** Binding Alarms **/
@@ -259,6 +302,18 @@ void ModbusCom::applyConfigs()
     // });
 }
 
+void ModbusCom::tryToConnect()
+{
+    if (!isSerialConnValid())
+    {
+        return;
+    }
+
+    qDebug() << __PRETTY_FUNCTION__ << m_serialConn->portName() << isConnected() << m_autoConnectTimer.interval();
+
+    openPort();
+}
+
 void ModbusCom::timerEvent(QTimerEvent* event)
 {
     if (event->timerId() == m_refreshTmr.timerId())
@@ -270,6 +325,7 @@ void ModbusCom::timerEvent(QTimerEvent* event)
 
 void ModbusCom::updateFrame()
 {
+    qInfo() << "Connection state: " << isConnected() << stateString(state());
     for (auto& device : qAsConst(m_devices))
     {
         int slaveAddress = device->slaveAddress();
