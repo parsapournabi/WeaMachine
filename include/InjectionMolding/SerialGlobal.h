@@ -3,6 +3,7 @@
 
 #include <QSerialPortInfo>
 #include <QSerialPort>
+#include <QRegularExpression>
 #include <QDebug>
 
 #define RO_PROP(type, name) \
@@ -148,6 +149,54 @@ class SerialGlobal : public QObject
                 {"8", QSerialPort::Data8},
             };
             return resHash[dataBit];
+        }
+
+        inline static bool isPortNameValid(const QString& portName)
+        {
+            const QString name = portName.trimmed();
+
+            if (name.isEmpty())
+            {
+                return false;
+            }
+
+#ifdef Q_OS_WIN
+
+            // COM1 ... COM9
+            // COM10 ... COM256
+            //
+            // QSerialPort also supports the \\.\COM10 notation,
+            // but normally the portName itself should be "COM10".
+            static const QRegularExpression regex(
+                R"(^COM[1-9][0-9]{0,2}$)",
+                QRegularExpression::CaseInsensitiveOption
+            );
+
+            return regex.match(name).hasMatch();
+
+#elif defined(Q_OS_LINUX)
+
+            static const QRegularExpression regex(
+                R"(^/dev/(tty(S|USB|ACM)[0-9]+|serial/by-id/[^/]+)$)"
+            );
+
+            return regex.match(name).hasMatch();
+
+#elif defined(Q_OS_MACOS)
+
+            static const QRegularExpression regex(
+                R"(^/dev/(tty|cu)\.[A-Za-z0-9._-]+$)"
+            );
+
+            return regex.match(name).hasMatch();
+
+#else
+
+            // Unknown platform:
+            // At least reject empty/whitespace-only names.
+            return !name.isEmpty();
+
+#endif
         }
 
     private:
