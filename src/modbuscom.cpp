@@ -5,8 +5,12 @@
 #include "../include/InjectionMolding/AlarmModel.h"
 
 #include <QTimerEvent>
+#include <QGuiApplication>
+#include <QSettings>
 #include <QThread>
 #include <QDebug>
+
+#define COM_PORT_NAME objectName() + "_PORT_NAME"
 
 constexpr int AUTO_CONNECT_INTERVAL[5] =
 {
@@ -78,6 +82,13 @@ void ModbusCom::classBegin()
 
 void ModbusCom::componentComplete()
 {
+    /** Updating Data with Setting **/
+    QSettings settings(QSettings::IniFormat,
+                       QSettings::UserScope,
+                       QGuiApplication::organizationName(),
+                       QGuiApplication::applicationName());
+    m_targetCOM = settings.value(COM_PORT_NAME, "").toString();
+
     if (m_threaded)
     {
         m_thread = new QThread(this);
@@ -306,6 +317,12 @@ void ModbusCom::tryToConnect()
 {
     if (!isSerialConnValid() || isConnected())
     {
+        return;
+    }
+
+    if (!SerialConnection::applyTargetPortNumber(m_targetCOM, m_serialConn))
+    {
+        emit autoConnectChanged();
         return;
     }
 

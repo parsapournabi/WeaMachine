@@ -8,6 +8,8 @@
 #include <QHash>
 #include <QQmlParserStatus>
 
+#include "Addresses.h"
+
 class SerialConnection;
 class AbstractModbusDevice;
 class ModbusCom : public QModbusRtuSerialMaster, public QQmlParserStatus
@@ -15,6 +17,7 @@ class ModbusCom : public QModbusRtuSerialMaster, public QQmlParserStatus
         Q_OBJECT
         Q_INTERFACES(QQmlParserStatus)
         // Which Port and with which options should be open?
+        READ_PROP(QString, targetCOM) // Specify which Serial Port number should be check via QSettings
         W_PROP_HDEF(int, objectID, ObjectID, -1) // REQUIRED
         W_PROP_HDEF(SerialConnection*, serialConn, SerialConn, nullptr) // REQUIRED
         W_PROP_HDEF(QList<AbstractModbusDevice*>, devices, Devices, {}) // millisecond (cannot be change after connected)
