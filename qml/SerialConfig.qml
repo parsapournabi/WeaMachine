@@ -4,193 +4,215 @@ import com.wearily.WeaQuick 1.0 as WeaQuick
 import CustomItems 1.0
 
 Item {
-    id: root
+	id: root
 
 	property SerialConnection connection: SerialConnection {
-        portName: cboxPorts.currentText
-        baudRate: serialGlobal.mapToBaudRate(cboxBaudRate.currentValue)
-        parity: serialGlobal.mapToParity(cboxParity.currentValue)
-        stopBits: serialGlobal.mapToStopBits(cboxStopBits.currentValue)
-        dataBits: serialGlobal.mapToDataBits(labelDataBits.text)
-    }
+		// PortName & cboxPort should bind with each other
+		// portName: cboxPorts.currentText
+		baudRate: serialGlobal.mapToBaudRate(cboxBaudRate.currentValue)
+		parity: serialGlobal.mapToParity(cboxParity.currentValue)
+		stopBits: serialGlobal.mapToStopBits(cboxStopBits.currentValue)
+		dataBits: serialGlobal.mapToDataBits(labelDataBits.text)
+	}
 
-    readonly property int controlPreferredWidth: 150
-    readonly property int controlPreferredHeight: 27
+	readonly property int controlPreferredWidth: 150
+	readonly property int controlPreferredHeight: 27
 
-    property int fontSize: 14
+	property int fontSize: 14
 
-    property alias title: titleLabel.text
-    property alias baudRateComboBox: cboxBaudRate
+	property alias title: titleLabel.text
+	property alias baudRateComboBox: cboxBaudRate
 
-    signal openConnection
-    signal closeConnection
+	signal openConnection
+	signal closeConnection
 
-    // implicitWidth: 350
-    // implicitHeight: 500
+	// implicitWidth: 350
+	// implicitHeight: 500
 
-    WeaQuick.Label {
-        id: titleLabel
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
+	WeaQuick.Label {
+		id: titleLabel
+		anchors {
+			top: parent.top
+			left: parent.left
+			right: parent.right
+		}
 
-        font.pixelSize: 17
-    }
+		font.pixelSize: 17
+	}
 
-    Column {
-        anchors {
-            top: titleLabel.bottom
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            margins: 20
-        }
-        spacing: 20
+	Column {
+		anchors {
+			top: titleLabel.bottom
+			left: parent.left
+			right: parent.right
+			bottom: parent.bottom
+			margins: 20
+		}
+		spacing: 20
 
-        Compact {
-            tagName: "Port: "
+		Compact {
+			tagName: "Port: "
 
-            CusComboBox {
-                id: cboxPorts
-                anchors.right: parent.right
-                width: controlPreferredWidth
-                model: serialGlobal.availablePorts
-            }
-        }
+			CusComboBox {
+				id: cboxPorts
+				anchors.right: parent.right
+				width: controlPreferredWidth
+				model: serialGlobal.availablePorts
 
-        Compact {
-            tagName: "BaudRate: "
+				/** Connections **/
+				onCurrentTextChanged: {
+					if (currentText !== connection.portName) {
+						connection.portName = currentText;
+					}
+				}
 
-            CusComboBox {
-                id: cboxBaudRate
-                anchors.right: parent.right
-                width: controlPreferredWidth
+				Connections {
+					target: connection
+					function onPortNameChanged() {
+						while (connection.portName !== cboxPorts.currentText) {
+							serialGlobal.refreshPorts();
+							if (cboxPorts.currentIndex < cboxPorts.count - 1) {
+								cboxPorts.incrementCurrentIndex();
+							} else {
+								cboxPorts.decrementCurrentIndex();
+							}
+						}
+					}
+				}
+			}
+		}
 
-                model: serialGlobal.baudRates
-                currentIndex: model.length - 1
-            }
-        }
+		Compact {
+			tagName: "BaudRate: "
 
-        Compact {
-            tagName: "DataBits: "
+			CusComboBox {
+				id: cboxBaudRate
+				anchors.right: parent.right
+				width: controlPreferredWidth
 
-            WeaQuick.Label {
-                id: labelDataBits
-                anchors.right: parent.right
-                height: controlPreferredHeight
-                width: controlPreferredWidth
+				model: serialGlobal.baudRates
+				currentIndex: model.length - 1
+			}
+		}
 
-                font.pixelSize: root.fontSize
-                verticalAlignment: Qt.AlignVCenter
-                text: "8"
-            }
-        }
+		Compact {
+			tagName: "DataBits: "
 
-        Compact {
-            tagName: "Parity: "
+			WeaQuick.Label {
+				id: labelDataBits
+				anchors.right: parent.right
+				height: controlPreferredHeight
+				width: controlPreferredWidth
 
-            CusComboBox {
-                id: cboxParity
-                anchors.right: parent.right
-                width: controlPreferredWidth
+				font.pixelSize: root.fontSize
+				verticalAlignment: Qt.AlignVCenter
+				text: "8"
+			}
+		}
 
-                model: serialGlobal.parities
-                currentIndex: 1
-            }
-        }
+		Compact {
+			tagName: "Parity: "
 
-        Compact {
-            tagName: "StopBits: "
+			CusComboBox {
+				id: cboxParity
+				anchors.right: parent.right
+				width: controlPreferredWidth
 
-            CusComboBox {
-                id: cboxStopBits
-                anchors.right: parent.right
-                width: controlPreferredWidth
+				model: serialGlobal.parities
+				currentIndex: 1
+			}
+		}
 
-                model: serialGlobal.stopBits
-            }
-        }
+		Compact {
+			tagName: "StopBits: "
 
-        // Compact {
-        //     tagName: "Slave Address: "
+			CusComboBox {
+				id: cboxStopBits
+				anchors.right: parent.right
+				width: controlPreferredWidth
 
-        //     WeaQuick.EditBox {
-        //         id: editBoxSlaveAddr
-        //         anchors.right: parent.right
-        //         width: controlPreferredWidth
+				model: serialGlobal.stopBits
+			}
+		}
 
-        //         level: 0
-        //         flat: false
-        //         font.pixelSize: root.fontSize
+		// Compact {
+		//     tagName: "Slave Address: "
 
-        //         from: 1
-        //         to: 127
-        //         decimals: 0
-        //         stepSize: 1
-        //         value: 1
-        //     }
-        // }
+		//     WeaQuick.EditBox {
+		//         id: editBoxSlaveAddr
+		//         anchors.right: parent.right
+		//         width: controlPreferredWidth
 
-        // Connect/Disconnect Buttons
+		//         level: 0
+		//         flat: false
+		//         font.pixelSize: root.fontSize
 
-        Row {
-            anchors.right: parent.right
-            spacing: 5
-            WeaQuick.Button {
-                id: connectButton
+		//         from: 1
+		//         to: 127
+		//         decimals: 0
+		//         stepSize: 1
+		//         value: 1
+		//     }
+		// }
+
+		// Connect/Disconnect Buttons
+
+		Row {
+			anchors.right: parent.right
+			spacing: 5
+			WeaQuick.Button {
+				id: connectButton
 
 				enabled: !connection.connected
 
-                level: 5
-                width: 110
-                flat: false
+				level: 5
+				width: 110
+				flat: false
 
-                text: "Connect"
-                font.pixelSize: root.fontSize
-                onClicked: {
-                    openConnection();
-                }
-            }
+				text: "Connect"
+				font.pixelSize: root.fontSize
+				onClicked: {
+					openConnection();
+				}
+			}
 
-            WeaQuick.Button {
-                id: disconnectButton
+			WeaQuick.Button {
+				id: disconnectButton
 
 				enabled: connection.connected
 
-                level: 5
-                width: 115
-                flat: false
+				level: 5
+				width: 115
+				flat: false
 
-                text: "Disconnect"
-                font.pixelSize: root.fontSize
-                onClicked: {
-                    closeConnection();
-                }
-            }
-        }
-    }
+				text: "Disconnect"
+				font.pixelSize: root.fontSize
+				onClicked: {
+					closeConnection();
+				}
+			}
+		}
+	}
 
-    // Objects & Inline-Components
-    component Compact: Item {
+	// Objects & Inline-Components
+	component Compact: Item {
 
-        property alias tagName: label.text
-        property alias tagHeight: label.height
-        property alias tag: label
+		property alias tagName: label.text
+		property alias tagHeight: label.height
+		property alias tag: label
 
-        anchors {
-            left: parent.left
-            right: parent.right
-        }
+		anchors {
+			left: parent.left
+			right: parent.right
+		}
 
-        height: controlPreferredHeight
+		height: controlPreferredHeight
 
-        WeaQuick.Label {
-            id: label
-            height: parent.height
-            verticalAlignment: Qt.AlignBottom
-            font.pixelSize: root.fontSize
-        }
-    }
+		WeaQuick.Label {
+			id: label
+			height: parent.height
+			verticalAlignment: Qt.AlignBottom
+			font.pixelSize: root.fontSize
+		}
+	}
 }
