@@ -243,16 +243,20 @@ Item {
 		/** Serial **/
 		servoSerialConfig.onOpenConnection: {
 			servoModbusCom.openPort();
+			servoModbusCom.autoConnect = true;
 		}
 		servoSerialConfig.onCloseConnection: {
 			servoModbusCom.closePort();
+			servoModbusCom.autoConnect = false;
 		}
 
 		plcSerialConfig.onOpenConnection: {
 			plcModbusCom.openPort();
+			plcModbusCom.autoConnect = true;
 		}
 		plcSerialConfig.onCloseConnection: {
 			plcModbusCom.closePort();
+			plcModbusCom.autoConnect = false;
 		}
 	}
 
