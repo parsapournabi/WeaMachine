@@ -138,6 +138,7 @@ Item {
 		objectID: 300
 		objectName: "SCOM"
 		serialConn: comPopup.servoSerialConnection
+		autoConnect: true
 		threaded: false
 		devices: [servoXDevice, servoYDevice]
 		refreshInterval: 300
