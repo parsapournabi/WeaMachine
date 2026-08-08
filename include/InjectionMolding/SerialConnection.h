@@ -4,6 +4,8 @@
 #include <QSerialPort>
 #include <WeaCore/utils.h>
 
+#include "SerialGlobal.h"
+
 class SerialConnection : public QObject
 {
         Q_OBJECT
@@ -18,6 +20,36 @@ class SerialConnection : public QObject
             : QObject{parent}
         {
 
+        }
+
+        /*!
+         * \brief applyTargetPortNumber : It will set the portName into the serialConn->portName if exists
+         * \param portName : the target portName for example: "COM3"
+         * \param serialConn : Specific target object
+         * \return true if portName == serialConn->portName and portName is exists in Available ports.
+         */
+        inline static bool applyTargetPortNumber(const QString& portName, SerialConnection* serialConn)
+        {
+            if (!serialConn || !SerialGlobal::isPortNameValid(portName))
+            {
+                return false;
+            }
+
+            const auto availablePorts = QSerialPortInfo::availablePorts();
+            const auto contains = std::any_of(availablePorts.cbegin(),
+                                              availablePorts.cend(),
+                                              [portName](const auto & l)
+            {
+                return l.portName() == portName;
+            });
+
+            if (!contains)
+            {
+                return false;
+            }
+            serialConn->setPortName(portName);
+
+            return true;
         }
 
 };
