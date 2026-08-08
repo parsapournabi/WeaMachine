@@ -367,10 +367,12 @@ C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
     - [x] Number of Delay for Checking
     - [x] Mode when encoder error has occured --> [ Emergency and Stop after Delay of checking is completed and has error, Retry again (send GotoPos and continue until the retry counts is reached) ]
 		
+- [ ] Remove unnecessary components from General Setting page.
 - [ ] Add Keyboard Shortcut for Manual running.
 - [ ] Add Keyboard shortcut for Record Table.
 - [ ] Add Step Starting from a specific step.
 - [ ] Fix Manual Scaling for Position
+- [ ] Fix step refreshing to avoid operator mistakes.
 - [ ] Add Notification and Alarm Sound (Low priority)
 - [x] Connect these new UIs with Backend
 - [ ] Optimize UI 
@@ -381,7 +383,7 @@ C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
 - [ ] ADD Alarm for when a specific Step cannot be execute or is freezing.
 - [ ] ADD Counter register for when Step flow is done.
 - [x] Make Homing Smarter
-- [ ] Auto Connect of TCP/Serial
+- [x] Auto Connect of TCP/Serial
 - [x] Fix Sometimes Servo will freeze at specific Step (Because of Servo Encoder error and we also have an encoder checking for reaching position.
     you can fix this by using it an option into the general setting.
 - [x] Servo OFF at Start
