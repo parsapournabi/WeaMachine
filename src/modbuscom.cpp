@@ -304,12 +304,10 @@ void ModbusCom::applyConfigs()
 
 void ModbusCom::tryToConnect()
 {
-    if (!isSerialConnValid())
+    if (!isSerialConnValid() || isConnected())
     {
         return;
     }
-
-    qDebug() << __PRETTY_FUNCTION__ << m_serialConn->portName() << isConnected() << m_autoConnectTimer.interval();
 
     openPort();
 }
@@ -325,7 +323,6 @@ void ModbusCom::timerEvent(QTimerEvent* event)
 
 void ModbusCom::updateFrame()
 {
-    qInfo() << "Connection state: " << isConnected() << stateString(state());
     for (auto& device : qAsConst(m_devices))
     {
         int slaveAddress = device->slaveAddress();
