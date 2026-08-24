@@ -36,19 +36,29 @@ BorderRectangle {
 		Q.TableViewColumn {
 			role: "no"
 			title: "No"
-			width: 50
+			width: 45
 		}
 		Q.TableViewColumn {
 			role: "xpos"
 			title: "X-Axis Position (%1)".arg(globalConfig.xAxisConfig.unitName)
-			width: 220
+			width: 190
+		}
+		Q.TableViewColumn {
+			role: "xspeed"
+			title: "X-Axis Speed"
+			width: 130
 		}
 		Q.TableViewColumn {
 			role: "ypos"
 			title: "Y-Axis Position (%1)".arg(globalConfig.yAxisConfig.unitName)
-			width: 220
+			width: 190
 		}
-		model: libraryModel
+		Q.TableViewColumn {
+			role: "yspeed"
+			title: "Y-Axis Speed"
+			width: 130
+		}
+		model: recordModel
 	}
 
 	RecordFooter {
@@ -76,21 +86,27 @@ BorderRectangle {
 	}
 
 	ListModel {
-		id: libraryModel
+		id: recordModel
 		ListElement {
 			no: "1"
 			xpos: "6,127.000"
 			ypos: "200.123"
+			xspeed: "100.0"
+			yspeed: "100.0"
 		}
 		ListElement {
 			no: "2"
 			xpos: "8,964.000"
 			ypos: "1,542.001"
+			xspeed: "800.0"
+			yspeed: "700.5"
 		}
 		ListElement {
 			no: "3"
 			xpos: "10,000.71"
 			ypos: "555.555"
+			xspeed: "1250.0"
+			yspeed: "1500.0"
 		}
 	}
 }
