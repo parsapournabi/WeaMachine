@@ -36,6 +36,13 @@ Rectangle {
     property bool checked: false
     property bool locked: false // locking at checked states means disabling mouseArea until programally unchecked
 
+    /** Keyboards **/
+    property int keyboardKey: Qt.NoButton
+
+    // Keyboad or Mouse press
+    readonly property bool keyboardPressed: _private.keyboardPressed
+    readonly property bool containsPress: _private.keyboardPressed || mouseArea.containsPress
+
     /** Item Alias **/
     property alias mouseArea: mouseArea
     property alias dropShadow: dropShadow
@@ -99,7 +106,7 @@ Rectangle {
         },
         State {
             name: "default"
-            when: (enabled && !mouseArea.containsMouse && !mouseArea.containsPress && !isChecked())
+            when: (enabled && !mouseArea.containsMouse && !containsPress && !isChecked())
             PropertyChanges {
                 target: root
                 color: arrayBackgroundColor[level]
@@ -110,7 +117,7 @@ Rectangle {
         },
         State {
             name: "hovered"
-            when: (enabled && mouseArea.containsMouse && !mouseArea.containsPress && !isLocked())
+            when: (enabled && mouseArea.containsMouse && !containsPress && !isLocked())
             PropertyChanges {
                 target: root
                 color: arrayHoveredBackgroundColor[level]
@@ -119,7 +126,7 @@ Rectangle {
         },
         State {
             name: "pressed"
-            when: (enabled && mouseArea.containsMouse && mouseArea.containsPress && !isLocked())
+            when: (enabled && containsPress && !isLocked())
             PropertyChanges {
                 target: root
                 color: arraySelectedBackgroundColor[level]
@@ -207,9 +214,42 @@ Rectangle {
         id: _private
 
         property bool isTransparent: root.color === Qt.rgba(0, 0, 0, 0)
+        property bool keyboardPressed: false
     }
 
+    /** Slots **/
+    onKeyboardPressedChanged: {
+        console.log("Keyboard Press has changed: ", keyboardPressed, _private.keyboardPressed);
+    }
+
+    Keys.onPressed: event => {
+                        if (event.isAutoRepeat) {
+                            return;
+                        }
+
+                        console.log("PRESSED", event.key, keyboardKey, Qt.Key_W, _private.keyboardPressed,
+                                    event.isAutoRepeat);
+                        if (isKeyboardActive() && event.key === keyboardKey) {
+                            _private.keyboardPressed = true;
+                        }
+                        event.accepted = true;
+                    }
+    Keys.onReleased: event => {
+                         if (event.isAutoRepeat) {
+                             return;
+                         }
+                         console.log("RELEASED", event.key, keyboardKey, Qt.Key_W, event.isAutoRepeat);
+                         if (isKeyboardActive() && event.key === keyboardKey) {
+                             _private.keyboardPressed = false;
+                         }
+                         event.accepted = true;
+                     }
+
     /** Functions **/
+    function isKeyboardActive() {
+        return keyboardKey && keyboardKey !== Qt.NoButton;
+    }
+
     function isChecked() {
         return checked;
     }
