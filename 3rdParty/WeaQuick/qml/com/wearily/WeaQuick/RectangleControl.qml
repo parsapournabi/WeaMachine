@@ -217,37 +217,33 @@ Rectangle {
         property bool keyboardPressed: false
     }
 
-    /** Slots **/
-    onKeyboardPressedChanged: {
-        console.log("Keyboard Press has changed: ", keyboardPressed, _private.keyboardPressed);
-    }
-
-    Keys.onPressed: event => {
-                        if (event.isAutoRepeat) {
-                            return;
-                        }
-
-                        console.log("PRESSED", event.key, keyboardKey, Qt.Key_W, _private.keyboardPressed,
-                                    event.isAutoRepeat);
-                        if (isKeyboardActive() && event.key === keyboardKey) {
-                            _private.keyboardPressed = true;
-                        }
-                        event.accepted = true;
-                    }
-    Keys.onReleased: event => {
-                         if (event.isAutoRepeat) {
-                             return;
-                         }
-                         console.log("RELEASED", event.key, keyboardKey, Qt.Key_W, event.isAutoRepeat);
-                         if (isKeyboardActive() && event.key === keyboardKey) {
-                             _private.keyboardPressed = false;
-                         }
-                         event.accepted = true;
-                     }
-
     /** Functions **/
     function isKeyboardActive() {
         return keyboardKey && keyboardKey !== Qt.NoButton;
+    }
+
+    function applyKeyboardPress(key) {
+        if (key !== keyboardKey) {
+            return;
+        }
+
+        setKeyboardPressed(true);
+    }
+
+    function applyKeyboardRelease(key) {
+        if (key !== keyboardKey) {
+            return;
+        }
+
+        setKeyboardPressed(false);
+    }
+
+    function setKeyboardPressed(value) {
+        if (!isKeyboardActive()) {
+            return;
+        }
+
+        _private.keyboardPressed = value;
     }
 
     function isChecked() {
