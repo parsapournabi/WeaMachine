@@ -93,11 +93,24 @@ RectangleControl {
             Layout.fillWidth: true
             Layout.preferredWidth: 10
             verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: !icon.visible ? Qt.AlignHCenter : layout.layoutDirection
-                                                 === Qt.LeftToRight ? Qt.AlignLeft : Qt.AlignRight
+            horizontalAlignment: !icon.visible ? Qt.AlignHCenter : layout.layoutDirection === Qt.LeftToRight
+                                                 ? Qt.AlignLeft : Qt.AlignRight
             visible: text || text !== ""
             level: root.levelLabel
             fontLevel: root.fontLevel
+        }
+    }
+
+    // Forwarding Press/Release with Keyboard shortcuts
+    onKeyboardPressedChanged: {
+        if (!enabled) {
+            return;
+        }
+
+        if (keyboardPressed) {
+            root.pressed(null);
+        } else {
+            root.released(null);
         }
     }
 
@@ -107,27 +120,27 @@ RectangleControl {
 
         /** Forwarding Signals **/
         function onCanceled(mouse) {
-            root.canceled(mouse)
+            root.canceled(mouse);
         }
 
         function onClicked(mouse) {
-            root.clicked(mouse)
+            root.clicked(mouse);
         }
 
         function onDoubleClicked(mouse) {
-            root.doubleClicked(mouse)
+            root.doubleClicked(mouse);
         }
 
         function onPressAndHold(mouse) {
-            root.pressAndHold(mouse)
+            root.pressAndHold(mouse);
         }
 
         function onPressed(mouse) {
-            root.pressed(mouse)
+            root.pressed(mouse);
         }
 
         function onReleased(mouse) {
-            root.released(mouse)
+            root.released(mouse);
         }
     }
 }
