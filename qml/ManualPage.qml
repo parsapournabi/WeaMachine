@@ -5,6 +5,9 @@ import com.wearily.WeaQuick 1.0 as WeaQuick
 Item {
     id: root
 
+    signal keyPressed(var key)
+    signal keyReleased(var key)
+
     Item {
         id: mainContent
         anchors {
@@ -63,4 +66,24 @@ Item {
         }
         width: 380
     }
+
+    /** Slots **/
+    Keys.onPressed: event => {
+                        if (event.isAutoRepeat) {
+                            return;
+                        }
+
+                        console.log("Pressed: ", event.key);
+                        keyPressed(event.key);
+                        event.accepted = true;
+                    }
+    Keys.onReleased: event => {
+                         if (event.isAutoRepeat) {
+                             return;
+                         }
+
+                         console.log("Released: ", event.key);
+                         keyReleased(event.key);
+                         event.accepted = true;
+                     }
 }
