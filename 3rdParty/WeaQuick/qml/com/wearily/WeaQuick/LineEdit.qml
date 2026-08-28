@@ -125,6 +125,7 @@ RectangleControl {
         /** Slot **/
         Keys.onEscapePressed: {
             focus = false;
+            root.focus = false;
         }
 
         /** Forwarding Signals **/
