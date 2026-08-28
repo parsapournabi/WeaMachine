@@ -38,6 +38,7 @@ Rectangle {
 
     /** Keyboards **/
     property int keyboardKey: Qt.NoButton
+    property bool togglableKeyboardKey: false
 
     // Keyboad or Mouse press
     readonly property bool keyboardPressed: _private.keyboardPressed
@@ -227,10 +228,18 @@ Rectangle {
             return;
         }
 
-        setKeyboardPressed(true);
+        if (togglableKeyboardKey) {
+            setKeyboardPressed(!_private.keyboardPressed);
+        } else {
+            setKeyboardPressed(true);
+        }
     }
 
     function applyKeyboardRelease(key) {
+        if (togglableKeyboardKey) {
+            return;
+        }
+
         if (key !== keyboardKey) {
             return;
         }
