@@ -38,6 +38,7 @@ Rectangle {
 
     /** Keyboards **/
     property int keyboardKey: Qt.NoButton
+    property bool interlockActive: false
     property bool togglableKeyboardKey: false
 
     // Keyboad or Mouse press
@@ -198,6 +199,7 @@ Rectangle {
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons
         hoverEnabled: true
+        enabled: root.enabled && !root.interlockActive
 
         /** Forwarding Signals **/
         onEntered: {
@@ -220,7 +222,7 @@ Rectangle {
 
     /** Functions **/
     function isKeyboardActive() {
-        return keyboardKey && keyboardKey !== Qt.NoButton;
+        return root.enabled && !root.interlockActive && keyboardKey && keyboardKey !== Qt.NoButton;
     }
 
     function applyKeyboardPress(key) {
