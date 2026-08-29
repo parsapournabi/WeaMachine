@@ -34,6 +34,7 @@ Item {
             id: shot
             enabled: record.checked
             icon: "aperture"
+            keyboardKey: Qt.Key_R
         }
 
         IconicButton {
@@ -41,6 +42,21 @@ Item {
             checkable: true
             locked: true
             icon: checked ? "circle-pause" : "circle-play"
+        }
+    }
+
+    /** Slots **/
+
+    // Binding keyboard for Record snap-shot
+    Connections {
+        target: manualPage
+
+        function onKeyPressed(key) {
+            shot.applyKeyboardPress(key);
+        }
+
+        function onKeyReleased(key) {
+            shot.applyKeyboardRelease(key);
         }
     }
 }
