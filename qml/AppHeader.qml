@@ -46,7 +46,7 @@ Item {
                 iconName: "house"
             },
             {
-                iconName: "gamepad-modern"
+                iconName: "hand-pointer"
             },
             {
                 iconName: "gear"
