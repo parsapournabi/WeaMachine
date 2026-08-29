@@ -21,6 +21,15 @@ Item {
     property alias joystickDownLeft: btnDownLeft
     property alias joystickDownRight: btnDownRight
 
+    /** Readonly properties **/
+    readonly property var singleDirectionButtons: [btnTop, btnDown, btnLeft, btnRight]
+    readonly property var multiDirectionButtons: [btnTopLeft, btnTopRight, btnDownLeft, btnDownRight]
+
+    // Properties helper for interlocks
+    // JS TIP: some == any, every == all
+    readonly property bool anySinglePressed: singleDirectionButtons.some(btn => btn.containsPress)
+    readonly property bool anyMultiPressed: multiDirectionButtons.some(btn => btn.containsPress)
+
     implicitWidth: 100
     implicitHeight: 100
 
@@ -33,6 +42,8 @@ Item {
         }
 
         direction: JoystickButton.Direction.Top
+        keyboardKey: Qt.Key_W
+        interlockActive: btnDown.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
     }
@@ -46,6 +57,8 @@ Item {
         }
 
         direction: JoystickButton.Direction.Bottom
+        keyboardKey: Qt.Key_S
+        interlockActive: btnTop.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
     }
@@ -59,6 +72,8 @@ Item {
         }
 
         direction: JoystickButton.Direction.Left
+        keyboardKey: Qt.Key_A
+        interlockActive: btnRight.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
     }
@@ -72,6 +87,8 @@ Item {
         }
 
         direction: JoystickButton.Direction.Right
+        keyboardKey: Qt.Key_D
+        interlockActive: btnLeft.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
     }
@@ -86,6 +103,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.TopLeft
+        interlockActive: anySinglePressed
         width: subSize
         height: subSize
     }
@@ -100,6 +118,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.TopRight
+        interlockActive: anySinglePressed
         width: subSize
         height: subSize
     }
@@ -114,6 +133,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.BottomLeft
+        interlockActive: anySinglePressed
         width: subSize
         height: subSize
     }
@@ -128,7 +148,23 @@ Item {
         }
 
         direction: JoystickButton.Direction.BottomRight
+        interlockActive: anySinglePressed
         width: subSize
         height: subSize
+    }
+
+    Connections {
+        target: manualPage
+        function onKeyPressed(key) {
+            singleDirectionButtons.forEach(function (button, index) {
+                button.applyKeyboardPress(key);
+            });
+        }
+
+        function onKeyReleased(key) {
+            singleDirectionButtons.forEach(function (button, index) {
+                button.applyKeyboardRelease(key);
+            });
+        }
     }
 }
