@@ -78,6 +78,8 @@ Item {
 
                 Item {
                     id: leftSide
+                    // FIXME: Currently is out of service
+                    visible: false
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 

@@ -19,7 +19,8 @@ Item {
     property alias labelTitle: lblTitle
     property alias spliterVisible: spliter.visible
 
-    implicitHeight: 900
+    // implicitHeight: 900
+    implicitHeight: 600
 
     // Saving options into the SettingFile
     signal writeRequest
@@ -77,6 +78,8 @@ Item {
                 // Encoder Setting
                 Item {
                     id: topSide
+                    // FIXME: Currently is out of service
+                    visible: false
                     Layout.fillWidth: true
                     Layout.preferredHeight: 300
                     Layout.columnSpan: 2
@@ -498,7 +501,7 @@ Item {
 
     /** functions **/
     function writeConfigs(otherAxisConfig) {
-		otherAxisConfig.synchronize(helper.axisConfig);
+        otherAxisConfig.synchronize(helper.axisConfig);
     }
 
     function readConfigs(otherAxisConfig) {
