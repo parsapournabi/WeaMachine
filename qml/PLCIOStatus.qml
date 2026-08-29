@@ -17,6 +17,46 @@ Item {
 
     property bool manualActive: false
 
+    // FIXME: fix togglable with checkable unmatching
+    property var shortcuts: [
+        {
+            key: Qt.Key_Y,
+            togglable: false
+        },
+        {
+            key: Qt.Key_U,
+            togglable: false
+        },
+        {
+            key: Qt.Key_I,
+            togglable: false
+        },
+        {
+            key: Qt.Key_O,
+            togglable: false
+        },
+        {
+            key: Qt.Key_P,
+            togglable: false
+        },
+        {
+            key: Qt.Key_H,
+            togglable: false
+        },
+        {
+            key: Qt.Key_J,
+            togglable: false
+        },
+        {
+            key: Qt.Key_K,
+            togglable: false
+        },
+        {
+            key: Qt.Key_L,
+            togglable: false
+        },
+    ]
+
     ColumnLayout {
         id: columnLayout
         anchors.fill: parent
@@ -115,11 +155,27 @@ Item {
             Component {
                 id: compOutputButton
                 SunkenButton {
+                    id: btn
                     enabled: manualActive && modeldata.outputEnabled
                     checkable: false
                     checked: modeldata.activeFeedback
+                    keyboardKey: modelIndex >= 9 ? Qt.NoButton : shortcuts[modelIndex].key
+                    togglableKeyboardKey: modelIndex >= 9 ? false : shortcuts[modelIndex].togglable
                     onPressed: {
                         _plcIOModel.setCoilActive(modelIndex, !modeldata.coilActive);
+                    }
+
+                    // Binding Keyboard key
+                    Connections {
+                        target: manualPage
+
+                        function onKeyPressed(key) {
+                            btn.applyKeyboardPress(key);
+                        }
+
+                        function onKeyReleased(key) {
+                            btn.applyKeyboardRelease(key);
+                        }
                     }
                 }
             }
