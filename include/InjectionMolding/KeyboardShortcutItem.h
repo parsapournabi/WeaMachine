@@ -25,9 +25,25 @@ class KeyboardShortcutItem : public QObject
 
         }
 
+        KeyboardShortcutItem(const QString& name,
+                             const QKeySequence& sequence,
+                             int toggleType,
+                             bool editable,
+                             QObject* parent = nullptr)
+            :
+            QObject{parent},
+            m_name(name),
+            m_keySequence(sequence),
+            m_toggleType(toggleType),
+            m_editable(editable)
+        {
+
+        }
+
         KeyboardShortcutItem(const QKeySequence& sequence)
             : m_keySequence(sequence)
         {
+
         }
 
         /** Copy Functions **/
