@@ -6,6 +6,7 @@
 
 #include "SerialGlobal.h"
 #include "SerialConnection.h"
+#include "ShortcutKeysManager.h"
 #include "TcpConnection.h"
 #include "modbuscom.h"
 #include "modbustcp.h"
@@ -62,6 +63,9 @@ static void registerTypes()
     QTQML_REGISTER_TYPE("CustomItems", TcpConnection);
     QTQML_REGISTER_TYPE("CustomItems", ModbusCom);
     QTQML_REGISTER_TYPE("CustomItems", ModbusTcp);
+    QTQML_REGISTER_TYPE("CustomItems", KeyboardShortcuts);
+    QTQML_REGISTER_TYPE("CustomItems", KeyboardShortcutItem);
+    QTQML_REGISTER_TYPE("CustomItems", ShortcutKeysManager);
 
     // Enums
     QTQML_UNCREATABLE_TYPE("CustomItems", PlcIOItem);
