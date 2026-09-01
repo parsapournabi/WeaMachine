@@ -8,6 +8,7 @@ class KeyboardShortcutItem : public QObject
 {
         Q_OBJECT
         W_PROP_HDEF(QString, name, Name, "")
+        W_PROP_HDEF(QString, displayName, DisplayName, "")
         W_PROP_HDEF(QKeySequence, keySequence, KeySequence, {})
         W_PROP_HDEF(int, toggleType, ToggleType, ToggleType::Momentory)
         W_PROP_HDEF(bool, editable, Editable, true)
@@ -26,6 +27,7 @@ class KeyboardShortcutItem : public QObject
         }
 
         KeyboardShortcutItem(const QString& name,
+                             const QString& displayName,
                              const QKeySequence& sequence,
                              int toggleType,
                              bool editable,
@@ -33,6 +35,7 @@ class KeyboardShortcutItem : public QObject
             :
             QObject{parent},
             m_name(name),
+            m_displayName(displayName),
             m_keySequence(sequence),
             m_toggleType(toggleType),
             m_editable(editable)
