@@ -41,6 +41,19 @@ bool KeyboardShortcuts::remove(int index)
     return true;
 }
 
+bool KeyboardShortcuts::edit(int index, const QKeySequence& keySequence, int toggleType)
+{
+    if (const auto& key = get(index))
+    {
+        key->setKeySequence(keySequence);
+        key->setToggleType(toggleType);
+
+        emit dataChanged(index);
+        return true;
+    }
+    return false;
+}
+
 KeyboardShortcutItem* KeyboardShortcuts::get(int index)
 {
     if (index < 0 || index >= m_buffer.size())

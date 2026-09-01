@@ -14,6 +14,7 @@ class KeyboardShortcuts : public QObject
         /** QML Interface SLOTS **/
         Q_INVOKABLE bool add(KeyboardShortcutItem item);
         Q_INVOKABLE bool remove(int index);
+        Q_INVOKABLE bool edit(int index, const QKeySequence& keySequence, int toggleType);
         Q_INVOKABLE KeyboardShortcutItem* get(int index);
         Q_INVOKABLE const KeyboardShortcutItem* get(int index) const;
 
@@ -31,6 +32,7 @@ class KeyboardShortcuts : public QObject
 
     signals:
         void countChanged();
+        void dataChanged(int index);
 
     private:
         QVector<KeyboardShortcutItem> m_buffer;
