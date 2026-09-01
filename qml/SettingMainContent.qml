@@ -5,7 +5,7 @@ WeaQuick.Pane {
     id: root
 
     property int currentIndex: 0
-    property var settingPages: [plcInputSettingPage, plcOutputSettingPage, generalSettingPage]
+    property var settingPages: [plcInputSettingPage, plcOutputSettingPage, generalSettingPage, accessibilityPage]
 
     Component {
         id: plcInputSettingPage
@@ -20,6 +20,11 @@ WeaQuick.Pane {
     Component {
         id: generalSettingPage
         SettingGeneralPage {}
+    }
+
+    Component {
+        id: accessibilityPage
+        SettingAccessibilityPage {}
     }
 
     Loader {

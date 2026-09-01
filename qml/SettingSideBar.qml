@@ -12,7 +12,7 @@ Column {
 
     Repeater {
         id: repeater
-        model: ["PLC Digital Inputs", "PLC Digital Outputs", "General"]
+        model: ["PLC Digital Inputs", "PLC Digital Outputs", "General", "Accessibility"]
 
         delegate: WeaQuick.Button {
             width: parent.width
