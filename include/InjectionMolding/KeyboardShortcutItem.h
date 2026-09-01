@@ -83,6 +83,7 @@ class KeyboardShortcutItem : public QObject
         KeyboardShortcutItem& doCopy(const KeyboardShortcutItem& other)
         {
             this->m_name = other.m_name;
+            this->m_displayName = other.m_displayName;
             this->m_keySequence = other.m_keySequence;
             this->m_toggleType = other.m_toggleType;
             this->m_editable = other.m_editable;
