@@ -107,5 +107,6 @@
         <file>qml/StepConditionBits.qml</file>
         <file>qml/SettingAccessibilityPage.qml</file>
         <file>qml/KeybindView.qml</file>
+        <file>qml/KeybindDelegate.qml</file>
     </qresource>
 </RCC>
