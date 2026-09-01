@@ -106,5 +106,6 @@
         <file>qml/CusRadioButton.qml</file>
         <file>qml/StepConditionBits.qml</file>
         <file>qml/SettingAccessibilityPage.qml</file>
+        <file>qml/KeybindView.qml</file>
     </qresource>
 </RCC>
