@@ -10,6 +10,7 @@ class KeyboardShortcutItem : public QObject
         W_PROP_HDEF(QString, name, Name, "")
         W_PROP_HDEF(QString, displayName, DisplayName, "")
         W_PROP_HDEF(QKeySequence, keySequence, KeySequence, {})
+        Q_PROPERTY(QString keySequenceStr READ keySequenceStr NOTIFY keySequenceChanged)
         W_PROP_HDEF(int, toggleType, ToggleType, ToggleType::Momentory)
         W_PROP_HDEF(bool, editable, Editable, true)
     public:
@@ -46,6 +47,12 @@ class KeyboardShortcutItem : public QObject
             : m_keySequence(sequence)
         {
 
+        }
+
+        /** Properties **/
+        QString keySequenceStr() const
+        {
+            return m_keySequence.toString();
         }
 
         /** Methods **/
