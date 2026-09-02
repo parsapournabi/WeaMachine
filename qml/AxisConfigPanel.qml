@@ -414,7 +414,7 @@ Item {
                     Layout.columnSpan: 2
                     Layout.preferredHeight: 90
 
-                    CusDelayButton {
+                    WriteButton {
                         id: btnDlyWriteSetting
                         anchors {
                             right: parent.right
@@ -422,28 +422,8 @@ Item {
                             rightMargin: 20
                             bottomMargin: 10
                         }
-                        width: 220
-                        button.border.width: 2
-                        button.width: 220
-                        height: 48
-                        label.font.pixelSize: 16
 
-                        level: 2
-                        text: "Write"
-                        delay: 700
-                        onActivated: {
-                            writeRequest();
-                        }
-
-                        WeaQuick.IconFont {
-                            anchors {
-                                verticalCenter: parent.verticalCenter
-                                right: parent.right
-                                rightMargin: 60
-                            }
-                            name: "clipboard"
-                            pixelSize: 14
-                        }
+                        onWriteRequest: root.writeRequest()
                     }
                 }
             }
