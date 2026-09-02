@@ -73,6 +73,25 @@ class KeyboardShortcutItem : public QObject
         {
             return !(sequence.isEmpty() || sequence.count() != 1 || sequence.toString().isEmpty());
         }
+
+        inline static QString keyToString(int key, Qt::KeyboardModifiers modifiers = Qt::NoModifier)
+        {
+            return isModifier(key) ? QString() : QKeySequence(modifiers | Qt::Key(key)).toString();
+        }
+
+        inline static bool isModifier(int key)
+        {
+            switch (key)
+            {
+                case Qt::Key_Control:
+                case Qt::Key_Shift:
+                case Qt::Key_Alt:
+                case Qt::Key_Meta:
+                    return true;
+                default:
+                    return false;
+            }
+        }
 };
 
 #endif // KEYBOARDSHORTCUTITEM_H
