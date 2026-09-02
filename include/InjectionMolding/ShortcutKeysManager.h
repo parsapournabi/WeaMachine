@@ -31,6 +31,7 @@ class ShortcutKeysManager : public QObject
         void setPlcIOModel(PlcIOModel* newPlcIOModel);
 
         /** QML Interface Slots **/
+        Q_INVOKABLE QString keyToString(int key, Qt::KeyboardModifiers modifiers) const;
         Q_INVOKABLE void updatePlcKey(int index, const QKeySequence& keySequence, int toggleType);
         Q_INVOKABLE void writeAllToSettings() const;
 
@@ -105,6 +106,11 @@ inline void ShortcutKeysManager::setPlcIOModel(PlcIOModel* newPlcIOModel)
     /** Make Connections **/
     // connect(m_plcIOModel, &PlcIOModel::outputsChanged, this, &ShortcutKeysManager::synchronize);
     synchronize();
+}
+
+inline QString ShortcutKeysManager::keyToString(int key, Qt::KeyboardModifiers modifiers) const
+{
+    return TKeyItem::keyToString(key, modifiers);
 }
 
 inline void ShortcutKeysManager::updatePlcKey(int index, const QKeySequence& keySequence, int toggleType)
