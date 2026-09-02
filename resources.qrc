@@ -109,6 +109,6 @@
         <file>qml/KeybindView.qml</file>
         <file>qml/KeybindDelegate.qml</file>
         <file>qml/WriteButton.qml</file>
-        <file>qml/KebindInput.qml</file>
+        <file>qml/KeybindInput.qml</file>
     </qresource>
 </RCC>
