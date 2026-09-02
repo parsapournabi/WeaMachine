@@ -8,11 +8,11 @@ KeyboardShortcuts::KeyboardShortcuts(QObject* parent)
 {
 }
 
-bool KeyboardShortcuts::add(KeyboardShortcutItem item)
+bool KeyboardShortcuts::add(KeyboardShortcutItem* item)
 {
     if (exists(item))
     {
-        qWarning() << __FUNCTION__ << "Item is alread exists: " << item.name() << item.keySequence();
+        qWarning() << __FUNCTION__ << "Item is alread exists: " << item->name() << item->keySequence();
         return false;
     }
 
@@ -61,12 +61,12 @@ const KeyboardShortcutItem* KeyboardShortcuts::get(int index) const
         return nullptr;
     }
 
-    return &m_buffer.at(index);
+    return m_buffer.at(index);
 }
 
-bool KeyboardShortcuts::exists(const KeyboardShortcutItem& item) const
+bool KeyboardShortcuts::exists(KeyboardShortcutItem* item) const
 {
-    return exists(item.keySequence());
+    return exists(item->keySequence());
 }
 
 bool KeyboardShortcuts::exists(const QKeySequence& sequence) const
@@ -75,11 +75,11 @@ bool KeyboardShortcuts::exists(const QKeySequence& sequence) const
                        m_buffer.cend(),
                        [&](const auto & keyboardShortcutItem)
     {
-        return sequence.toString() != "" && sequence == keyboardShortcutItem.keySequence();
+        return sequence.toString() != "" && sequence == keyboardShortcutItem->keySequence();
     });
 }
 
-bool KeyboardShortcuts::isValid(const KeyboardShortcutItem& item) const
+bool KeyboardShortcuts::isValid(KeyboardShortcutItem* item) const
 {
     return KeyboardShortcutItem::isValid(item);
 }
@@ -95,7 +95,7 @@ bool KeyboardShortcuts::isAllValid() const
                        m_buffer.cend(),
                        [](const auto & item)
     {
-        return item.isValid();
+        return item->isValid();
     });
 }
 

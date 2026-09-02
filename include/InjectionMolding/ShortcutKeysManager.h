@@ -73,12 +73,13 @@ inline ShortcutKeysManager::ShortcutKeysManager(QObject* parent)
 
     for (const auto& shortcut : qAsConst(shortcuts))
     {
-        m_shortcuts->add(TKeyItem(TO_SHORTCUT_NAME(shortcut.first),
-                                  shortcut.first,
-                                  QKeySequence(settings.value(TO_SHORTCUT_NAME(shortcut.first),
-                                               shortcut.second).toString()),
-                                  TKeyItem::ToggleType::Momentory,
-                                  false));
+        m_shortcuts->add(new TKeyItem(TO_SHORTCUT_NAME(shortcut.first),
+                                      shortcut.first,
+                                      QKeySequence(settings.value(TO_SHORTCUT_NAME(shortcut.first),
+                                              shortcut.second).toString()),
+                                      TKeyItem::ToggleType::Momentory,
+                                      false,
+                                      this));
     }
 }
 
@@ -102,7 +103,7 @@ inline void ShortcutKeysManager::setPlcIOModel(PlcIOModel* newPlcIOModel)
     emit plcIOModelChanged();
 
     /** Make Connections **/
-    connect(m_plcIOModel, &PlcIOModel::outputsChanged, this, &ShortcutKeysManager::synchronize);
+    // connect(m_plcIOModel, &PlcIOModel::outputsChanged, this, &ShortcutKeysManager::synchronize);
     synchronize();
 }
 
@@ -151,11 +152,12 @@ inline void ShortcutKeysManager::synchronize()
         const auto& output = outputs[i];
         const auto& sequence = TO_SHORTCUT_NAME(output->name());
         const auto& toggleType = TO_SHORTCUT_NAME(output->name() + QString("TOGGLE_TYPE"));
-        TKeyItem key = TKeyItem(sequence,
+        auto key = new TKeyItem(sequence,
                                 output->displayName(),
                                 QKeySequence(settings.value(sequence, "").toString()),
                                 settings.value(toggleType, TKeyItem::Momentory).toInt(),
-                                true);
+                                true,
+                                this);
         m_shortcuts->add(key);
 
         /** Connection **/

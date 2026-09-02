@@ -14,14 +14,14 @@ class KeyboardShortcuts : public QObject
         const KeyboardShortcutItem* get(int index) const;
 
         /** QML Interface SLOTS **/
-        Q_INVOKABLE bool add(KeyboardShortcutItem item);
+        Q_INVOKABLE bool add(KeyboardShortcutItem* item);
         Q_INVOKABLE bool remove(int index);
         Q_INVOKABLE bool edit(int index, const QKeySequence& keySequence, int toggleType);
         Q_INVOKABLE KeyboardShortcutItem* get(int index);
 
-        Q_INVOKABLE bool exists(const KeyboardShortcutItem& item) const;
+        Q_INVOKABLE bool exists(KeyboardShortcutItem* item) const;
         Q_INVOKABLE bool exists(const QKeySequence& sequence) const;
-        Q_INVOKABLE bool isValid(const KeyboardShortcutItem& item) const;
+        Q_INVOKABLE bool isValid(KeyboardShortcutItem* item) const;
         Q_INVOKABLE bool isValid(const QKeySequence& item) const;
         Q_INVOKABLE bool isAllValid() const;
 
@@ -36,7 +36,7 @@ class KeyboardShortcuts : public QObject
         void dataChanged(int index);
 
     private:
-        QVector<KeyboardShortcutItem> m_buffer;
+        QVector<KeyboardShortcutItem*> m_buffer;
 };
 
 #endif // KEYBOARDSHORTCUTS_H

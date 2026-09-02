@@ -23,7 +23,6 @@ class KeyboardShortcutItem : public QObject
             :
             QObject{parent}
         {
-
         }
 
         KeyboardShortcutItem(const QString& name,
@@ -49,45 +48,23 @@ class KeyboardShortcutItem : public QObject
 
         }
 
-        /** Copy Functions **/
-        KeyboardShortcutItem(const KeyboardShortcutItem& other)
-        {
-            doCopy(other);
-        }
-
-        KeyboardShortcutItem& operator=(const KeyboardShortcutItem& other)
-        {
-            return doCopy(other);
-        }
-
         /** Methods **/
 
         inline bool isValid() const
         {
-            return isValid(*this);
+            return isValid(this);
         }
 
         /** Statics **/
-        inline static bool isValid(const KeyboardShortcutItem& item)
+        inline static bool isValid(const KeyboardShortcutItem* item)
         {
-            const auto& sequence = item.keySequence();
+            const auto& sequence = item->keySequence();
             return isValid(sequence);
         }
 
         inline static bool isValid(const QKeySequence& sequence)
         {
             return !(sequence.isEmpty() || sequence.count() != 1 || sequence.toString().isEmpty());
-        }
-
-    protected:
-        KeyboardShortcutItem& doCopy(const KeyboardShortcutItem& other)
-        {
-            this->m_name = other.m_name;
-            this->m_displayName = other.m_displayName;
-            this->m_keySequence = other.m_keySequence;
-            this->m_toggleType = other.m_toggleType;
-            this->m_editable = other.m_editable;
-            return *this;
         }
 };
 
