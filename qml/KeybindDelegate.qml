@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.12
 import com.wearily.WeaQuick 1.0 as WeaQuick
 import CustomItems 1.0
 
-Item {
+FocusScope {
     id: root
 
     property KeyboardShortcutItem modelItem
@@ -30,18 +30,13 @@ Item {
             Layout.fillHeight: true
         }
 
-        WeaQuick.LineEdit {
+        KeybindInput {
             id: lineEditShortcutKey
             Layout.preferredWidth: 180
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
-            level: 2
-            border.width: 1
-            font.pixelSize: 16
-            arrayBackgroundColor: ["black", "black", "black"]
+            objectName: modelItem.name
             enabled: modelItem.editable
-            placeholderText: "???"
-            horizontalAlignment: Qt.AlignHCenter
             text: modelItem.keySequenceStr
         }
 
