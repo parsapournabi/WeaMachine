@@ -11,12 +11,13 @@ class KeyboardShortcuts : public QObject
     public:
         explicit KeyboardShortcuts(QObject* parent = nullptr);
 
+        const KeyboardShortcutItem* get(int index) const;
+
         /** QML Interface SLOTS **/
         Q_INVOKABLE bool add(KeyboardShortcutItem item);
         Q_INVOKABLE bool remove(int index);
         Q_INVOKABLE bool edit(int index, const QKeySequence& keySequence, int toggleType);
         Q_INVOKABLE KeyboardShortcutItem* get(int index);
-        Q_INVOKABLE const KeyboardShortcutItem* get(int index) const;
 
         Q_INVOKABLE bool exists(const KeyboardShortcutItem& item) const;
         Q_INVOKABLE bool exists(const QKeySequence& sequence) const;

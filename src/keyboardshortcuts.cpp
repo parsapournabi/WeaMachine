@@ -56,13 +56,7 @@ bool KeyboardShortcuts::edit(int index, const QKeySequence& keySequence, int tog
 
 KeyboardShortcutItem* KeyboardShortcuts::get(int index)
 {
-    if (index < 0 || index >= m_buffer.size())
-    {
-        qWarning() << __FUNCTION__ << "Invalid Index value: " << index;
-        return nullptr;
-    }
-
-    return &m_buffer[index];
+    return const_cast<KeyboardShortcutItem*>(std::as_const(*this).get(index));
 }
 
 const KeyboardShortcutItem* KeyboardShortcuts::get(int index) const
