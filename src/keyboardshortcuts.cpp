@@ -10,12 +10,6 @@ KeyboardShortcuts::KeyboardShortcuts(QObject* parent)
 
 bool KeyboardShortcuts::add(KeyboardShortcutItem item)
 {
-    if (!item.isValid())
-    {
-        qWarning() << __FUNCTION__ << "Item isn't valid: " << item.name() << item.keySequence();
-        return false;
-    }
-
     if (exists(item))
     {
         qWarning() << __FUNCTION__ << "Item is alread exists: " << item.name() << item.keySequence();
@@ -81,7 +75,7 @@ bool KeyboardShortcuts::exists(const QKeySequence& sequence) const
                        m_buffer.cend(),
                        [&](const auto & keyboardShortcutItem)
     {
-        return sequence == keyboardShortcutItem.keySequence();
+        return sequence.toString() != "" && sequence == keyboardShortcutItem.keySequence();
     });
 }
 
