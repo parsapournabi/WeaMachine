@@ -162,7 +162,7 @@ inline void ShortcutKeysManager::synchronize()
 
         /** Connection **/
         int outputIndex = i + m_constantSize;
-        connect(output, &PlcIOItem::displayNameChanged, [&]()
+        connect(output, &PlcIOItem::displayNameChanged, [ = ]()
         {
             // Binding displayName with key displayName
             auto* key = m_shortcuts->get(outputIndex);
