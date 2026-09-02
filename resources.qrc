@@ -108,5 +108,6 @@
         <file>qml/SettingAccessibilityPage.qml</file>
         <file>qml/KeybindView.qml</file>
         <file>qml/KeybindDelegate.qml</file>
+        <file>qml/WriteButton.qml</file>
     </qresource>
 </RCC>
