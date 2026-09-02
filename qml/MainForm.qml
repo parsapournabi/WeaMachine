@@ -296,6 +296,12 @@ Item {
         id: globalConfig
     }
 
+    // KeyboardShortcuts
+    ShortcutKeysManager {
+        id: shortcutKeysManager
+        plcIOModel: _plcIOModel
+    }
+
     // AppSetting
     Settings {
         id: settings
