@@ -34,7 +34,7 @@ Item {
             id: shot
             enabled: record.checked
             icon: "aperture"
-            keyboardKey: Qt.Key_R
+            keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_RECORD_POSITION").keySequence
         }
 
         IconicButton {
