@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 ListView {
     id: root
 
-    spacing: 20
+    spacing: 30
     clip: true
 
     boundsBehavior: Flickable.StopAtBounds

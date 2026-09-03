@@ -26,9 +26,7 @@ WeaQuick.LineEdit {
                             return;
                         }
 
-                        console.log("Keys PRESSSED Keybind: ", objectName, event.key, event.modifiers);
                         root.text = shortcutKeysManager.keyToString(event.key, event.modifiers);
-                        console.log("Text is: ", root.text);
                     }
 
     /** Objects & Resources **/
