@@ -15,8 +15,8 @@ ListView {
         width: root.width
         height: 33
         modelItem: shortcutKeysManager.shortcuts.get(index)
-        onRequestForEdit: (keySequence, toggleType) => {
-                              shortcutKeysManager.shortcuts.edit(index, keySequence, toggleType);
+        onRequestForEdit: (keySequence, toggleType, analogValue) => {
+                              shortcutKeysManager.shortcuts.edit(index, keySequence, toggleType, analogValue);
                           }
     }
 }

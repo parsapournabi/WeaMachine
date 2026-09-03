@@ -8,7 +8,7 @@ FocusScope {
 
     property KeyboardShortcutItem modelItem
 
-    signal requestForEdit(string keySequence, int toggleType)
+    signal requestForEdit(string keySequence, int toggleType, int analogValue)
 
     RowLayout {
         id: layout
@@ -52,7 +52,7 @@ FocusScope {
                     }
 
                     if (!lblExists.visible) {
-                        root.requestForEdit(lineEditShortcutKey.text, cmbBoxToggleType.currentIndex);
+                        root.requestForEdit(lineEditShortcutKey.text, modelItem.toggleType, modelItem.analogValue);
                     }
                 }
             }
@@ -74,20 +74,54 @@ FocusScope {
             Layout.fillHeight: true
         }
 
-        // Contact Type
-        CusComboBox {
-            id: cmbBoxToggleType
+        // InputType Loader
+        Loader {
+            id: loaderInput
+
+            property int toggleType: modelItem.toggleType
+            property int analogValue: modelItem.analogValue
+
             Layout.preferredWidth: 170
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignVCenter
-            level: 2
 
             enabled: modelItem.editable
-            model: ["Momentory", "Maintained"]
-            currentIndex: modelItem.toggleType
-            onCurrentIndexChanged: {
-                if (!lblExists.visible) {
-                    root.requestForEdit(modelItem.keySequenceStr, cmbBoxToggleType.currentIndex);
+            sourceComponent: modelItem.inputType === 0 ? compCmbBoxToggleType : compSpdEditBox
+        }
+
+        Component {
+            id: compCmbBoxToggleType
+
+            // ToggleType
+            CusComboBox {
+                anchors.fill: parent
+                level: 2
+
+                model: ["Momentory", "Maintained"]
+                currentIndex: toggleType
+                onCurrentIndexChanged: {
+                    if (!lblExists.visible) {
+                        root.requestForEdit(modelItem.keySequenceStr, currentIndex, modelItem.analogValue);
+                    }
+                }
+            }
+        }
+
+        Component {
+            id: compSpdEditBox
+
+            // Analog Value
+            SpdEditBox {
+                anchors.fill: parent
+                font.pixelSize: 13
+                level: 2
+                stepSize: 1
+                decimals: 0
+                value: analogValue
+                onValueChanged: {
+                    if (!lblExists.visible) {
+                        root.requestForEdit(modelItem.keySequenceStr, modelItem.toggleType, value);
+                    }
                 }
             }
         }
@@ -95,8 +129,7 @@ FocusScope {
 
     /** Functions **/
     function hasChanged() {
-        return modelItem.keySequenceStr !== lineEditShortcutKey.text || modelItem.toggleType
-                !== cmbBoxToggleType.currentIndex;
+        return modelItem.keySequenceStr !== lineEditShortcutKey.text || modelItem.toggleType !== loaderInput.toggleType;
     }
 
     function markInvalid() {
