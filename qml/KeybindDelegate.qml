@@ -45,7 +45,15 @@ FocusScope {
                 enabled: modelItem.editable
                 text: modelItem.keySequenceStr
                 onTextChanged: {
-                    root.requestForEdit(lineEditShortcutKey.text, cmbBoxToggleType.currentIndex);
+                    if (hasChanged()) {
+                        lblExists.visible = shortcutKeysManager.shortcuts.exists(lineEditShortcutKey.text);
+                    } else {
+                        lblExists.visible = false;
+                    }
+
+                    if (!lblExists.visible) {
+                        root.requestForEdit(lineEditShortcutKey.text, cmbBoxToggleType.currentIndex);
+                    }
                 }
             }
 
@@ -76,14 +84,29 @@ FocusScope {
 
             enabled: modelItem.editable
             model: ["Momentory", "Maintained"]
+            currentIndex: modelItem.toggleType
             onCurrentIndexChanged: {
-                root.requestForEdit(lineEditShortcutKey.text, cmbBoxToggleType.currentIndex);
+                if (!lblExists.visible) {
+                    root.requestForEdit(modelItem.keySequenceStr, cmbBoxToggleType.currentIndex);
+                }
             }
         }
     }
 
     /** Functions **/
+    function hasChanged() {
+        return modelItem.keySequenceStr !== lineEditShortcutKey.text || modelItem.toggleType
+                !== cmbBoxToggleType.currentIndex;
+    }
+
+    function markInvalid() {
+        lblExists.visible = true;
+    }
+
     function update() {
-        lblExists.visible = shortcutKeysManager.shortcuts.exists(lineEditShortcutKey.text, 1);
+        // Update appearence
+
+        // Mark Valid
+        lblExists.visible = false;
     }
 }
