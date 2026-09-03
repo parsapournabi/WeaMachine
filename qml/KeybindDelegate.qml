@@ -8,6 +8,8 @@ FocusScope {
 
     property KeyboardShortcutItem modelItem
 
+    signal requestForEdit(string keySequence, int toggleType)
+
     RowLayout {
         id: layout
         anchors.fill: parent
@@ -42,6 +44,9 @@ FocusScope {
                 objectName: modelItem.name
                 enabled: modelItem.editable
                 text: modelItem.keySequenceStr
+                onTextChanged: {
+                    root.requestForEdit(lineEditShortcutKey.text, cmbBoxToggleType.currentIndex);
+                }
             }
 
             WeaQuick.Label {
@@ -71,6 +76,14 @@ FocusScope {
 
             enabled: modelItem.editable
             model: ["Momentory", "Maintained"]
+            onCurrentIndexChanged: {
+                root.requestForEdit(lineEditShortcutKey.text, cmbBoxToggleType.currentIndex);
+            }
         }
+    }
+
+    /** Functions **/
+    function update() {
+        lblExists.visible = shortcutKeysManager.shortcuts.exists(lineEditShortcutKey.text, 1);
     }
 }
