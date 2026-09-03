@@ -42,7 +42,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.Top
-        keyboardKey: Qt.Key_W
+        keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_UP").keySequence
         interlockActive: btnDown.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
@@ -57,7 +57,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.Bottom
-        keyboardKey: Qt.Key_S
+        keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_DOWN").keySequence
         interlockActive: btnTop.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
@@ -72,7 +72,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.Left
-        keyboardKey: Qt.Key_A
+        keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_LEFT").keySequence
         interlockActive: btnRight.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
@@ -87,7 +87,7 @@ Item {
         }
 
         direction: JoystickButton.Direction.Right
-        keyboardKey: Qt.Key_D
+        keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_RIGHT").keySequence
         interlockActive: btnLeft.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
