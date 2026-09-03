@@ -55,6 +55,9 @@ Item {
             Layout.preferredWidth: width
             Layout.preferredHeight: height
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            onWriteRequest: {
+                shortcutKeysManager.writeAllToSettings();
+            }
         }
     }
 
