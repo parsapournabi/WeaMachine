@@ -12,12 +12,19 @@ class KeyboardShortcutItem : public QObject
         W_PROP_HDEF(QKeySequence, keySequence, KeySequence, {})
         Q_PROPERTY(QString keySequenceStr READ keySequenceStr NOTIFY keySequenceChanged)
         W_PROP_HDEF(int, toggleType, ToggleType, ToggleType::Momentory)
+        W_PROP_HDEF(int, inputType, InputType, InputType::Digital)
+        W_PROP_HDEF(quint16, analogValue, AnalogValue, 0)
         W_PROP_HDEF(bool, editable, Editable, true)
     public:
         enum ToggleType
         {
             Momentory = 0,
             Maintained
+        };
+        enum InputType
+        {
+            Digital = 0, // Declares ToggleType
+            Analog // Declares Analog value
         };
 
         explicit KeyboardShortcutItem(QObject* parent = nullptr)
@@ -30,6 +37,8 @@ class KeyboardShortcutItem : public QObject
                              const QString& displayName,
                              const QKeySequence& sequence,
                              int toggleType,
+                             int inputType,
+                             quint16 analogValue,
                              bool editable,
                              QObject* parent = nullptr)
             :
@@ -38,6 +47,8 @@ class KeyboardShortcutItem : public QObject
             m_displayName(displayName),
             m_keySequence(sequence),
             m_toggleType(toggleType),
+            m_inputType(inputType),
+            m_analogValue(analogValue),
             m_editable(editable)
         {
 

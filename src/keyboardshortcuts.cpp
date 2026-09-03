@@ -35,12 +35,13 @@ bool KeyboardShortcuts::remove(int index)
     return true;
 }
 
-bool KeyboardShortcuts::edit(int index, const QKeySequence& keySequence, int toggleType)
+bool KeyboardShortcuts::edit(int index, const QKeySequence& keySequence, int toggleType, quint16 analogValue)
 {
     if (const auto& key = get(index))
     {
         key->setKeySequence(keySequence);
         key->setToggleType(toggleType);
+        key->setAnalogValue(analogValue);
 
         emit dataChanged(index);
         return true;

@@ -61,25 +61,60 @@ inline ShortcutKeysManager::ShortcutKeysManager(QObject* parent)
     DECL_SETTINGS;
 
     /** Adding Constants shortcuts such as Joystick and default buttons **/
-    const QVector<QPair<QString, QString>> shortcuts =
+    struct Key
     {
-        { "Record Position", "R" }, // Default Key is R
-        { "Joystick Up", "W" }, // Default Key is W
-        { "Joystick Down", "S" }, // Default Key is S
-        { "Joystick Left", "A" }, // Default Key is A
-        { "Joystick Right", "D" }, // Default Key is D
+        QString displayName;
+        QKeySequence sequence;
+        int toggleType;
+        int inputType;
+        quint16 analogValue;
+        bool editable;
+    };
 
+    const QVector<Key> shortcuts =
+    {
+        // Non-Editable Shortcuts (Only from INI file can be edit)
+        { "Record Position", Qt::Key_R, TKeyItem::Momentory, TKeyItem::Digital, 0, false}, // Default Key is R
+        { "Joystick Up", Qt::Key_W, TKeyItem::Momentory, TKeyItem::Digital, 0, false},     // Default Key is W
+        { "Joystick Down", Qt::Key_S, TKeyItem::Momentory, TKeyItem::Digital, 0, false},   // Default Key is S
+        { "Joystick Left", Qt::Key_A, TKeyItem::Momentory, TKeyItem::Digital, 0, false},   // Default Key is A
+        { "Joystick Right", Qt::Key_D, TKeyItem::Momentory, TKeyItem::Digital, 0, false},  // Default Key is D
+
+        // Analog and Editable shortcuts
+        { "X Servo Speed 1", Qt::Key_1, TKeyItem::Momentory, TKeyItem::Analog, 100, true},  // Default Key is 1
+        { "X Servo Speed 2", Qt::Key_2, TKeyItem::Momentory, TKeyItem::Analog, 200, true},  // Default Key is 2
+        { "X Servo Speed 3", Qt::Key_3, TKeyItem::Momentory, TKeyItem::Analog, 300, true},  // Default Key is 3
+        { "X Servo Speed 4", Qt::Key_4, TKeyItem::Momentory, TKeyItem::Analog, 400, true},  // Default Key is 4
+        { "X Servo Speed 5", Qt::Key_5, TKeyItem::Momentory, TKeyItem::Analog, 500, true},  // Default Key is 5
+        { "X Servo Speed 6", Qt::Key_6, TKeyItem::Momentory, TKeyItem::Analog, 750, true},  // Default Key is 6
+        { "X Servo Speed 7", Qt::Key_7, TKeyItem::Momentory, TKeyItem::Analog, 1000, true}, // Default Key is 7
+        { "X Servo Speed 8", Qt::Key_8, TKeyItem::Momentory, TKeyItem::Analog, 1250, true}, // Default Key is 8
+        { "X Servo Speed 9", Qt::Key_9, TKeyItem::Momentory, TKeyItem::Analog, 1500, true}, // Default Key is 9
+        { "X Servo Speed 10", Qt::Key_0, TKeyItem::Momentory, TKeyItem::Analog, 2000, true},// Default Key is 0
+
+        { "Y Servo Speed 1", Qt::Key_F1, TKeyItem::Momentory, TKeyItem::Analog, 100, true},   // Default Key is F1
+        { "Y Servo Speed 2", Qt::Key_F2, TKeyItem::Momentory, TKeyItem::Analog, 200, true},   // Default Key is F2
+        { "Y Servo Speed 3", Qt::Key_F3, TKeyItem::Momentory, TKeyItem::Analog, 300, true},   // Default Key is F3
+        { "Y Servo Speed 4", Qt::Key_F4, TKeyItem::Momentory, TKeyItem::Analog, 400, true},   // Default Key is F4
+        { "Y Servo Speed 5", Qt::Key_F5, TKeyItem::Momentory, TKeyItem::Analog, 500, true},   // Default Key is F5
+        { "Y Servo Speed 6", Qt::Key_F6, TKeyItem::Momentory, TKeyItem::Analog, 750, true},   // Default Key is F6
+        { "Y Servo Speed 7", Qt::Key_F7, TKeyItem::Momentory, TKeyItem::Analog, 1000, true},  // Default Key is F7
+        { "Y Servo Speed 8", Qt::Key_F8, TKeyItem::Momentory, TKeyItem::Analog, 1250, true},  // Default Key is F8
+        { "Y Servo Speed 9", Qt::Key_F9, TKeyItem::Momentory, TKeyItem::Analog, 1500, true},  // Default Key is F9
+        { "Y Servo Speed 10", Qt::Key_F10, TKeyItem::Momentory, TKeyItem::Analog, 2000, true},// Default Key is F10
     };
     m_constantSize = shortcuts.size();
 
     for (const auto& shortcut : qAsConst(shortcuts))
     {
-        m_shortcuts->add(new TKeyItem(TO_SHORTCUT_NAME(shortcut.first),
-                                      shortcut.first,
-                                      QKeySequence(settings.value(TO_SHORTCUT_NAME(shortcut.first),
-                                              shortcut.second).toString()),
-                                      TKeyItem::ToggleType::Momentory,
-                                      false,
+        m_shortcuts->add(new TKeyItem(TO_SHORTCUT_NAME(shortcut.displayName),
+                                      shortcut.displayName,
+                                      QKeySequence(settings.value(TO_SHORTCUT_NAME(shortcut.displayName),
+                                              shortcut.sequence).toString()),
+                                      shortcut.toggleType,
+                                      shortcut.inputType,
+                                      settings.value(TO_SHORTCUT_NAME(shortcut.displayName) + "ANALOG_VALUE", shortcut.analogValue).toUInt(),
+                                      shortcut.editable,
                                       this));
     }
 }
@@ -122,7 +157,7 @@ inline void ShortcutKeysManager::updatePlcKey(int index, const QKeySequence& key
         return;
     }
 
-    m_shortcuts->edit(index, keySequence, toggleType);
+    m_shortcuts->edit(index, keySequence, toggleType, 0);
 }
 
 inline void ShortcutKeysManager::writeAllToSettings() const
@@ -135,8 +170,17 @@ inline void ShortcutKeysManager::writeAllToSettings() const
         // Setting the KeySequence
         settings.setValue(key->name(), key->keySequence());
 
-        // Setting the ToggleType
-        settings.setValue(key->name() + "TOGGLE_TYPE", key->toggleType());
+        switch (key->inputType())
+        {
+            case TKeyItem::Digital:
+                // Setting the ToggleType
+                settings.setValue(key->name() + "TOGGLE_TYPE", key->toggleType());
+                break;
+            case TKeyItem::Analog:
+                // Setting the AnalogValue
+                settings.setValue(key->name() + "ANALOG_VALUE", key->analogValue());
+                break;
+        }
     }
 }
 
@@ -162,6 +206,8 @@ inline void ShortcutKeysManager::synchronize()
                                 output->displayName(),
                                 QKeySequence(settings.value(sequence, "").toString()),
                                 settings.value(toggleType, TKeyItem::Momentory).toInt(),
+                                TKeyItem::InputType::Digital,
+                                0,
                                 true,
                                 this);
         m_shortcuts->add(key);
