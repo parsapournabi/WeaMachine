@@ -20,7 +20,9 @@ class KeyboardShortcuts : public QObject
         Q_INVOKABLE KeyboardShortcutItem* get(int index);
 
         Q_INVOKABLE bool exists(KeyboardShortcutItem* item) const;
+        Q_INVOKABLE bool exists(KeyboardShortcutItem* item, int count) const;
         Q_INVOKABLE bool exists(const QKeySequence& sequence) const;
+        Q_INVOKABLE bool exists(const QKeySequence& sequence, int count) const;
         Q_INVOKABLE bool isValid(KeyboardShortcutItem* item) const;
         Q_INVOKABLE bool isValid(const QKeySequence& item) const;
         Q_INVOKABLE bool isAllValid() const;

@@ -69,6 +69,11 @@ bool KeyboardShortcuts::exists(KeyboardShortcutItem* item) const
     return exists(item->keySequence());
 }
 
+bool KeyboardShortcuts::exists(KeyboardShortcutItem* item, int count) const
+{
+    return exists(item->keySequence(), count);
+}
+
 bool KeyboardShortcuts::exists(const QKeySequence& sequence) const
 {
     return std::any_of(m_buffer.cbegin(),
@@ -76,6 +81,14 @@ bool KeyboardShortcuts::exists(const QKeySequence& sequence) const
                        [&](const auto & keyboardShortcutItem)
     {
         return sequence.toString() != "" && sequence == keyboardShortcutItem->keySequence();
+    });
+}
+
+bool KeyboardShortcuts::exists(const QKeySequence& sequence, int count) const
+{
+    return sequence.toString() != "" && count < std::count_if(m_buffer.cbegin(), m_buffer.cend(), [&](const auto & it)
+    {
+        return it->keySequence() == sequence;
     });
 }
 
