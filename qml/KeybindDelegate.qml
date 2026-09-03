@@ -30,14 +30,29 @@ FocusScope {
             Layout.fillHeight: true
         }
 
-        KeybindInput {
-            id: lineEditShortcutKey
+        Column {
             Layout.preferredWidth: 180
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
-            objectName: modelItem.name
-            enabled: modelItem.editable
-            text: modelItem.keySequenceStr
+            spacing: 3
+
+            KeybindInput {
+                id: lineEditShortcutKey
+                width: parent.width
+                objectName: modelItem.name
+                enabled: modelItem.editable
+                text: modelItem.keySequenceStr
+            }
+
+            WeaQuick.Label {
+                id: lblExists
+                visible: false
+                width: parent.width
+                level: 4
+                font.pixelSize: 13
+                horizontalAlignment: Qt.AlignHCenter
+                text: "Already Exists!"
+            }
         }
 
         // Spacer
