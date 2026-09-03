@@ -54,6 +54,16 @@ KeyboardShortcutItem* KeyboardShortcuts::get(int index)
     return const_cast<KeyboardShortcutItem*>(std::as_const(*this).get(index));
 }
 
+KeyboardShortcutItem* KeyboardShortcuts::getByName(const QString& name)
+{
+    return const_cast<KeyboardShortcutItem*>(std::as_const(*this).getByName(name));
+}
+
+KeyboardShortcutItem* KeyboardShortcuts::getBySequence(const QKeySequence& sequence)
+{
+    return const_cast<KeyboardShortcutItem*>(std::as_const(*this).getBySequence(sequence));
+}
+
 const KeyboardShortcutItem* KeyboardShortcuts::get(int index) const
 {
     if (index < 0 || index >= m_buffer.size())
@@ -63,6 +73,26 @@ const KeyboardShortcutItem* KeyboardShortcuts::get(int index) const
     }
 
     return m_buffer.at(index);
+}
+
+const KeyboardShortcutItem* KeyboardShortcuts::getByName(const QString& name) const
+{
+    const auto* it = std::find_if(m_buffer.cbegin(), m_buffer.cend(),
+                                  [&](const auto & item)
+    {
+        return item && item->name() == name;
+    });
+    return it != m_buffer.cend() ? *it : nullptr;
+}
+
+const KeyboardShortcutItem* KeyboardShortcuts::getBySequence(const QKeySequence& sequence) const
+{
+    const auto* it =  std::find_if(m_buffer.cbegin(), m_buffer.cend(),
+                                   [&](const auto & item)
+    {
+        return item && item->keySequence() == sequence;
+    });
+    return it != m_buffer.cend() ? *it : nullptr;
 }
 
 bool KeyboardShortcuts::exists(KeyboardShortcutItem* item) const
