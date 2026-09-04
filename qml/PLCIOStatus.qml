@@ -117,14 +117,28 @@ Item {
                 id: compOutputButton
                 SunkenButton {
                     id: btn
+                    property bool maintained: shortcutKeysManager.shortcuts.getByName("SHORTCUT_%1".arg(
+                                                                                          modeldata.name)).toggleType
+
                     enabled: manualActive && modeldata.outputEnabled
                     checkable: false
                     checked: modeldata.activeFeedback
                     keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_%1".arg(modeldata.name)).keySequence
-                    // togglableKeyboardKey: modelIndex >= 9 ? false : shortcuts[modelIndex].togglable
 
                     onPressed: {
-                        _plcIOModel.setCoilActive(modelIndex, !modeldata.coilActive);
+                        if (maintained) {
+                            _plcIOModel.setCoilActive(modelIndex, !modeldata.coilActive);
+                        } else {
+                            _plcIOModel.setCoilActive(modelIndex, true);
+                        }
+                    }
+
+                    onReleased: {
+                        if (maintained) {
+                            return;
+                        } else {
+                            _plcIOModel.setCoilActive(modelIndex, false);
+                        }
                     }
 
                     // Binding Keyboard key
