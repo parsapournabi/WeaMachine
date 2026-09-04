@@ -131,12 +131,12 @@ Item {
                     Connections {
                         target: manualPage
 
-                        function onKeyPressed(key) {
-                            btn.applyKeyboardPress(key);
+                        function onKeyPressed(key, modifiers) {
+                            btn.applyKeyboardPress(key | modifiers);
                         }
 
-                        function onKeyReleased(key) {
-                            btn.applyKeyboardRelease(key);
+                        function onKeyReleased(key, modifiers) {
+                            btn.applyKeyboardRelease(key | modifiers);
                         }
                     }
                 }

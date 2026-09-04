@@ -5,8 +5,8 @@ import com.wearily.WeaQuick 1.0 as WeaQuick
 Item {
     id: root
 
-    signal keyPressed(var key)
-    signal keyReleased(var key)
+    signal keyPressed(var key, var modifiers)
+    signal keyReleased(var key, var modifiers)
 
     Item {
         id: mainContent
@@ -74,7 +74,7 @@ Item {
                         }
 
                         console.log("Pressed: ", event.key);
-                        keyPressed(event.key);
+                        keyPressed(event.key, event.modifiers);
                         event.accepted = true;
                     }
     Keys.onReleased: event => {
@@ -83,7 +83,7 @@ Item {
                          }
 
                          console.log("Released: ", event.key);
-                         keyReleased(event.key);
+                         keyReleased(event.key, event.modifiers);
                          event.accepted = true;
                      }
 }
