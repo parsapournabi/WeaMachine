@@ -111,7 +111,7 @@ inline ShortcutKeysManager::ShortcutKeysManager(QObject* parent)
                                       shortcut.displayName,
                                       QKeySequence(settings.value(TO_SHORTCUT_NAME(shortcut.displayName),
                                               shortcut.sequence).toString()),
-                                      shortcut.toggleType,
+                                      settings.value(TO_SHORTCUT_NAME(shortcut.displayName) + "TOGGLE_TYPE",  shortcut.toggleType).toInt(),
                                       shortcut.inputType,
                                       settings.value(TO_SHORTCUT_NAME(shortcut.displayName) + "ANALOG_VALUE", shortcut.analogValue).toUInt(),
                                       shortcut.editable,
