@@ -43,6 +43,7 @@ Item {
 
         direction: JoystickButton.Direction.Top
         keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_UP").keySequence
+        togglableKeyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_UP").toggleType
         interlockActive: btnDown.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
@@ -58,6 +59,7 @@ Item {
 
         direction: JoystickButton.Direction.Bottom
         keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_DOWN").keySequence
+        togglableKeyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_DOWN").toggleType
         interlockActive: btnTop.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
@@ -73,6 +75,7 @@ Item {
 
         direction: JoystickButton.Direction.Left
         keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_LEFT").keySequence
+        togglableKeyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_LEFT").toggleType
         interlockActive: btnRight.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight
@@ -88,6 +91,7 @@ Item {
 
         direction: JoystickButton.Direction.Right
         keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_RIGHT").keySequence
+        togglableKeyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_JOYSTICK_RIGHT").toggleType
         interlockActive: btnLeft.containsPress || anyMultiPressed
         width: root.size
         height: joystickHeight

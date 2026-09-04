@@ -35,6 +35,7 @@ Item {
             enabled: record.checked
             icon: "aperture"
             keyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_RECORD_POSITION").keySequence
+            togglableKeyboardKey: shortcutKeysManager.shortcuts.getByName("SHORTCUT_RECORD_POSITION").toggleType
         }
 
         IconicButton {
