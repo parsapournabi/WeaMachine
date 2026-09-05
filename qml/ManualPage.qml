@@ -72,8 +72,6 @@ Item {
                         if (event.isAutoRepeat) {
                             return;
                         }
-
-                        console.log("Pressed: ", event.key);
                         keyPressed(event.key, event.modifiers);
                         event.accepted = true;
                     }
@@ -81,8 +79,6 @@ Item {
                          if (event.isAutoRepeat) {
                              return;
                          }
-
-                         console.log("Released: ", event.key);
                          keyReleased(event.key, event.modifiers);
                          event.accepted = true;
                      }
