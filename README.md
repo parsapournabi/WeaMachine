@@ -355,7 +355,7 @@ C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
 ### UI/Front
 
 - [ ] Manual GroupBoxes should be enable only when its servo ON and Manual mode is ON.
-- [ ] Complete Record Table and model.
+- [x] Complete Record Table and model.
 - [x] Add 'General' Setting Page with these sections: [ Axes Configuration, Step Configuration ]
 	
 - [x] Step Configuration:
@@ -367,9 +367,9 @@ C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
     - [x] Number of Delay for Checking
     - [x] Mode when encoder error has occured --> [ Emergency and Stop after Delay of checking is completed and has error, Retry again (send GotoPos and continue until the retry counts is reached) ]
 		
-- [ ] Remove unnecessary components from General Setting page.
-- [ ] Add Keyboard Shortcut for Manual running.
-- [ ] Add Keyboard shortcut for Record Table.
+- [x] Remove unnecessary components from General Setting page.
+- [x] Add Keyboard Shortcut for Manual running.
+- [x] Add Keyboard shortcut for Record Table.
 - [ ] Add Step Starting from a specific step.
 - [ ] Fix Manual Scaling for Position
 - [ ] Fix step refreshing to avoid operator mistakes.
@@ -379,7 +379,7 @@ C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
 
 ### Backend
 
-- [ ] ADD RecordTable model logic.
+- [x] ADD RecordTable model logic.
 - [ ] ADD Alarm for when a specific Step cannot be execute or is freezing.
 - [ ] ADD Counter register for when Step flow is done.
 - [x] Make Homing Smarter
