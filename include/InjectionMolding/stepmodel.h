@@ -59,6 +59,7 @@ class  StepModel : public QAbstractListModel
         Q_PROPERTY(int count READ count NOTIFY countChanged)
         W_PROP_HDEF(int, currentSelected, CurrentSelected, -1) // Index
         W_PROP_HDEF(int, currentRunning, CurrentRunning, -1) // Index
+        W_PROP_HDEF(int, currentDelayElapsed, CurrentDelayElapsed, -1) // Index
 
         // Q_PROPERTY(QList<StepItem> steps READ steps WRITE setSteps NOTIFY stepsChanged)
         Q_PROPERTY(QList<StepItem*> steps READ steps WRITE setSteps NOTIFY stepsChanged)

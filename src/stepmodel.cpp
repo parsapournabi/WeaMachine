@@ -691,6 +691,7 @@ void StepModel::onStepTrigger()
     switch (m_state)
     {
         case Idle:
+            setCurrentDelayElapsed(0);
             m_currentStep = nullptr;
             break;
 
@@ -895,6 +896,8 @@ void StepModel::updateRunningState()
 
 void StepModel::updateDelay()
 {
+    // Updating delay elapsed properties
+    setCurrentDelayElapsed(m_delayTimer.elapsed());
     if (m_delayTimer.elapsed() < current()->delay())
     {
         return;
@@ -1259,6 +1262,7 @@ void StepModel::restoreMemories()
     m_plcCompleted = false;
     m_conditionsPassed = false;
     m_delayTimer.invalidate();
+    setCurrentDelayElapsed(0);
     qDebug() << "restoringMemories..." << m_running <<  m_currentRunning << m_currentSelected;
 }
 
