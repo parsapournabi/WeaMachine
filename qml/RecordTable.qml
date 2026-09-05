@@ -78,18 +78,23 @@ BorderRectangle {
 
         /** Slots **/
         shotButton.onPressed: {
+            var x = servoXDevice.encoderPUU;
+            var y = servoYDevice.encoderPUU;
             var item = {
                 no: recordModel.count,
-                xpos: globalConfig.xAxisConfig.toUnit(servoXDevice.encoderPUU + 10),
-                xspeed: servoXDevice.jogSpeed + 12,
-                ypos: globalConfig.yAxisConfig.toUnit(servoYDevice.encoderPUU + 13),
-                yspeed: servoYDevice.jogSpeed + 5
+                xposPUU: x,
+                xpos: globalConfig.xAxisConfig.toUnit(x),
+                xspeed: servoXDevice.jogSpeed,
+                yposPUU: y,
+                ypos: globalConfig.yAxisConfig.toUnit(y),
+                yspeed: servoYDevice.jogSpeed
             };
             recordModel.append(item);
         }
 
         removeButton.onClicked: {
             tableView.removeCurrent();
+            syncModel();
         }
 
         cleanButton.onClicked: {
@@ -99,5 +104,30 @@ BorderRectangle {
 
     ListModel {
         id: recordModel
+    }
+
+    /** Slots **/
+    Connections {
+        target: globalConfig.xAxisConfig
+        function onGearRatioChanged() {
+            syncModel();
+        }
+    }
+
+    Connections {
+        target: globalConfig.yAxisConfig
+        function onGearRatioChanged() {
+            syncModel();
+        }
+    }
+
+    /** Functions **/
+    function syncModel() {
+        for (var i = 0; i < recordModel.count; ++i) {
+            var item = recordModel.get(i);
+            recordModel.setProperty(i, "no", i);
+            recordModel.setProperty(i, "xpos", globalConfig.xAxisConfig.toUnit(item.xposPUU));
+            recordModel.setProperty(i, "ypos", globalConfig.yAxisConfig.toUnit(item.yposPUU));
+        }
     }
 }
