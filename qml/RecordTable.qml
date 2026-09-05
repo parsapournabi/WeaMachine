@@ -75,6 +75,7 @@ BorderRectangle {
 
         removeButton.enabled: tableView.currentRow > -1
         cleanButton.enabled: tableView.rowCount > 0
+        saveButton.enabled: tableView.rowCount > 0
 
         /** Slots **/
         shotButton.onPressed: {
