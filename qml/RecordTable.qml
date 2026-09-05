@@ -93,6 +93,10 @@ BorderRectangle {
             recordModel.append(item);
         }
 
+        saveButton.onClicked: {
+            addSteps();
+        }
+
         removeButton.onClicked: {
             tableView.removeCurrent();
             syncModel();
@@ -129,6 +133,37 @@ BorderRectangle {
             recordModel.setProperty(i, "no", i);
             recordModel.setProperty(i, "xpos", globalConfig.xAxisConfig.toUnit(item.xposPUU));
             recordModel.setProperty(i, "ypos", globalConfig.yAxisConfig.toUnit(item.yposPUU));
+        }
+    }
+
+    function addSteps() {
+        for (var i = 0; i < recordModel.count; ++i) {
+            const modelItem = recordModel.get(i);
+            var item = {
+                "id": stepModel.count,
+                "name": "Recorded #%1".arg(modelItem.no),
+                "bitwiseenable": false,
+                "bitwisemethod": 0,
+                "xposactive": true,
+                "xservoon": true,
+                "xservohome": false,
+                "xservopos": modelItem.xposPUU,
+                "xservospd": modelItem.xspeed * 10,
+                "xservoacc": 200,
+                "xservodec": 200,
+                "yposactive": true,
+                "yservoon": true,
+                "yservohome": false,
+                "yservopos": modelItem.yposPUU,
+                "yservospd": modelItem.yspeed * 10,
+                "yservoacc": 200,
+                "yservodec": 200,
+                "plcoutputtargets": globalConfig.stepConfig.defaultActiveCoils,
+                "conditionbits": [],
+                "delay": 0
+            };
+
+            stepModel.addItem(item);
         }
     }
 }
