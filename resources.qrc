@@ -110,5 +110,7 @@
         <file>qml/KeybindDelegate.qml</file>
         <file>qml/WriteButton.qml</file>
         <file>qml/KeybindInput.qml</file>
+        <file>app.rc</file>
+        <file>share/images/Wearily-Logo-AppIcon-Dark.ico</file>
     </qresource>
 </RCC>
