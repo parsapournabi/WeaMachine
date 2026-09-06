@@ -1,0 +1,16 @@
+// Special Enviornments variables
+
+// INI Configs
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin
+
+// INI
+
+// PLC Servo Auto connect Serial COM
+PLCCOM_PORT_NAME=COM3
+SCOM_PORT_NAME=COM5
+
+// PLC INPUTS/OUTPUS COUNTS
+INPUTS_COUNT=16
+OUTPUTS_COUNT=12
+
