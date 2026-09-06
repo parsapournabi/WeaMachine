@@ -371,7 +371,7 @@ C++ • Qt/QML • OpenGL • PLC Integration • Motion Control
 - [x] Add Keyboard Shortcut for Manual running.
 - [x] Add Keyboard shortcut for Record Table.
 - [ ] Add Step Starting from a specific step.
-- [ ] Fix Manual Scaling for Position
+- [x] Fix Manual Scaling for Position
 - [ ] Fix step refreshing to avoid operator mistakes.
 - [ ] Add Notification and Alarm Sound (Low priority)
 - [x] Connect these new UIs with Backend
