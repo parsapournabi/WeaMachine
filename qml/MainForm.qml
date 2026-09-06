@@ -102,6 +102,13 @@ Item {
             if (currentIndex === 1) {
                 manualPage.forceActiveFocus();
             }
+
+            if (currentIndex === 2) {
+                // Opening Login Modal
+                if (!loginPopup.success) {
+                    loginPopup.open();
+                }
+            }
         }
 
         HomePage {
@@ -113,6 +120,15 @@ Item {
         }
         SettingsPage {
             id: settingsPage
+        }
+
+        Connections {
+            target: loginPopup
+            function onVisibleChanged() {
+                if (!loginPopup.visible && !loginPopup.success && swipeView.currentIndex === 2) {
+                    swipeView.currentIndex = 1;
+                }
+            }
         }
     }
 
