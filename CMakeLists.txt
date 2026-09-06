@@ -33,8 +33,13 @@ set(PROJECT_SOURCES
 find_package(Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt5 REQUIRED COMPONENTS Core)
 
+if(WIN32)
+    set(APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
+endif()
+
 add_executable(InjectionMolding
     ${PROJECT_SOURCES}
+    ${APP_ICON}
 )
 
 # Adding 3rdParty Libraries
