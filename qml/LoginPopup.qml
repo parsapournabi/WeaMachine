@@ -121,7 +121,7 @@ CusPopup {
     }
 
     function checkLoginCorrect(username, password) {
-        return username === "admin" && password === "qazqwe";
+        return _securityManager.checkUserPass(username, password);
     }
 
     function focusOnUsername() {
