@@ -14,7 +14,7 @@ Window {
 
     // qrc:/
     property string splashSource: "qml/SplashScreen.qml"
-    property string projectVersion: "2.3.0"
+    property string projectVersion: "2.3.1"
 
     Component {
         id: compSplashScreen
