@@ -10,6 +10,7 @@
 #include "InjectionMolding/AlarmModel.h"
 #include "InjectionMolding/plciomodel.h"
 #include "InjectionMolding/Registerations.h"
+#include "InjectionMolding/securitymanager.h"
 
 const char* DEBUG_MESSAGE_PATTERN = "[%{type}][%{threadid}][%{function}:%{line}] - %{message}";
 
@@ -72,10 +73,14 @@ int main(int argc, char* argv[])
 
     engine.addImportPath(PROJECT_SOURCE_DIR);
 
+    // Default Items;
+    SecurityManager securityManager;
+
     // Engine Property Contexts
     engine.addEngineContextProperty();
     engine.rootContext()->setContextProperty("_alarmModel", &AlarmModel::getInstance());
     engine.rootContext()->setContextProperty("_plcIOModel", &PlcIOModel::getInstance());
+    engine.rootContext()->setContextProperty("_securityManager", &securityManager);
 
     engine.load(url);
 
