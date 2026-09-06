@@ -1,4 +1,4 @@
-#include "../include/InjectionMolding/securitymanager.h"
+#include "../include/WeaMachine/securitymanager.h"
 
 #include <QSettings>
 #include <QGuiApplication>

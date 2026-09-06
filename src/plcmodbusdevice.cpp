@@ -1,5 +1,5 @@
-#include "../include/InjectionMolding/plcmodbusdevice.h"
-#include "../include/InjectionMolding/plciomodel.h"
+#include "../include/WeaMachine/plcmodbusdevice.h"
+#include "../include/WeaMachine/plciomodel.h"
 
 #include <QDebug>
 

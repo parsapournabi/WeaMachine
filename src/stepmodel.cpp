@@ -1,8 +1,8 @@
-#include "../include/InjectionMolding/stepmodel.h"
+#include "../include/WeaMachine/stepmodel.h"
 
-#include "../include/InjectionMolding/stepitem.h"
-#include "../include/InjectionMolding/plciomodel.h"
-#include "../include/InjectionMolding/servomodbusdevice.h"
+#include "../include/WeaMachine/stepitem.h"
+#include "../include/WeaMachine/plciomodel.h"
+#include "../include/WeaMachine/servomodbusdevice.h"
 
 #include <QJsonArray>
 #include<QJsonDocument>

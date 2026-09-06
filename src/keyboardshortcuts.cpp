@@ -1,5 +1,5 @@
-#include "../include/InjectionMolding/keyboardshortcuts.h"
-#include "../include/InjectionMolding/KeyboardShortcutItem.h"
+#include "../include/WeaMachine/keyboardshortcuts.h"
+#include "../include/WeaMachine/KeyboardShortcutItem.h"
 
 #include <QDebug>
 

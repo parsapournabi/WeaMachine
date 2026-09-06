@@ -1,4 +1,4 @@
-#include "../include/InjectionMolding/stepconfig.h"
+#include "../include/WeaMachine/stepconfig.h"
 
 #include <QSettings>
 #include <QGuiApplication>

@@ -1,5 +1,5 @@
-#include "../include/InjectionMolding/plcioitem.h"
-#include "../include/InjectionMolding/AlarmModel.h"
+#include "../include/WeaMachine/plcioitem.h"
+#include "../include/WeaMachine/AlarmModel.h"
 
 #include <QGuiApplication>
 #include <QSettings>

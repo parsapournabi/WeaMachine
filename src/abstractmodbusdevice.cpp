@@ -1,4 +1,4 @@
-#include "../include/InjectionMolding/abstractmodbusdevice.h"
+#include "../include/WeaMachine/abstractmodbusdevice.h"
 
 #include <QVariant>
 #include <QDebug>

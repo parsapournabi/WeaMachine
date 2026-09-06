@@ -1,4 +1,4 @@
-#include "../include/InjectionMolding/stepitem.h"
+#include "../include/WeaMachine/stepitem.h"
 
 #include <QDebug>
 #include <QMetaObject>

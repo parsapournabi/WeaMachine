@@ -1,8 +1,8 @@
-#include "../include/InjectionMolding/modbuscom.h"
+#include "../include/WeaMachine/modbuscom.h"
 
-#include "../include/InjectionMolding/SerialConnection.h"
-#include "../include/InjectionMolding/abstractmodbusdevice.h"
-#include "../include/InjectionMolding/AlarmModel.h"
+#include "../include/WeaMachine/SerialConnection.h"
+#include "../include/WeaMachine/abstractmodbusdevice.h"
+#include "../include/WeaMachine/AlarmModel.h"
 
 #include <QTimerEvent>
 #include <QGuiApplication>

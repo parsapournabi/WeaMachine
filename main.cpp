@@ -5,12 +5,12 @@
 
 #include <WeaQuick/initialize.h>
 
-#include "InjectionMolding/Utils.h"
-#include "InjectionMolding/Engine.h"
-#include "InjectionMolding/AlarmModel.h"
-#include "InjectionMolding/plciomodel.h"
-#include "InjectionMolding/Registerations.h"
-#include "InjectionMolding/securitymanager.h"
+#include "WeaMachine/Utils.h"
+#include "WeaMachine/Engine.h"
+#include "WeaMachine/AlarmModel.h"
+#include "WeaMachine/plciomodel.h"
+#include "WeaMachine/Registerations.h"
+#include "WeaMachine/securitymanager.h"
 
 const char* DEBUG_MESSAGE_PATTERN = "[%{type}][%{threadid}][%{function}:%{line}] - %{message}";
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     QGuiApplication app(argc, argv);
     QGuiApplication::setOrganizationName("WeaProject");
     QGuiApplication::setOrganizationDomain("com.wearily");
-    QGuiApplication::setApplicationName("InjectionMolding");
+    QGuiApplication::setApplicationName("WeaMachine");
 
     const QString projectSourceDir(PROJECT_SOURCE_DIR);
     const QString mainQmlPath(projectSourceDir + "/main.qml");

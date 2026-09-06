@@ -1,8 +1,8 @@
-#include "../include/InjectionMolding/modbustcp.h"
+#include "../include/WeaMachine/modbustcp.h"
 
-#include "../include/InjectionMolding/TcpConnection.h"
-#include "../include/InjectionMolding/abstractmodbusdevice.h"
-#include "../include/InjectionMolding/AlarmModel.h"
+#include "../include/WeaMachine/TcpConnection.h"
+#include "../include/WeaMachine/abstractmodbusdevice.h"
+#include "../include/WeaMachine/AlarmModel.h"
 
 #include <QTimerEvent>
 #include <QThread>

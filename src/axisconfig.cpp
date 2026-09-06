@@ -1,4 +1,4 @@
-#include "../include/InjectionMolding/axisconfig.h"
+#include "../include/WeaMachine/axisconfig.h"
 
 #include <QSettings>
 #include <QGuiApplication>

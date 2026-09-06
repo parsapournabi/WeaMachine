@@ -1,4 +1,4 @@
-#include "../include/InjectionMolding/plciomodel.h"
+#include "../include/WeaMachine/plciomodel.h"
 
 #include <QGuiApplication>
 #include <QSettings>

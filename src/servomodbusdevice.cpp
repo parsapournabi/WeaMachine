@@ -1,5 +1,5 @@
-#include "../include/InjectionMolding/servomodbusdevice.h"
-#include "../include/InjectionMolding/AlarmModel.h"
+#include "../include/WeaMachine/servomodbusdevice.h"
+#include "../include/WeaMachine/AlarmModel.h"
 
 #include <QDebug>
 #include <QTimer>
