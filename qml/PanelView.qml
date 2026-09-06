@@ -101,14 +101,14 @@ Flickable {
                 // X Servo Goto Position
                 if (gotoPosPanel.gotoPosXControl.positionEditBox.enabled) {
                     // servoXDevice.triggerCTRG();
-                    servoXDevice.gotoPosition(gotoPosPanel.gotoPosXControl.positionValue * 1000,
+                    servoXDevice.gotoPosition(gotoPosPanel.gotoPosXControl.positionValue,
                                               speedPanel.speedXControl.value * 10, rampPanel.rampXControl.accValue);
                 }
 
                 // Y Servo Goto Position
                 if (gotoPosPanel.gotoPosYControl.positionEditBox.enabled) {
                     // servoYDevice.triggerCTRG();
-                    servoYDevice.gotoPosition(gotoPosPanel.gotoPosYControl.positionValue * 1000,
+                    servoYDevice.gotoPosition(gotoPosPanel.gotoPosYControl.positionValue,
                                               speedPanel.speedYControl.value * 10, rampPanel.rampYControl.accValue);
                 }
             }
